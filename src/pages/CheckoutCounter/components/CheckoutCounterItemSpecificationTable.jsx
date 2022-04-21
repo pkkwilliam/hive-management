@@ -41,6 +41,12 @@ const CheckoutCounterItemSpecificationTable = (props) => {
     {
       title: '單價',
       dataIndex: ['itemSpecification', 'price'],
+      renderText: (text, record) => '$' + text,
+    },
+    {
+      title: '優惠價',
+      dataIndex: ['itemSpecification', 'discountPrice'],
+      renderText: (text, record) => '$' + text,
     },
     {
       title: '數量',
@@ -52,10 +58,15 @@ const CheckoutCounterItemSpecificationTable = (props) => {
     {
       title: '小計',
       dataIndex: 'cost',
-      render: (text, record) => `$${record.itemSpecification.price * record.quantity}`,
+      render: (text, record) =>
+        `$${
+          (record.itemSpecification.discountPrice
+            ? record.itemSpecification.discountPrice
+            : record.itemSpecification.price) * record.quantity
+        }`,
     },
     {
-      title: '删除',
+      title: '操作',
       dataIndex: 'cost',
       render: (text, record) => (
         <Button danger icon={<DeleteOutlined />} onClick={() => deleteRow(record)} type="link">

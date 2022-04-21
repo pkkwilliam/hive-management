@@ -10,7 +10,7 @@ import {
 
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import InternalOrderModalForm from './components/InternalOrderModalForm';
+import OrderModalForm from './components/OrderModalForm';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { getValueEnum } from '@/enum/enumUtil';
 import { ORDER_STATUSES } from '@/enum/orderStatus';
@@ -20,7 +20,11 @@ import { toDisplayDate } from '@/util/dateUtil';
 import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
 import { PAYMENT_CHANNELS } from '@/enum/paymentChannel';
 
-const InternalOrder = () => {
+/**
+ * @param {orderPlaceChannel} props
+ * @returns
+ */
+const Order = (props) => {
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
   const [modalFormVisible, setShowModalFormVisible] = useState(false);
@@ -38,6 +42,7 @@ const InternalOrder = () => {
       COMPANY_ORDER_SERVICE_CONFIG,
       {
         ...params,
+        orderPlaceChannel: props.orderPlaceChannel,
         active: true,
       },
       sort,
@@ -132,7 +137,7 @@ const InternalOrder = () => {
           </Button>,
         ]}
       />
-      <InternalOrderModalForm
+      <OrderModalForm
         onFinish={currentRow ? onUpdate : onCreate}
         onVisibleChange={onChangeModalFormVisible}
         order={currentRow}
@@ -142,4 +147,4 @@ const InternalOrder = () => {
   );
 };
 
-export default InternalOrder;
+export default Order;

@@ -4,8 +4,6 @@ import { Alert, Typography } from 'antd';
 import { useIntl } from 'umi';
 import styles from './Welcome.less';
 import Onboard from '@/components/Onboard';
-import Title from 'antd/lib/typography/Title';
-import ProCard from '@ant-design/pro-card';
 
 const CodePreview = ({ children }) => (
   <pre className={styles.pre}>

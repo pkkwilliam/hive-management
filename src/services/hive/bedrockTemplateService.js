@@ -66,6 +66,7 @@ export async function BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
     authenticated: serviceConfig.requireAuth,
     method: 'GET',
     params: {
+      active: true,
       ...params,
       pageRequest: params.current - 1,
     },

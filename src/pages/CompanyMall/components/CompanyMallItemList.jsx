@@ -7,8 +7,7 @@ import { Col, Row, Tag } from 'antd';
 import React, { useState } from 'react';
 
 const CompanyMallItemList = (props) => {
-  const [items, setItems] = useState();
-
+  const { onClickItem } = props;
   const queryItem = async (params, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(PUBLIC_ITEM_SERVICE_CONFIG, params);
   };
@@ -47,15 +46,6 @@ const CompanyMallItemList = (props) => {
       },
     },
   ];
-
-  let cols = [];
-  for (let i = 0; i < 8; i++) {
-    cols.push(
-      <Col className="gutter-row" xs={4} sm={8} md={6} span={8}>
-        <div>col-6</div>
-      </Col>,
-    );
-  }
 
   return (
     <ProTable

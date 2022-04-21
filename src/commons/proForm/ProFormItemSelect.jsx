@@ -10,7 +10,7 @@ const ProFormItemSelect = (props) => {
       {
         active: true,
         current: 1,
-        pageSize: 20,
+        pageSize: 500,
         name: param.keyWords,
       },
     );

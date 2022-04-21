@@ -14,6 +14,11 @@ export const ITEM_SPECIFICATION_SERVICE_CONFIG = {
   serviceUrl: ITEM_SPECIFICATION_SERVICE_URL,
 };
 
+export const PUBLIC_ITEM_SPECIFICATION_SERVICE_CONFIG = {
+  requireAuth: false,
+  serviceUrl: '/public/item_specification/v1',
+};
+
 export async function COMPANY_SPECIFICATION_FUZZY_SEARCH(params) {
   const request = {
     authenticated: false,

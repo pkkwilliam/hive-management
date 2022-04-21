@@ -5,7 +5,13 @@ import React from 'react';
 const CheckoutCounterItemSpecificationSelectedStatistic = (props) => {
   const calculateTotalCost = () => {
     return props.selectedItemSpecifications.reduce((previous, current) => {
-      return previous + current.itemSpecification.price * current.quantity;
+      return (
+        previous +
+        (current.itemSpecification.discountPrice
+          ? current.itemSpecification.discountPrice
+          : current.itemSpecification.price) *
+          current.quantity
+      );
     }, 0);
   };
 

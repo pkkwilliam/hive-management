@@ -7,13 +7,12 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 import { GET_USER_PROFILE } from './services/hive/userProfile';
 import { PUBLIC_GET_COMPANY_CONFIG_BY_COMPANY_ID } from './services/hive/companyConfigService';
-import { useModel } from 'umi';
 import { Button, Space } from 'antd';
 import { GET_COMPANY_ONBOARD } from './services/hive/companyOnboardService';
 
 const isDev = process.env.NODE_ENV === 'development';
 const companyMallPath = '/company/mall';
-
+const mpayHelper = '/mpayH5Helper';
 const loginPath = '/user/login';
 const trialPath = '/user/trial';
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -38,6 +37,7 @@ export async function getInitialState() {
   // 如果是登录页面 or Trial Page，不执行
   if (
     history.location.pathname !== companyMallPath &&
+    !history.location.pathname.includes(mpayHelper) &&
     history.location.pathname !== loginPath &&
     history.location.pathname !== trialPath
   ) {
@@ -82,6 +82,7 @@ export const layout = ({ initialState, setInitialState }) => {
       if (
         !initialState?.currentUser &&
         location.pathname !== companyMallPath &&
+        !location.pathname.includes(mpayHelper) &&
         location.pathname !== loginPath &&
         location.pathname !== trialPath
       ) {
