@@ -11,7 +11,7 @@ const ProFormItemSpecificationSelect = (props) => {
       {
         active: true,
         current: 1,
-        pageSize: 20,
+        pageSize: 500,
         'item.id': props.item.id,
         name: param.keyWords,
       },

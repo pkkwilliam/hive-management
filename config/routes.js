@@ -156,13 +156,33 @@ export default [
     ],
   },
   {
-    path: '/shopManager',
+    path: '/order',
     name: '訂單',
     routes: [
       {
-        path: '/shopManager/internalOrder',
+        path: '/order',
         name: '銷售訂單',
-        component: './shopManager/order/InternalOrder/index',
+        component: './Order/index',
+      },
+      {
+        path: '/order/internalOrder',
+        name: '內部訂單',
+        component: './Order/OrderInternal/index',
+      },
+      {
+        path: '/order/externalCompanyBusiness',
+        name: '外部訂單(客戶)',
+        component: './Order/OrderExternalCompanyBusiness/index',
+      },
+      {
+        path: '/order/externalMiniProgram',
+        name: '外部訂單(微信)',
+        component: './Order/OrderExternalMiniPrgoram/index',
+      },
+      {
+        path: '/order/directSale',
+        name: '門店直銷',
+        component: './Order/OrderDirectSale/index',
       },
     ],
   },
@@ -171,12 +191,6 @@ export default [
     name: '收銀',
     icon: 'moneyCollect',
     component: './CheckoutCounter/index',
-  },
-  {
-    path: '/companyMallConfig',
-    name: '企業商城',
-    icon: 'shop',
-    component: './company/CompanyMallConfig/index',
   },
   {
     path: '/wechatMiniProgram',

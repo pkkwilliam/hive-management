@@ -8,6 +8,7 @@ const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   define: {
     API_URL: 'https://hive-uat-api.bitcode.mo',
+    MPAY_RETURN_URL: 'https://hive-uat-management.bitcode.mo/#/mpayHelper',
   },
   history: { type: 'hash' },
   hash: true,
