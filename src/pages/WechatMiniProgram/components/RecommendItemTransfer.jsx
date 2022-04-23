@@ -63,7 +63,7 @@ const RecommendItemTransfer = (props) => {
         height: 600,
         width: 300,
       }}
-      titles={['後台標籤', '小程序顯示標籤']}
+      titles={['後台標籤/分類', '小程序顯示標籤/分類']}
       targetKeys={targetKeys}
       selectedKeys={selectedKeys}
       showSearch

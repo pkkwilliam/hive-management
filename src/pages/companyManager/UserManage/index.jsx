@@ -32,7 +32,8 @@ export function UserManage() {
   };
 
   const deactivate = async (record) => {
-    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_INTERNAL_USER_SERVICE_CONFIG, record.id);
+    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_INTERNAL_USER_SERVICE_CONFIG, record.sid);
+    tableActionRef.current.reload();
   };
 
   const onClickEdit = (record) => {
@@ -64,6 +65,7 @@ export function UserManage() {
 
   const update = async (record) => {
     await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_INTERNAL_USER_SERVICE_CONFIG, record);
+    tableActionRef.current.reload();
     return true;
   };
 

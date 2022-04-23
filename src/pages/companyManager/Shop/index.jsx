@@ -17,6 +17,7 @@ import {
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import { COMPANY_TEST_SHOP_PRINTER } from '@/services/hive/printService';
 import { COMPANY_GET_WECHAT_MINI_PROGRAM_QR_CODE } from '@/services/hive/wechatMiniProgramQrCodeService';
+import Text from 'antd/lib/typography/Text';
 
 const Category = () => {
   const { initialState } = useModel('@@initialState');
@@ -104,7 +105,11 @@ const Category = () => {
       },
       deleteShopServiceRequest,
       (text, record) =>
-        record.defaultPrinter ? <a onClick={() => onClickTestPrinter(record)}>測試打印機</a> : '-',
+        record.defaultPrinter ? (
+          <a onClick={() => onClickTestPrinter(record)}>測試打印機</a>
+        ) : (
+          <Text disabled>没有打印機</Text>
+        ),
     ),
   ];
 

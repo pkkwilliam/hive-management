@@ -26,7 +26,7 @@ const CompanyMallItemList = (props) => {
     },
     { title: '品牌', dataIndex: 'brand' },
     {
-      title: '標簽',
+      title: '標籤/分類',
       dataIndex: 'categories',
       key: 'categoryId',
       render: (text, record) => {

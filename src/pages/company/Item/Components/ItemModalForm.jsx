@@ -40,7 +40,7 @@ const ItemModalForm = (props) => {
         </Space>
       </Space>
 
-      <ProFormCategoryListSelect label="標簽" mode="multiple" name={['categories']} />
+      <ProFormCategoryListSelect label="標籤/分類" mode="multiple" name={['categories']} />
       <Space>
         <ProFormTextArea label="內容" name="content" placeholder="5分包裝 每包25塊" />
         <ProFormTextArea

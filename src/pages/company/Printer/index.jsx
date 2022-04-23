@@ -61,6 +61,7 @@ const Printer = () => {
       valueEnum: getValueEnum(PRINTERS),
     },
     { title: '打印機SN', dataIndex: ['serialNumber'], search: false },
+    { title: '打印機Key', dataIndex: ['printerKey'], search: false },
     { title: '備註', dataIndex: ['remark'], search: false },
     ProTableOperationColumnButtons((record) => {
       setCurrentRow(record);

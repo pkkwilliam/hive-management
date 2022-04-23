@@ -10,18 +10,12 @@ import {
   USER_ROLE_BUYER,
 } from '@/enum/userRole';
 import ProFormUserRoleCheckbox from '@/commons/proForm/ProFormUserRoleCheckbox';
+import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 
 const UserModalForm = (props) => {
   const [form] = Form.useForm();
   const { onChangeModalFormVisible, onFinish, user, visible } = props;
   form.setFieldsValue(user);
-
-  const onVisibleChange = (visible) => {
-    if (!visible) {
-      form.resetFields();
-    }
-    onChangeModalFormVisible(visible);
-  };
 
   return (
     <ModalForm
@@ -31,13 +25,21 @@ const UserModalForm = (props) => {
         maskClosable: false,
       }}
       onFinish={onFinish}
-      onVisibleChange={onVisibleChange}
+      onVisibleChange={(visible) =>
+        onModalFormVisibleChange(onChangeModalFormVisible, form, visible)
+      }
       title={user ? '修改用戶' : '新增用戶'}
       visible={visible}
     >
       <ProFormText hidden label="SID" name={['sid']} />
-      <ProFormText label="名字" placeholder="請輸入名字" required name="name" />
-      <ProFormText label="用戶名(英文無空格)" placeholder="請輸入用戶名" required name="username" />
+      <ProFormText disabled={user} label="名字" placeholder="請輸入名字" required name="name" />
+      <ProFormText
+        disabled={user}
+        label="用戶名(英文無空格)"
+        placeholder="請輸入用戶名"
+        required
+        name="username"
+      />
       <ProFormUserRoleCheckbox
         name="grantedRoles"
         label="權限"

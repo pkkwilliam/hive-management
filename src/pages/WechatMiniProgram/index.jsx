@@ -46,7 +46,7 @@ const WechatMiniProgram = () => {
             wechatMiniProgramConfig={wechatMiniProgramConfig}
           />
         </ProCard.TabPane>
-        <ProCard.TabPane key="tab2" tab="標籤">
+        <ProCard.TabPane key="tab2" tab="標籤/分類">
           <CategoryTransfer onUpdate={update} wechatMiniProgramConfig={wechatMiniProgramConfig} />
         </ProCard.TabPane>
         <ProCard.TabPane key="tab3" tab="產品">

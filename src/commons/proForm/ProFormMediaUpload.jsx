@@ -7,8 +7,11 @@ const ProFormMediaUpload = (props) => {
   const [currentFileList, setCurrentFileList] = useState([]);
   const [token, setToken] = useState();
 
+  console.log(props.form);
+
   useEffect(() => {
     let currentValues = props.form.getFieldValue(props.name);
+    console.log(props?.form?.getFieldValue('id'));
     if (!isArray) {
       currentValues = [currentValues];
     }
@@ -18,7 +21,7 @@ const ProFormMediaUpload = (props) => {
         currentValues.map((value, index) => ({ uid: index, status: 'done', url: value, index })),
       );
     }
-  }, []);
+  }, [props?.form?.getFieldValue('id')]);
 
   const beforeUpload = async () => {
     const response = await COMPANY_MANAGER_GET_MEDIA_UPLOAD_TOKEN();

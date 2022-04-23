@@ -15,7 +15,7 @@ export const ORDER_STATUS_ORDER_PENDING = {
 };
 export const ORDER_STATUS_ORDER_READY_TO_PICK_UP = {
   key: 'ORDER_READY_TO_PICK_UP',
-  label: '訂單準備完成',
+  label: '訂單配貨完成',
   status: 'success',
 };
 export const ORDER_STATUS_ORDER_FINISHED = {
@@ -35,5 +35,4 @@ export const ORDER_STATUSES = [
   ORDER_STATUS_ORDER_PENDING,
   ORDER_STATUS_ORDER_READY_TO_PICK_UP,
   ORDER_STATUS_ORDER_FINISHED,
-  ORDER_STATUS_PAYMENT_PENDING,
 ];

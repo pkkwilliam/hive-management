@@ -6,29 +6,40 @@ import { BEDROCK_GET_BY_ID_SERVICE_REQUEST } from '@/services/hive/bedrockTempla
 import { ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
 
 const OrderItemInfoList = (props) => {
+  const { disabled = false, readonly = false } = props;
   return (
     <ProFormDependency name={['companyBusiness', 'distributionShop']} ignoreFormListField>
       {({ companyBusiness, distributionShop }) => {
         return (
           <ProFormList
             tooltip="請先選擇配貨中心與客戶"
-            creatorButtonProps={{ disabled: !companyBusiness?.id || !distributionShop?.id }}
+            creatorButtonProps={
+              readonly
+                ? false
+                : {
+                    disabled: !companyBusiness?.id || !distributionShop?.id || disabled,
+                  }
+            }
             {...props}
           >
             {({ key, name }) => {
               return (
                 <ProFormGroup>
                   <ProFormItemSelect
+                    disabled={disabled}
                     label="商品"
                     name={['item', 'id']}
+                    readonly={readonly}
                     rules={[{ required: true, message: '請選擇商品' }]}
                     showSearch
                     width="sm"
                   />
                   <ProFormPreOrderItemSpecificationSelection
+                    disabled={disabled}
                     companyBusiness={companyBusiness}
                     distributionShop={distributionShop}
                     dependencies={['item']}
+                    readonly={readonly}
                     showStock
                     label="規格"
                     name={['itemSpecification', 'id']}
@@ -50,8 +61,10 @@ const OrderItemInfoList = (props) => {
                     width="lg"
                   />
                   <ProFormDigit
+                    disabled={disabled}
                     label="數量"
                     name="quantity"
+                    readonly={readonly}
                     width="xs"
                     rules={[{ required: true, message: '請輸入數量' }]}
                   />

@@ -130,7 +130,7 @@ export default [
     routes: [
       {
         path: '/companyManagerItem/category',
-        name: '標簽',
+        name: '標籤/分類',
         component: './company/Category/index',
       },
       {

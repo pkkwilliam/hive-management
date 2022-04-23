@@ -21,6 +21,7 @@ const PrinterModalForm = (props) => {
       <ProFormText label="名稱" name={['name']} />
       <ProFormPrinterSelect label="打印機類型" name={['printer']} />
       <ProFormText label="打印機SN" name={['serialNumber']} />
+      <ProFormText label="打印機Key" name={['printerKey']} />
       <ProFormText label="備註" name={['remark']} />
     </ModalForm>
   );

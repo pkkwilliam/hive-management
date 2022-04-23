@@ -14,10 +14,12 @@ import {
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
+import CompanyBusinessDeliveryAddressModal from './components/CompanyBusinessDeliveryAddressModal';
 
 const CompanyBusiness = () => {
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
+  const [deliveryAddresssModalVisible, setDeliveryAddressModalVisible] = useState();
   const [modalFormVisible, setModalFormVisible] = useState(false);
 
   const createCompanyBusinessService = async (request) => {
@@ -32,6 +34,13 @@ const CompanyBusiness = () => {
       record.id,
     );
     tableRef.current.reload();
+  };
+
+  const deliveryAddressModalVisibleChange = (visible) => {
+    if (!visible) {
+      setCurrentRow(undefined);
+    }
+    setDeliveryAddressModalVisible(visible);
   };
 
   const modalFormVisibleChange = (visible) => {
@@ -68,6 +77,10 @@ const CompanyBusiness = () => {
       dataIndex: 'companyBusinessPaymentType',
       valueEnum: getValueEnum(COMPANY_BUSINESS_PAYMENT_TYPES),
     },
+    {
+      title: '地址數量',
+      renderText: (text, record) => record.deliveryAddress.length,
+    },
     { title: '備註', dataIndex: 'remark', search: false },
     ProTableOperationColumnButtons(
       (record) => {
@@ -75,7 +88,16 @@ const CompanyBusiness = () => {
         setModalFormVisible(true);
       },
       deleteCompanyBusinessService,
-      (text, record) => <a>送貨地址</a>,
+      (text, record) => (
+        <a
+          onClick={() => {
+            deliveryAddressModalVisibleChange(true);
+            setCurrentRow(record);
+          }}
+        >
+          送貨地址
+        </a>
+      ),
     ),
   ];
 
@@ -101,6 +123,11 @@ const CompanyBusiness = () => {
         onFinish={currentRow ? updateCompanyBusinessService : createCompanyBusinessService}
         onVisibleChange={modalFormVisibleChange}
         visible={modalFormVisible}
+      />
+      <CompanyBusinessDeliveryAddressModal
+        companyBusiness={currentRow}
+        onVisibleChange={deliveryAddressModalVisibleChange}
+        visible={deliveryAddresssModalVisible}
       />
     </PageContainer>
   );

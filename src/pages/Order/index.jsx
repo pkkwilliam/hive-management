@@ -1,24 +1,24 @@
 import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
 
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import OrderModalForm from './components/OrderModalForm';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { getValueEnum } from '@/enum/enumUtil';
-import { ORDER_STATUSES } from '@/enum/orderStatus';
-import { PAYMENT_STATUSES } from '@/enum/paymentStatus';
+import { ORDER_STATUSES, ORDER_STATUS_ORDER_FINISHED } from '@/enum/orderStatus';
+import { PAYMENT_STATUSES, PAYMENT_STATUS_PAID } from '@/enum/paymentStatus';
 import { ORDER_PLACE_CHANNELS } from '@/enum/orderPlaceChannel';
 import { toDisplayDate } from '@/util/dateUtil';
 import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
 import { PAYMENT_CHANNELS } from '@/enum/paymentChannel';
+import Text from 'antd/lib/typography/Text';
 
 /**
  * @param {orderPlaceChannel} props
@@ -68,7 +68,7 @@ const Order = (props) => {
   };
 
   const COLUMNS = [
-    { title: '單號', dataIndex: ['id'] },
+    { title: '單號', dataIndex: ['id'], render: (text, record) => <a>{text}</a> },
     {
       title: '創單日期',
       dataIndex: ['createTime'],
@@ -110,14 +110,38 @@ const Order = (props) => {
       dataIndex: ['remark'],
       search: false,
     },
-    ProTableOperationColumnButtons(
-      (record) => {
-        setCurrentRow(record);
-        onChangeModalFormVisible(true);
-      },
-      onDelete,
-      (text, record) => <a onClick={() => onClickPrintDistributionList(record)}>打印配貨單</a>,
-    ),
+    {
+      title: '操作',
+      valueType: 'option',
+      render: (text, record, _, action) => [
+        <a key="printReceipt" onClick={() => onClickPrintDistributionList(record)}>
+          打印配貨單
+        </a>,
+        record.paymentStatus === PAYMENT_STATUS_PAID.key &&
+        record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key ? (
+          <Text disabled>修改</Text>
+        ) : (
+          <a
+            key="edit"
+            onClick={() => {
+              setCurrentRow(record);
+              onChangeModalFormVisible(true);
+            }}
+          >
+            修改
+          </a>
+        ),
+        <Popconfirm
+          cancelText="取消"
+          key="delete"
+          onConfirm={() => onDelete(record)}
+          okText="確定"
+          title="確認刪除?"
+        >
+          <a>删除</a>
+        </Popconfirm>,
+      ],
+    },
   ];
 
   return (
@@ -137,12 +161,12 @@ const Order = (props) => {
           </Button>,
         ]}
       />
-      <OrderModalForm
-        onFinish={currentRow ? onUpdate : onCreate}
-        onVisibleChange={onChangeModalFormVisible}
-        order={currentRow}
-        visible={modalFormVisible}
-      />
+      {props.modalFormComponent({
+        onFinish: currentRow ? onUpdate : onCreate,
+        onVisibleChange: onChangeModalFormVisible,
+        order: currentRow,
+        visible: modalFormVisible,
+      })}
     </PageContainer>
   );
 };

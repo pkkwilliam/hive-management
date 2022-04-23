@@ -15,12 +15,13 @@ const CategoryModalForm = (props) => {
       form={form}
       onFinish={(values) => onClickSubmit({ ...values, id: category?.id })}
       onVisibleChange={(visible) => onModalFormVisibleChange(setModalVisible, form, visible)}
-      title={category ? '修改標簽' : '新增標簽'}
+      title={category ? '修改標籤/分類' : '新增標籤/分類'}
       visible={visible}
     >
+      {form.getFieldValue('imageUrl')}
       <ProFormDigit disabled hidden label="ID" name="id" />
-      <ProFormMediaUpload label="圖片" form={form} max={1} name={['imageUrl']} />
-      <ProFormText label="標簽名稱" placeholder="請輸入標簽名稱" required name="name" />
+      <ProFormMediaUpload label="圖片" form={form} max={1} name={['imageUrl']} {...props} />
+      <ProFormText label="標籤/分類名稱" placeholder="請輸入標籤/分類名稱" required name="name" />
     </ModalForm>
   );
 };

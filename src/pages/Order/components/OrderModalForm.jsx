@@ -22,7 +22,7 @@ import { COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive
 import { ORDER_PLACE_CHANNEL_INTERNAL_ORDER } from '@/enum/orderPlaceChannel';
 import { ORDER_STATUS_ORDER_PENDING } from '@/enum/orderStatus';
 
-const InternalOrderModalForm = (props) => {
+const OrderModalForm = (props) => {
   const [form] = Form.useForm();
   const { order, onFinish, onVisibleChange, visible } = props;
   if (order?.id) {
@@ -125,4 +125,4 @@ const InternalOrderModalForm = (props) => {
   );
 };
 
-export default InternalOrderModalForm;
+export default OrderModalForm;
