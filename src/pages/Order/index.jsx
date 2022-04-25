@@ -9,7 +9,6 @@ import {
 
 import { Button, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import OrderModalForm from './components/OrderModalForm';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { getValueEnum } from '@/enum/enumUtil';
 import { ORDER_STATUSES, ORDER_STATUS_ORDER_FINISHED } from '@/enum/orderStatus';
@@ -19,6 +18,7 @@ import { toDisplayDate } from '@/util/dateUtil';
 import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
 import { PAYMENT_CHANNELS } from '@/enum/paymentChannel';
 import Text from 'antd/lib/typography/Text';
+import OrderDetailModal from './components/OrderDetailModal';
 
 /**
  * @param {orderPlaceChannel} props
@@ -27,6 +27,7 @@ import Text from 'antd/lib/typography/Text';
 const Order = (props) => {
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [modalFormVisible, setShowModalFormVisible] = useState(false);
 
   const onCreate = async (request) => {
@@ -56,6 +57,13 @@ const Order = (props) => {
     return true;
   };
 
+  const onChangeDetailModalVisible = (visible) => {
+    if (!visible) {
+      setCurrentRow(undefined);
+    }
+    setDetailModalVisible(false);
+  };
+
   const onChangeModalFormVisible = (visible) => {
     if (!visible) {
       setCurrentRow(undefined);
@@ -68,7 +76,20 @@ const Order = (props) => {
   };
 
   const COLUMNS = [
-    { title: '單號', dataIndex: ['id'], render: (text, record) => <a>{text}</a> },
+    {
+      title: '單號',
+      dataIndex: ['id'],
+      render: (text, record) => (
+        <a
+          onClick={() => {
+            setCurrentRow(record);
+            setDetailModalVisible(true);
+          }}
+        >
+          {text}
+        </a>
+      ),
+    },
     {
       title: '創單日期',
       dataIndex: ['createTime'],
@@ -167,6 +188,11 @@ const Order = (props) => {
         order: currentRow,
         visible: modalFormVisible,
       })}
+      <OrderDetailModal
+        order={currentRow}
+        setModalVisible={onChangeDetailModalVisible}
+        visible={detailModalVisible}
+      />
     </PageContainer>
   );
 };

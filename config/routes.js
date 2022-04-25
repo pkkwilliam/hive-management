@@ -125,6 +125,17 @@ export default [
     ],
   },
   {
+    path: '/financial',
+    name: '財務管理',
+    routes: [
+      {
+        path: '/financial/companyBusiness',
+        name: '客戶賬單',
+        component: './financial/FinancialCompanyBusiness/index',
+      },
+    ],
+  },
+  {
     path: '/companyManagerItem',
     name: '商品管理',
     routes: [
@@ -181,7 +192,7 @@ export default [
       },
       {
         path: '/order/directSale',
-        name: '門店直銷',
+        name: '地點直銷',
         component: './Order/OrderDirectSale/index',
       },
     ],
