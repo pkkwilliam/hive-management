@@ -170,19 +170,19 @@ export default [
     path: '/order',
     name: '訂單',
     routes: [
-      {
-        path: '/order',
-        name: '銷售訂單',
-        component: './Order/index',
-      },
+      // {
+      //   path: '/order',
+      //   name: '銷售訂單',
+      //   component: './Order/index',
+      // },
       {
         path: '/order/internalOrder',
-        name: '內部訂單',
+        name: '企業訂單',
         component: './Order/OrderInternal/index',
       },
       {
         path: '/order/externalCompanyBusiness',
-        name: '外部訂單(客戶)',
+        name: '外部訂單(企業)',
         component: './Order/OrderExternalCompanyBusiness/index',
       },
       {

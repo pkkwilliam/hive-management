@@ -152,15 +152,21 @@ const Order = (props) => {
             修改
           </a>
         ),
-        <Popconfirm
-          cancelText="取消"
-          key="delete"
-          onConfirm={() => onDelete(record)}
-          okText="確定"
-          title="確認刪除?"
-        >
-          <a>删除</a>
-        </Popconfirm>,
+        record.paymentStatus === PAYMENT_STATUS_PAID.key &&
+        record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key ? (
+          <Text disabled>删除</Text>
+        ) : (
+          <Popconfirm
+            cancelText="取消"
+            key="delete"
+            onConfirm={() => onDelete(record)}
+            okText="確定"
+            title="確認刪除?"
+          >
+            <a>删除</a>
+          </Popconfirm>
+        ),
+        ,
       ],
     },
   ];

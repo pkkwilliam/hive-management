@@ -1,6 +1,6 @@
 import React from 'react';
 import OrderModalForm from '@/pages/Order/components/OrderModalForm';
-import { ModalForm, ProFormGroup, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormDigit, ProFormGroup, ProFormText } from '@ant-design/pro-form';
 import { Form } from 'antd';
 import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
 import OrderItemInfoList from '@/pages/Order/components/OrderItemInfoList';
@@ -38,6 +38,7 @@ const OrderExternalMiniProgramModalForm = (props) => {
       visible={visible}
       width={1200}
     >
+      <ProFormDigit hidden disabled label="ID" name="id" />
       <ProFormShopSelect
         label="配貨中心"
         name={['distributionShop', 'id']}

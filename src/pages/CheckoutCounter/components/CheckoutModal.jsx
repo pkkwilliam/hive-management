@@ -15,7 +15,7 @@ import { getEnumLabelByKey } from '@/enum/enumUtil';
 
 const CheckoutModal = (props) => {
   const [form] = Form.useForm();
-  const [cashValue, setCashValue] = useState(0);
+  const [cashValue, setCashValue] = useState();
   const [orderResponse, setOrderResponse] = useState();
   const { onChangeVisible, order, visible } = props;
   form.setFieldsValue(order);
@@ -90,6 +90,15 @@ const CheckoutModal = (props) => {
       onFinish={createOrder}
       onChangeVisible={onChangeVisible}
       submitter={{
+        render: (props, defaultDoms) => {
+          return [
+            <Button key="finishWithoutPrint" onClick={createOrder} size="large">
+              完成結賬
+            </Button>,
+            ...defaultDoms,
+          ];
+        },
+
         resetButtonProps: {
           style: {
             // 隐藏重置按钮
@@ -97,7 +106,7 @@ const CheckoutModal = (props) => {
           },
         },
         searchConfig: {
-          submitText: '完成結賬',
+          submitText: '完成結賬並列印收據',
         },
         submitButtonProps: {
           block: true,
@@ -239,7 +248,7 @@ const RightPanel = (props) => {
         </Col>
         <Col>
           <Text style={{ fontSize: 26 }}>
-            ${cashValue - calculateTotalCost(order.orderItemInfos)}
+            ${(cashValue ?? 0) - calculateTotalCost(order.orderItemInfos)}
           </Text>
         </Col>
       </Row>
