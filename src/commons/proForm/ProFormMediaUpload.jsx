@@ -7,8 +7,6 @@ const ProFormMediaUpload = (props) => {
   const [currentFileList, setCurrentFileList] = useState([]);
   const [token, setToken] = useState();
 
-  console.log(props.form);
-
   useEffect(() => {
     let currentValues = props.form.getFieldValue(props.name);
     console.log(props?.form?.getFieldValue('id'));
@@ -95,6 +93,7 @@ const ProFormMediaUpload = (props) => {
         onChange: onChange,
         onRemove: onRemove,
       }}
+      title="單擊上傳"
       {...props}
     />
   );

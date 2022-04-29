@@ -13,7 +13,7 @@ import { COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hi
 import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 
 const ItemSpecificationModalForm = (props) => {
-  const { item, onFinish, onVisibleChange, visible } = props;
+  const { item, onFinish, setVisible, visible } = props;
   const [form] = Form.useForm();
 
   const getItemSpecificationByItem = async () => {
@@ -36,7 +36,7 @@ const ItemSpecificationModalForm = (props) => {
         }));
         onFinish(request);
       }}
-      onVisibleChange={onVisibleChange}
+      onVisibleChange={setVisible}
       visible={visible}
       title="商品規格"
     >

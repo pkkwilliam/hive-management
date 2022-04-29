@@ -3,7 +3,7 @@ import ProCard from '@ant-design/pro-card';
 import CheckoutCounterItemSpecificationSelect from './components/CheckoutCounterItemSpecificationSelect';
 import CheckoutCounterItemSpecificationSelectedStatistic from './components/CheckoutCounterItemSpecificationSelectedStatistic';
 import CheckoutCounterItemSpecificationTable from './components/CheckoutCounterItemSpecificationTable';
-import { Button, Space } from 'antd';
+import { Button, Card, Space } from 'antd';
 import CheckoutModal from './components/CheckoutModal';
 import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
 
@@ -43,11 +43,13 @@ const CheckoutCounter = () => {
 
   return (
     <>
-      <ProFormShopSelect
-        allowClear={false}
-        label="銷售地點"
-        onChange={(shopId) => setDistributionShop(shopId)}
-      />
+      <Card>
+        <ProFormShopSelect
+          allowClear={false}
+          label="銷售地點"
+          onChange={(shopId) => setDistributionShop(shopId)}
+        />
+      </Card>
       {!distributionShop ? null : (
         <ProCard direction="row" ghost gutter={16}>
           <ProCard direction="column" ghost>

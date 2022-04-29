@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function toDisplayDate(date, format = 'MM月DD日') {
+export function toDisplayDate(date, format = 'yyyy-MM-DD') {
   if (!date) {
     return date;
   }

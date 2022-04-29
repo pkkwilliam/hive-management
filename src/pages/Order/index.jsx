@@ -6,8 +6,7 @@ import {
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
-
-import { Button, Popconfirm } from 'antd';
+import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { getValueEnum } from '@/enum/enumUtil';
@@ -15,10 +14,9 @@ import { ORDER_STATUSES, ORDER_STATUS_ORDER_FINISHED } from '@/enum/orderStatus'
 import { PAYMENT_STATUSES, PAYMENT_STATUS_PAID } from '@/enum/paymentStatus';
 import { ORDER_PLACE_CHANNELS } from '@/enum/orderPlaceChannel';
 import { toDisplayDate } from '@/util/dateUtil';
-import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
 import { PAYMENT_CHANNELS } from '@/enum/paymentChannel';
-import Text from 'antd/lib/typography/Text';
 import OrderDetailModal from './components/OrderDetailModal';
+import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 
 /**
  * @param {orderPlaceChannel} props
@@ -59,9 +57,10 @@ const Order = (props) => {
 
   const onChangeDetailModalVisible = (visible) => {
     if (!visible) {
+      console.log('removeeee');
       setCurrentRow(undefined);
     }
-    setDetailModalVisible(false);
+    setDetailModalVisible(visible);
   };
 
   const onChangeModalFormVisible = (visible) => {
@@ -69,10 +68,6 @@ const Order = (props) => {
       setCurrentRow(undefined);
     }
     setShowModalFormVisible(visible);
-  };
-
-  const onClickPrintDistributionList = async (record) => {
-    await COMPANY_PRINT_ORDER_BY_ID(record.id);
   };
 
   const COLUMNS = [
@@ -83,7 +78,7 @@ const Order = (props) => {
         <a
           onClick={() => {
             setCurrentRow(record);
-            setDetailModalVisible(true);
+            onChangeDetailModalVisible(true);
           }}
         >
           {text}
@@ -135,38 +130,58 @@ const Order = (props) => {
       title: '操作',
       valueType: 'option',
       render: (text, record, _, action) => [
-        <a key="printReceipt" onClick={() => onClickPrintDistributionList(record)}>
+        <a
+          key="printReceipt"
+          onClick={() => {
+            setCurrentRow(record);
+            onChangeDetailModalVisible(true);
+          }}
+        >
           打印配貨單
         </a>,
-        record.paymentStatus === PAYMENT_STATUS_PAID.key &&
-        record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key ? (
-          <Text disabled>修改</Text>
-        ) : (
-          <a
-            key="edit"
-            onClick={() => {
-              setCurrentRow(record);
-              onChangeModalFormVisible(true);
-            }}
-          >
-            修改
-          </a>
-        ),
-        record.paymentStatus === PAYMENT_STATUS_PAID.key &&
-        record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key ? (
-          <Text disabled>删除</Text>
-        ) : (
-          <Popconfirm
-            cancelText="取消"
-            key="delete"
-            onConfirm={() => onDelete(record)}
-            okText="確定"
-            title="確認刪除?"
-          >
-            <a>删除</a>
-          </Popconfirm>
-        ),
-        ,
+        <InactiveableLinkButton
+          disabled={record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key}
+          key="edit"
+          label="送達"
+          onClick={() => {
+            onUpdate({ ...record, orderStatus: ORDER_STATUS_ORDER_FINISHED.key });
+          }}
+          popConfirm
+          popConfirmMessage={`${record.id} - 確認送達?`}
+        />,
+        <InactiveableLinkButton
+          disabled={record.paymentStatus === PAYMENT_STATUS_PAID.key}
+          key="edit"
+          label="收款"
+          onClick={() => {
+            onUpdate({ ...record, paymentStatus: PAYMENT_STATUS_PAID.key });
+          }}
+          popConfirm
+          popConfirmMessage={`${record.id} - 確認收款成功?`}
+        />,
+        <InactiveableLinkButton
+          disabled={
+            record.paymentStatus === PAYMENT_STATUS_PAID.key &&
+            record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key
+          }
+          key="edit"
+          label="修改"
+          onClick={() => {
+            setCurrentRow(record);
+            onChangeModalFormVisible(true);
+          }}
+        />,
+        <InactiveableLinkButton
+          disabled={
+            record.paymentStatus === PAYMENT_STATUS_PAID.key &&
+            record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key
+          }
+          key="delete"
+          label="棄單"
+          onClick={() => onDelete(record)}
+          popConfirm
+          popConfirmMessage="確認棄單?"
+        />,
       ],
     },
   ];
@@ -191,7 +206,8 @@ const Order = (props) => {
       {props.modalFormComponent({
         onFinish: currentRow ? onUpdate : onCreate,
         onVisibleChange: onChangeModalFormVisible,
-        order: currentRow,
+        // doing this because we don't want order to be set when modal is not visible but currentRow is using by others
+        order: modalFormVisible ? currentRow : undefined,
         visible: modalFormVisible,
       })}
       <OrderDetailModal

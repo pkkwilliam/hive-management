@@ -4,7 +4,7 @@ import {
   BEDROCK_QUERY_LIST_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
+import { COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
 import { SHOP_TYPES } from '@/enum/shopType';
 import { getValueEnum } from '@/enum/enumUtil';
 import {
@@ -17,7 +17,7 @@ const ShopItemSpecificationList = (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
   const queryItemSpecificationStock = async (params, sort, filter) => {
     return await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
-      COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
       {
         'itemSpecification.id': props.itemSpecification?.id,
       },
@@ -25,10 +25,7 @@ const ShopItemSpecificationList = (props) => {
   };
 
   const update = async (request) => {
-    await BEDROCK_UPDATE_SERVICE_REQUEST(
-      COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
-      request,
-    );
+    await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG, request);
     tableActionRef.current.reload();
   };
 

@@ -25,6 +25,30 @@ const OrderSummary = () => {
           precision: 0,
         }}
       />
+      <StatisticCard
+        statistic={{
+          title: '未完成企業訂單',
+          tip: '訂單金額未收齊或訂單未送達',
+          value: orderSummary.orderNotFinishedInternal,
+          precision: 0,
+        }}
+      />
+      <StatisticCard
+        statistic={{
+          title: '未完成外部訂單(企業)',
+          tip: '訂單金額未收齊或訂單未送達',
+          value: orderSummary.orderNotFinishedExternalCompanyBusiness,
+          precision: 0,
+        }}
+      />
+      <StatisticCard
+        statistic={{
+          title: '未完成外部訂單(微信)',
+          tip: '訂單金額未收齊或訂單未送達',
+          value: orderSummary.orderNotFinishedMiniProgram,
+          precision: 0,
+        }}
+      />
       <Divider type={'vertical'} />
       <StatisticCard
         statistic={{

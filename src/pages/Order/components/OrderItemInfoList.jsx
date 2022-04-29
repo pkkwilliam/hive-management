@@ -4,6 +4,9 @@ import ProFormItemSelect from '@/commons/proForm/ProFormItemSelect';
 import ProFormPreOrderItemSpecificationSelection from '@/commons/proForm/ProFormPreOrderItemSpecificationSelect';
 import { BEDROCK_GET_BY_ID_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 import { ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
+import ProCard from '@ant-design/pro-card';
+import { Space } from 'antd';
+import Text from 'antd/lib/typography/Text';
 
 const OrderItemInfoList = (props) => {
   const { disabled = false, readonly = false } = props;
@@ -13,6 +16,22 @@ const OrderItemInfoList = (props) => {
         return (
           <ProFormList
             tooltip="請先選擇配貨中心與客戶"
+            itemRender={({ listDom, action }, { record, index }) => {
+              return (
+                <ProCard
+                  bordered
+                  title={`${index + 1}.`}
+                  style={{
+                    marginBottom: 8,
+                  }}
+                >
+                  <Space align="end">
+                    {listDom}
+                    {disabled || readonly ? null : action}
+                  </Space>
+                </ProCard>
+              );
+            }}
             creatorButtonProps={
               readonly
                 ? false

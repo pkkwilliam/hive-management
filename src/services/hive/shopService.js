@@ -1,8 +1,8 @@
-const COMPANY_MANAGER_SHOP_SERVICE_URL = '/company_manager/shop/v1';
+const COMPANY_SHOP_SERVICE_URL = '/company/shop/v1';
 
-export const COMPANY_MANAGER_SHOP_SERVICE_CONFIG = {
+export const COMPANY_SHOP_SERVICE_CONFIG = {
   requireAuth: true,
-  serviceUrl: COMPANY_MANAGER_SHOP_SERVICE_URL,
+  serviceUrl: COMPANY_SHOP_SERVICE_URL,
 };
 
 export const PUBLIC_SHOP_SERVICE_CONFIG = {

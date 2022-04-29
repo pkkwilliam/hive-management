@@ -6,6 +6,18 @@ export async function BEDROCK_CREATE_SERVICE_REQEUST(serviceConfig, requestBody)
     body: requestBody,
     method: 'POST',
     requestUrl: serviceConfig.serviceUrl,
+    successMessage: '創建成功',
+  };
+  return constructBasicRequest(request);
+}
+
+export async function BEDROCK_CREATE_BATCH_SERVICE_REQEUST(serviceConfig, requestBody) {
+  const request = {
+    authenticated: serviceConfig.requireAuth,
+    body: requestBody,
+    method: 'POST',
+    requestUrl: serviceConfig.serviceUrl + '/batch',
+    successMessage: '批量創建成功',
   };
   return constructBasicRequest(request);
 }
@@ -15,6 +27,7 @@ export async function BEDROCK_DEACTIVATE_SERVICE_REQUEST(serviceConfig, entityId
     authenticated: serviceConfig.requireAuth,
     method: 'DELETE',
     requestUrl: serviceConfig.serviceUrl + `/${entityId}/deactivate`,
+    successMessage: '停用成功',
   };
   return constructBasicRequest(request);
 }
@@ -81,6 +94,7 @@ export async function BEDROCK_UPDATE_SERVICE_REQUEST(serviceConfig, requestBody)
     body: requestBody,
     method: 'PUT',
     requestUrl: serviceConfig.serviceUrl,
+    successMessage: '更新成功',
   };
   return constructBasicRequest(request);
 }
@@ -91,6 +105,7 @@ export async function BEDROCK_UPDATE_BATCH_SERVICE_REQUEST(serviceConfig, reques
     body: requestBody,
     method: 'PUT',
     requestUrl: serviceConfig.serviceUrl + '/batch',
+    successMessage: '批量更新成功',
   };
   return constructBasicRequest(request);
 }

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { MobileTwoTone } from '@ant-design/icons';
-import { Form, message, Space } from 'antd';
+import { Button, Form, message, Result, Space } from 'antd';
 import ProForm, { ProFormCaptcha, ProFormText, ProFormGroup } from '@ant-design/pro-form';
-import { SelectLang } from 'umi';
 import styles from './index.less';
 import { history } from 'umi';
 
@@ -13,6 +12,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import Text from 'antd/lib/typography/Text';
 
 const Trial = () => {
+  const [showResult, setShowResult] = useState(false);
   const [verifiedCodeRequested, setVerifiedCodeRequested] = useState(false);
   const [form] = Form.useForm();
 
@@ -25,18 +25,26 @@ const Trial = () => {
 
   const verifyTrial = async (request) => {
     const response = await TRIAL_VERIFY(request);
-    message.success('註冊成功 3秒後跳轉登錄');
-    history.replace('/user/login');
+    message.success('註冊成功');
+    setShowResult(true);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
-      </div>
-      <div className={styles.content}>
-        <PageContainer title="企業試用申請">
-          <ProCard>
+      <PageContainer title="企業試用申請">
+        <ProCard>
+          {showResult ? (
+            <Result
+              status="success"
+              title="注冊成功"
+              subTitle="此試用賬號擁有所有包括微信小程序及外部企業訂單功能"
+              extra={[
+                <Button key="console" type="primary" onClick={() => history.replace('/user/login')}>
+                  登錄
+                </Button>,
+              ]}
+            />
+          ) : (
             <ProForm
               submitter={{
                 submitButtonProps: {
@@ -60,12 +68,12 @@ const Trial = () => {
                   />
                 </Space>
               </ProFormGroup>
-              <ProFormGroup title="管理人員資料">
+              <ProFormGroup title="管理員資料">
                 <Space direction="vertical">
                   <ProFormText
-                    label="人員名稱"
+                    label="名稱"
                     name={['admin', 'name']}
-                    rules={[{ required: true, message: '請輸入人員名稱' }]}
+                    rules={[{ required: true, message: '請輸入名稱' }]}
                   />
 
                   <ProFormText
@@ -125,9 +133,9 @@ const Trial = () => {
                 </Space>
               </ProFormGroup>
             </ProForm>
-          </ProCard>
-        </PageContainer>
-      </div>
+          )}
+        </ProCard>
+      </PageContainer>
     </div>
   );
 };

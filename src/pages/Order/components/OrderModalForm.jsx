@@ -93,10 +93,10 @@ const OrderModalForm = (props) => {
           );
         }}
       </ProFormDependency>
-      <OrderItemInfoList label="訂單內容" name="orderItemInfos" form={form} />
+      <OrderItemInfoList readonly={order} label="訂單內容" name="orderItemInfos" form={form} />
       <ProFormGroup>
-        <ProFormMoney label="拆扣費用" name="discount" />
-        <ProFormMoney label="額外費用" name="extraFee" />
+        <ProFormMoney readonly={order} label="拆扣費用" name="discount" />
+        <ProFormMoney readonly={order} label="額外費用" name="extraFee" />
       </ProFormGroup>
       <ProFormOrderPlaceChannelRadio
         initialValue={ORDER_PLACE_CHANNEL_INTERNAL_ORDER.key}

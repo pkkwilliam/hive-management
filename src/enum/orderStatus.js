@@ -29,6 +29,12 @@ export const ORDER_STATUS_PAYMENT_PENDING = {
   status: 'warning',
 };
 
+export const ORDER_REFUND = {
+  key: 'ORDER_REFUND',
+  label: '退單',
+  status: 'default',
+};
+
 export const ORDER_STATUSES = [
   ORDER_STATUS_ORDER_RECEIVED,
   ORDER_STATUS_ORDER_PENDING_APPROVAL,

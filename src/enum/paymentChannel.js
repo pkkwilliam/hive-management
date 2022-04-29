@@ -4,6 +4,11 @@ export const PAYMENT_CHANNEL_CASH = { key: 'CASH', label: '現金支付', disabl
 export const PAYMENT_CHANNEL_MONTHLY = { key: 'MONTHLY', label: '月結' };
 export const PAYMENT_CHANNEL_M_PAY = { key: 'M_PAY', label: '澳門通(Mpay)', disabled: true };
 export const PAYMENT_CHANNEL_WECHAT_PAY = { key: 'WECHAT_PAY', label: '微信支付', disabled: true };
+export const PAMYNET_CHANNEL_MACAU_PASS_CARD = {
+  key: 'MACAU_PASS_CARD',
+  label: '澳門通卡',
+  disabled: false,
+};
 
 export const PAYMENT_CHANNELS = [
   PAYMENT_CHANNEL_CASH,
@@ -12,4 +17,5 @@ export const PAYMENT_CHANNELS = [
   PAYMENT_CHANNEL_WECHAT_PAY,
   PAYMENT_CHANNEL_BOC_PAY,
   PAYMENT_CHANNEL_MONTHLY,
+  PAMYNET_CHANNEL_MACAU_PASS_CARD,
 ];

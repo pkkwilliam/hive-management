@@ -108,14 +108,19 @@ export default [
         component: './companyManager/Shop/index',
       },
       {
+        path: '/companyManager/user',
+        name: '內部人員',
+        component: './companyManager/UserManage/index',
+      },
+      {
         path: '/companyManager/companyBusiness',
         name: '客戶',
         component: './companyManager/CompanyBusiness/index',
       },
       {
-        path: '/companyManager/user',
-        name: '內部人員',
-        component: './companyManager/UserManage/index',
+        path: '/companyManager/itemSpecificationPriceTemplate',
+        name: '客戶專屬價單',
+        component: './companyManager/ItemSpecificationPriceTemplate/index',
       },
       {
         path: '/companyManager/printer',
@@ -136,34 +141,29 @@ export default [
     ],
   },
   {
+    path: '/category',
+    name: '標籤/分類',
+    component: './company/Category/index',
+  },
+  {
     path: '/companyManagerItem',
     name: '商品管理',
     routes: [
-      {
-        path: '/companyManagerItem/category',
-        name: '標籤/分類',
-        component: './company/Category/index',
-      },
       {
         path: '/companyManagerItem/item',
         name: '商品',
         component: './company/Item/index',
       },
-      {
-        path: '/companyManagerItem/itemSpecification',
-        name: '商品規格',
-        component: './companyManager/ItemSpecification/index',
-      },
-      {
-        path: '/companyManagerItem/itemSpecificationStock',
-        name: '地點庫存',
-        component: './shopManager/ItemSpecificationStock/index',
-      },
-      {
-        path: '/companyManagerItem/itemSpecificationPriceTemplate',
-        name: '價格模版',
-        component: './companyManager/ItemSpecificationPriceTemplate/index',
-      },
+      // {
+      //   path: '/companyManagerItem/itemSpecification',
+      //   name: '商品規格',
+      //   component: './companyManager/ItemSpecification/index',
+      // },
+      // {
+      //   path: '/companyManagerItem/itemSpecificationStock',
+      //   name: '地點庫存',
+      //   component: './shopManager/ItemSpecificationStock/index',
+      // },
     ],
   },
   {
