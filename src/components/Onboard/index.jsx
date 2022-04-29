@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import CategoryOnboard from './components/CategoryOnboard';
 import CompanyBusinessOnboard from './components/CompanyBusinessOnboard';
 import ItemOnboard from './components/ItemOnboard';
+import OrderOnobard from './components/OrderOnboard';
 import PriceTemplateOnboard from './components/PriceTemplateOnboard';
 import ShopOnboard from './components/ShopOnboard';
 import { Alert } from 'antd';
@@ -13,7 +14,7 @@ import Title from 'antd/lib/typography/Title';
 export const Onboard = () => {
   const [companyOnboard, setCompanyOnboard] = useState({});
 
-  let showOnboard = false;
+  let showOnboard = true;
 
   useEffect(() => {
     getCompanyOnboard();
@@ -32,6 +33,21 @@ export const Onboard = () => {
       }
     }
   };
+
+  // return (
+  //   <>
+  //     <Title level={4}>使用嚮導</Title>
+  //     <Alert message="使用嚮導助您快速熟悉系統及添加必需要的組件" type="success" showIcon banner />
+  //     <Space direction="vertical" style={{ display: 'flex' }}>
+  //       <ShopOnboard />
+  //       <CategoryOnboard />
+  //       <ItemOnboard />
+  //       <CompanyBusinessOnboard />
+  //       <OrderOnobard />
+  //       <PriceTemplateOnboard />
+  //     </Space>
+  //   </>
+  // );
 
   return (
     <>

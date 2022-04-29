@@ -1,6 +1,6 @@
-import ItemSpecificationPriceTemplateModalForm from '@/pages/companyManager/ItemSpecificationPriceTemplate/components/ItemSpecificationPriceTemplateModalFormModalForm';
+import OrderModalForm from '@/pages/Order/components/OrderModalForm';
 import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_CATEGORY_SERVICE_CONFIG } from '@/services/hive/categoryService';
+import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import ProCard from '@ant-design/pro-card';
 import { Button, Space } from 'antd';
 import Text from 'antd/lib/typography/Text';
@@ -10,7 +10,7 @@ const PriceTemplateOnboard = () => {
   const [modalFormVisible, setModalFormVisible] = useState(false);
 
   const create = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_CATEGORY_SERVICE_CONFIG, request);
+    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ORDER_SERVICE_CONFIG, request);
     return true;
   };
 
@@ -19,17 +19,17 @@ const PriceTemplateOnboard = () => {
       <ProCard
         extra={
           <Button onClick={() => setModalFormVisible(true)} type="primary">
-            創建專屬價單
+            創建企業訂單
           </Button>
         }
         headerBordered
-        title="進階功能 客戶專屬價單 (非必要)"
+        title="企業訂單"
       >
         <Space>
-          <Text>創建專屬價單，可對固定客戶提供特供的商品價格</Text>
+          <Text>創建首個可追蹤，列印，收款的企業訂單。</Text>
         </Space>
       </ProCard>
-      <ItemSpecificationPriceTemplateModalForm
+      <OrderModalForm
         onFinish={create}
         onVisibleChange={setModalFormVisible}
         visible={modalFormVisible}

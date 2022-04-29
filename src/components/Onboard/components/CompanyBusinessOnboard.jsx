@@ -23,10 +23,10 @@ const CompanyBusinessOnboard = () => {
           </Button>
         }
         headerBordered
-        title="進階功能 客戶(非必要)"
+        title="企業客戶"
       >
         <Space>
-          <Text>創建首個客戶，方便您的企業追蹤所有定單以及為客戶提供特定的商品價格</Text>
+          <Text>創建首個企業客戶，方便您追蹤客戶的訂單以及為客戶提專屬定的商品價格</Text>
         </Space>
       </ProCard>
       <CompanyBusinessModalForm
