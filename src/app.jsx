@@ -110,7 +110,7 @@ export const layout = ({ initialState, setInitialState }) => {
       return (
         <>
           {children}
-          {!props.location?.pathname?.includes('/login') && (
+          {!props.location?.pathname?.includes('/login') && isDev && (
             <SettingDrawer
               disableUrlParams
               enableDarkTheme
