@@ -5,12 +5,17 @@ import ProCard from '@ant-design/pro-card';
 import { Button, Space } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import React, { useState } from 'react';
+import OnboardResultModal from './OnboardResultModal';
 
 const CategoryOnboard = () => {
   const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [resultVisible, setResultVisible] = useState(false);
+  const [category, setCategory] = useState();
 
   const create = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_CATEGORY_SERVICE_CONFIG, request);
+    const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_CATEGORY_SERVICE_CONFIG, request);
+    setCategory(response);
+    setResultVisible(true);
     return true;
   };
 
@@ -33,6 +38,16 @@ const CategoryOnboard = () => {
         onClickSubmit={create}
         setModalVisible={setModalFormVisible}
         visible={modalFormVisible}
+      />
+      <OnboardResultModal
+        createButtonText={'創建新分類'}
+        onClickCreate={() => setModalFormVisible(true)}
+        onClickClose={() => {
+          setCategory(undefined);
+          setResultVisible(false);
+        }}
+        successTitle={`${category?.name}創建成功`}
+        visible={resultVisible}
       />
     </>
   );

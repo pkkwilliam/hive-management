@@ -173,7 +173,7 @@ const LeftPanel = (props) => {
           優惠券
         </Button>
         <Button block disabled size="large">
-          整單拆扣
+          整單折扣
         </Button>
         <Button block disabled size="large">
           整單改價

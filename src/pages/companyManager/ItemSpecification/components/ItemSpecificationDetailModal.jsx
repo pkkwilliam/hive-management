@@ -46,7 +46,6 @@ const ItemSpecificationDetailModal = (props) => {
   };
 
   const updateItemSpecification = async (record) => {
-    console.log('HERERERE', record);
     const response = await BEDROCK_UPDATE_SERVICE_REQUEST(
       COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
       record,

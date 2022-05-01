@@ -18,7 +18,7 @@ const ProFormItemSpecificationSelect = (props) => {
     );
     const transformedResponse = getEnumOjbectsWithValueAsKey(response.content).map(
       (itemSpecification) => ({
-        label: `${itemSpecification.name} 基本價格: $${itemSpecification.price} 拆扣價格: ${
+        label: `${itemSpecification.name} 基本價格: $${itemSpecification.price} 折扣價格: ${
           itemSpecification?.discountPrice ?? '-'
         }`,
         value: itemSpecification.id,

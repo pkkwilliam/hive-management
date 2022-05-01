@@ -31,11 +31,11 @@ const CompanyBusinessModalForm = (props) => {
         rules={[{ required: true, message: '請輸入企業名稱' }]}
       />
       <ProFormItemSpecificationPriceTemplate
-        label="價格模版"
+        label="特供價單"
         name={['itemSpecificationPriceTemplate', 'id']}
       />
-      <ProFormCompanyBusinessPaymentTypeSelect label="支付方式" name="companyBusinessPaymentType" />
-      <ProFormGroup title="外部下單用戶(客戶可由微信小程序或網頁直接下單)">
+      {/* <ProFormCompanyBusinessPaymentTypeSelect label="支付方式" name="companyBusinessPaymentType" /> */}
+      <ProFormGroup title="外部下單企業用戶登入 (企業客戶可由網站直接下單至後台)">
         <ProFormCountryCodeSelect label="區號" name={['businessUser', 'countryCode']} />
         <ProFormDigit label="電話" name={['businessUser', 'smsNumber']} />
       </ProFormGroup>

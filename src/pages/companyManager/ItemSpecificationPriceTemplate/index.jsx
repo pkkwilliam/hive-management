@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG } from '@/services/hive/itemSpecificationPriceTemplate';
-import ItemSpecificationPriceTemplateModalForm from './components/ItemSpecificationPriceTemplateModalFormModalForm';
+import { COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG } from '@/services/hive/itemSpecificationPriceTemplate';
+import ItemSpecificationPriceTemplateModalForm from './components/ItemSpecificationPriceTemplateModalForm';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
@@ -20,7 +20,7 @@ const ItemSpecificationPriceTemplate = () => {
 
   const createItemSpecificationPriceTemplateService = async (request) => {
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
       request,
     );
     tableRef.current.reload();
@@ -29,7 +29,7 @@ const ItemSpecificationPriceTemplate = () => {
 
   const deleteItemSpecificationPriceTemplateService = async (record) => {
     await BEDROCK_DEACTIVATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
       record.id,
     );
     tableRef.current.reload();
@@ -44,7 +44,7 @@ const ItemSpecificationPriceTemplate = () => {
 
   const queryItemSpecificationPriceTemplateService = async (param, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
       { ...param, active: true },
       sort,
       filter,
@@ -53,7 +53,7 @@ const ItemSpecificationPriceTemplate = () => {
 
   const updateItemSpecificationPriceTemplateService = async (request) => {
     const response = await BEDROCK_UPDATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG,
       request,
     );
     tableRef.current.reload();
@@ -61,7 +61,7 @@ const ItemSpecificationPriceTemplate = () => {
   };
 
   const COLUMNS = [
-    { title: '模版名稱', dataIndex: 'name' },
+    { title: '名稱', dataIndex: 'name' },
     { title: '備註', dataIndex: 'remark', search: false },
     ProTableOperationColumnButtons((record) => {
       setCurrentRow(record);

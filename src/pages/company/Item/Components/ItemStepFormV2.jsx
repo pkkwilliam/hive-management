@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import ProForm, {
   StepsForm,
   ProFormText,
   ProFormTextArea,
@@ -7,6 +7,10 @@ import {
   ProFormMoney,
   ProFormDigit,
   ProFormList,
+  ProFormCheckbox,
+  ProFormDatePicker,
+  ProFormSelect,
+  ProFormDateTimePicker,
 } from '@ant-design/pro-form';
 import { Alert, Button, Form, Modal, Result, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -24,8 +28,10 @@ import Text from 'antd/lib/typography/Text';
 import ItemStockEditableTableModal from '@/commons/itemStock/ItemStockEditableTableModal';
 import { useModel } from 'umi';
 import ShopModalForm from '@/pages/companyManager/Shop/components/shopModalForm';
-import { onChangeModalVisible } from '@/commons/proTable/proTableUtil';
+import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 import { COMPANY_SHOP_SERVICE_CONFIG } from '@/services/hive/shopService';
+import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
+import { trimEnd } from 'lodash';
 
 const MODAL_WIDTH = 1500;
 
@@ -44,13 +50,12 @@ const ItemStepFormV2 = (props) => {
   const createItem = async (request) => {
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ITEM_SERVICE_CONFIG, request);
     setItem(response);
-    return true;
   };
 
   const createItemSpecification = async (request) => {
     const response = await BEDROCK_CREATE_BATCH_SERVICE_REQEUST(
       ITEM_SPECIFICATION_SERVICE_CONFIG,
-      request.map((itemSpecificationRequest) => ({
+      request.itemSpecifications.map((itemSpecificationRequest) => ({
         ...itemSpecificationRequest,
         item: {
           id: item.id,
@@ -58,9 +63,6 @@ const ItemStepFormV2 = (props) => {
       })),
     );
     setItemSpecifications(response);
-    onChangeVisible(false);
-    setResultVisible(true);
-    return true;
   };
 
   const createShop = async (request) => {
@@ -70,10 +72,8 @@ const ItemStepFormV2 = (props) => {
   };
 
   const onChangeVisible = (visible) => {
-    if (!visible) {
-      itemForm.resetFields();
-    }
-    setVisible(visible);
+    onModalFormVisibleChange(setVisible, itemForm, visible);
+    onModalFormVisibleChange(setVisible, itemSpecificationForm, visible);
   };
 
   return (
@@ -114,6 +114,8 @@ const ItemStepFormV2 = (props) => {
             <Button
               key="createNew"
               onClick={() => {
+                // setItem(undefined);
+                // setItemSpecifications([]);
                 setResultVisible(false);
                 onChangeVisible(true);
               }}
@@ -133,11 +135,13 @@ const ItemStepFormV2 = (props) => {
         />
       </Modal>
       <StepsForm
-        onFinish={props?.onFinish}
-        formProps={{
-          validateMessages: {
-            required: '此项为必填项',
-          },
+        onFinish={async (request) => {
+          await createItemSpecification(request);
+          setVisible(false);
+          setResultVisible(true);
+          props?.onFinish();
+          console.log('doneeee');
+          return true;
         }}
         stepsFormRender={(dom, submitter) => {
           return (
@@ -157,7 +161,10 @@ const ItemStepFormV2 = (props) => {
       >
         <StepsForm.StepForm
           form={itemForm}
-          onFinish={createItem}
+          onFinish={async (request) => {
+            await createItem(request);
+            return true;
+          }}
           name="base"
           stepProps={{
             description: '添加商品，如: 巧克力餅乾',
@@ -213,7 +220,6 @@ const ItemStepFormV2 = (props) => {
             description: '添加規格，如: 250克包裝',
           }}
           title="創建規格"
-          onFinish={(requestList) => createItemSpecification(requestList?.itemSpecifications)}
         >
           <Alert
             message="此為快速創建商品通道，更多規格可在 '商品管理' -> '商品規格' 中添加"
@@ -235,7 +241,7 @@ const ItemStepFormV2 = (props) => {
               return (
                 <ProCard
                   bordered
-                  title={`${index + 1}.`}
+                  title={`規格${index + 1}.`}
                   style={{
                     marginBottom: 8,
                   }}
@@ -320,7 +326,9 @@ const ItemStepFormV2 = (props) => {
       />
       <ShopModalForm
         onClickSubmit={createShop}
-        setModalVisible={(visible) => onChangeModalVisible(visible, setShopModalFormVisible)}
+        setModalVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setShopModalFormVisible)
+        }
         visible={shopModalFormVisible}
       />
     </>

@@ -61,6 +61,7 @@ const CheckoutCounter = () => {
                 <CheckoutCounterItemSpecificationSelect
                   onSelect={onSelectItemSpecification}
                   setRef={setScanRef}
+                  shopId={distributionShop}
                   showSearch
                 />
                 <CheckoutCounterItemSpecificationTable

@@ -34,20 +34,20 @@ export const Onboard = () => {
     }
   };
 
-  // return (
-  //   <>
-  //     <Title level={4}>使用嚮導</Title>
-  //     <Alert message="使用嚮導助您快速熟悉系統及添加必需要的組件" type="success" showIcon banner />
-  //     <Space direction="vertical" style={{ display: 'flex' }}>
-  //       <ShopOnboard />
-  //       <CategoryOnboard />
-  //       <ItemOnboard />
-  //       <CompanyBusinessOnboard />
-  //       <OrderOnobard />
-  //       <PriceTemplateOnboard />
-  //     </Space>
-  //   </>
-  // );
+  return (
+    <>
+      <Title level={4}>使用嚮導</Title>
+      <Alert message="使用嚮導助您快速熟悉系統及添加必需要的組件" type="success" showIcon banner />
+      <Space direction="vertical" style={{ display: 'flex' }}>
+        <ShopOnboard />
+        <CategoryOnboard />
+        <ItemOnboard />
+        <CompanyBusinessOnboard />
+        <OrderOnobard />
+        <PriceTemplateOnboard />
+      </Space>
+    </>
+  );
 
   return (
     <>

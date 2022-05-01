@@ -96,7 +96,7 @@ const ItemStockEditableTableModal = (props) => {
           確定
         </Button>,
       ]}
-      title={`${item?.name}庫存`}
+      title={`${item?.brand ? item.brand + ' ' : ''}${item?.name}庫存`}
       visible={visible}
       width={1500}
     >

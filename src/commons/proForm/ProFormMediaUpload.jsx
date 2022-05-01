@@ -8,8 +8,13 @@ const ProFormMediaUpload = (props) => {
   const [token, setToken] = useState();
 
   useEffect(() => {
+    // clear the list once the id has changed
+    setCurrentFileList([]);
+
+    // get form imageUrls by name
     let currentValues = props.form.getFieldValue(props.name);
-    console.log(props?.form?.getFieldValue('id'));
+
+    console.log(props?.form?.getFieldValue('id'), currentFileList);
     if (!isArray) {
       currentValues = [currentValues];
     }

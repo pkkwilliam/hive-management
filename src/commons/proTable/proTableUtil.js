@@ -1,4 +1,4 @@
-export const onChangeModalVisible = (visible, setVisible, setCurrentRow = () => {}) => {
+export const proTableOnChangeModalVisible = (visible, setVisible, setCurrentRow = () => {}) => {
   if (!visible) {
     setCurrentRow(undefined);
   }

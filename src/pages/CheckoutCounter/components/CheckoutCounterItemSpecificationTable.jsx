@@ -46,7 +46,7 @@ const CheckoutCounterItemSpecificationTable = (props) => {
     {
       title: '優惠價',
       dataIndex: ['itemSpecification', 'discountPrice'],
-      renderText: (text, record) => '$' + text,
+      renderText: (text, record) => ('$' + text ? text : '-'),
     },
     {
       title: '數量',

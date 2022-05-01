@@ -73,7 +73,7 @@ const ItemSpecificationModalForm = (props) => {
             name="price"
             rules={[{ required: true, message: '請輸入品名' }]}
           />
-          <ProFormMoney label="對外拆扣價錢" name="discountPrice" />
+          <ProFormMoney label="對外折扣價錢" name="discountPrice" />
         </ProFormGroup>
         <ProFormGroup title="尺吋/重量">
           <ProFormDigit label="長" name="length" />

@@ -21,7 +21,7 @@ const ProFormPriceTemplateList = (props) => {
           }}
         </ProFormDependency>
 
-        <ProFormMoney label="模版價格" name="price" />
+        <ProFormMoney label="特供價單" name="price" />
       </ProFormGroup>
     </ProFormList>
   );

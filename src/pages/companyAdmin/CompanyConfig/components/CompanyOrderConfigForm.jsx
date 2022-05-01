@@ -22,7 +22,11 @@ const CompanyOrderConfigForm = (props) => {
 
   return (
     <ProForm form={form} onFinish={onUpdate}>
-      <ProFormSwitch label="允許制作超過庫存的訂單" name={['allowOverStockOrder']} />
+      <ProFormSwitch
+        label="允許制作超過庫存的訂單"
+        name={['allowOverStockOrder']}
+        tooltip="當訂單商品大於庫存時，允許制單(庫存會變會負數)"
+      />
     </ProForm>
   );
 };

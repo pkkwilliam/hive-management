@@ -4,7 +4,7 @@ import { getValueEnum } from '@/enum/enumUtil';
 import { ORDER_STATUS_ORDER_FINISHED } from '@/enum/orderStatus';
 import { PAYMENT_STATUS_PENDING } from '@/enum/paymentStatus';
 import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
+import { COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -23,7 +23,7 @@ const FinancialCompanyBusiness = () => {
 
   const queryCompanyBusiness = async (params, sort, filter) => {
     return await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
-      COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG,
+      COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
       params,
       sort,
       filter,
@@ -63,7 +63,7 @@ const FinancialCompanyBusiness = () => {
   const COLUMNS = [
     { title: '企業名稱', dataIndex: 'name' },
     { title: '外部下單用戶', dataIndex: ['businessUser', 'smsNumber'], search: false },
-    { title: '價格模版', dataIndex: ['itemSpecificationPriceTemplate', 'name'] },
+    { title: '特供價單', dataIndex: ['itemSpecificationPriceTemplate', 'name'] },
     {
       title: '支款方式',
       dataIndex: 'companyBusinessPaymentType',

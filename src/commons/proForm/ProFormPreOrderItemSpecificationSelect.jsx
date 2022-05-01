@@ -28,7 +28,7 @@ const ProFormPreOrderItemSpecificationSelection = (props) => {
             ) : null}
             <Text>{name}</Text>
             <Text type={priceTemplate ? 'success' : 'warning'}>
-              {priceTemplate ? '模版價' : '基本價'}
+              {priceTemplate ? '特供價' : '基本價'}
             </Text>
             <Text bold type={priceTemplate ? 'success' : 'warning'}>
               ${price}

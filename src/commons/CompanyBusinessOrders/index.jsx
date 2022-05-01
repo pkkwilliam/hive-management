@@ -1,8 +1,10 @@
 import { toDisplayDate } from '@/util/dateUtil';
-import ProTable from '@ant-design/pro-table';
-import { Descriptions, Space } from 'antd';
+import { StatisticCard } from '@ant-design/pro-card';
+import { Card, Descriptions, Space, Table } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import React from 'react';
+
+const HEADER_FONT_SIZE = 16;
 
 const CompanyBusinessOrders = (props) => {
   const { orders } = props;
@@ -11,18 +13,18 @@ const CompanyBusinessOrders = (props) => {
     {
       title: '創單日期',
       dataIndex: ['createTime'],
-      renderText: (text, record) => toDisplayDate(text, 'YYYY-MM-DD'),
+      render: (text, record) => toDisplayDate(text, 'YYYY-MM-DD'),
     },
     {
       title: '送貨地址',
-      renderText: (text, record) =>
+      render: (text, record) =>
         `${record.deliveryAddress?.street ?? '-'} ${record.deliveryAddress?.unit ?? ''}`,
       search: false,
     },
     { title: '配貨地點', dataIndex: ['distributionShop', 'name'] },
     {
       title: '規格數量',
-      renderText: (text, record) => record.orderItemInfos.length,
+      render: (text, record) => record.orderItemInfos.length,
       search: false,
     },
     {
@@ -36,23 +38,62 @@ const CompanyBusinessOrders = (props) => {
   return (
     <Space direction="vertical">
       <Title level={3}>對賬單</Title>
-      <Descriptions column={1}>
-        <Descriptions.Item label="公司名稱">{orders[0]?.companyBusiness?.name}</Descriptions.Item>
-        <Descriptions.Item label="聯繫人">
+      <Descriptions column={1} size="small">
+        <Descriptions.Item
+          contentStyle={{ fontSize: HEADER_FONT_SIZE }}
+          labelStyle={{ fontSize: HEADER_FONT_SIZE }}
+          label="公司名稱"
+        >
+          {orders[0]?.companyBusiness?.name}
+        </Descriptions.Item>
+        <Descriptions.Item
+          contentStyle={{ fontSize: HEADER_FONT_SIZE }}
+          labelStyle={{ fontSize: HEADER_FONT_SIZE }}
+          label="聯繫人"
+        >
           {orders[0]?.companyBusiness?.businessUser?.name}
         </Descriptions.Item>
-        <Descriptions.Item label="聯繫人電話">
+        <Descriptions.Item
+          contentStyle={{ fontSize: HEADER_FONT_SIZE }}
+          labelStyle={{ fontSize: HEADER_FONT_SIZE }}
+          label="聯繫人電話"
+        >
           {orders[0]?.companyBusiness?.businessUser?.smsNumber}
         </Descriptions.Item>
       </Descriptions>
-      <ProTable
-        columns={COLUMNS}
-        dataSource={orders}
-        options={false}
-        pagination={false}
-        search={false}
-      />
+      <BillSummary orders={orders} />
+      <Card size="small" title="訂單">
+        <Table
+          columns={COLUMNS}
+          dataSource={orders}
+          options={false}
+          pagination={false}
+          size="small"
+        />
+      </Card>
     </Space>
+  );
+};
+
+const BillSummary = (props) => {
+  const { orders } = props;
+
+  return (
+    <StatisticCard.Group direction="row">
+      <StatisticCard
+        statistic={{
+          title: '訂單數量',
+          value: orders.length,
+        }}
+      />
+      <StatisticCard.Divider type={'vertical'} />
+      <StatisticCard
+        statistic={{
+          title: '總金額',
+          value: `$${orders.reduce((previous, current) => previous + current.cost, 0)}`,
+        }}
+      />
+    </StatisticCard.Group>
   );
 };
 

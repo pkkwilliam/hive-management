@@ -12,6 +12,7 @@ import {
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
+import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 
 const Category = () => {
   const actionRef = useRef();
@@ -33,13 +34,6 @@ const Category = () => {
     await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_MANAGER_CATEGORY_SERVICE_CONFIG, category);
     onDataChanged();
     return true;
-  };
-
-  const onChangeModalFormVisible = (visible) => {
-    if (!visible) {
-      setCurrentRow(undefined);
-    }
-    setModalFormVisible(visible);
   };
 
   const onDataChanged = () => {
@@ -90,7 +84,9 @@ const Category = () => {
       <CategoryModalForm
         category={currentRow}
         onClickSubmit={currentRow ? updateCategoryServiceRequest : createCategoryServiceRequest}
-        setModalVisible={onChangeModalFormVisible}
+        setModalVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setModalFormVisible, setCurrentRow)
+        }
         visible={modalFormVisible}
       />
     </PageContainer>

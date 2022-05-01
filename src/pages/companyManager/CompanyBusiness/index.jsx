@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
+import { COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
 import CompanyBusinessModalForm from './components/CompanyBusinessModalForm';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -15,44 +15,33 @@ import {
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
 import CompanyBusinessDeliveryAddressModal from './components/CompanyBusinessDeliveryAddressModal';
+import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
+import CompanyBusinessPriceTemplateModal from './components/CompanyBusinessPriceTemplateModal';
 
 const CompanyBusiness = () => {
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
   const [deliveryAddresssModalVisible, setDeliveryAddressModalVisible] = useState();
   const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [priceTemplateModalVisible, setPriceTemplateModalVisible] = useState(false);
 
   const createCompanyBusinessService = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG, request);
+    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG, request);
     tableRef.current.reload();
     return true;
   };
 
   const deleteCompanyBusinessService = async (record) => {
     const response = await BEDROCK_DEACTIVATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG,
+      COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
       record.id,
     );
     tableRef.current.reload();
   };
 
-  const deliveryAddressModalVisibleChange = (visible) => {
-    if (!visible) {
-      setCurrentRow(undefined);
-    }
-    setDeliveryAddressModalVisible(visible);
-  };
-
-  const modalFormVisibleChange = (visible) => {
-    if (!visible) {
-      setCurrentRow(undefined);
-    }
-    setModalFormVisible(visible);
-  };
-
   const queryCompanyBusinessService = async (params, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
-      COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG,
+      COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
       { ...params, active: true },
       sort,
       filter,
@@ -61,7 +50,7 @@ const CompanyBusiness = () => {
 
   const updateCompanyBusinessService = async (request) => {
     const response = await BEDROCK_UPDATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG,
+      COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
       request,
     );
     tableRef.current.reload();
@@ -71,7 +60,7 @@ const CompanyBusiness = () => {
   const COLUMNS = [
     { title: '企業名稱', dataIndex: 'name' },
     { title: '外部下單用戶', dataIndex: ['businessUser', 'smsNumber'], search: false },
-    { title: '價格模版', dataIndex: ['itemSpecificationPriceTemplate', 'name'] },
+    { title: '特供價單', dataIndex: ['itemSpecificationPriceTemplate', 'name'] },
     {
       title: '支款方式',
       dataIndex: 'companyBusinessPaymentType',
@@ -88,16 +77,26 @@ const CompanyBusiness = () => {
         setModalFormVisible(true);
       },
       deleteCompanyBusinessService,
-      (text, record) => (
+      (text, record) => [
         <a
+          key="deliveryAddresss"
           onClick={() => {
-            deliveryAddressModalVisibleChange(true);
+            setDeliveryAddressModalVisible(true);
             setCurrentRow(record);
           }}
         >
           送貨地址
-        </a>
-      ),
+        </a>,
+        <a
+          key="priceTemplate"
+          onClick={() => {
+            setPriceTemplateModalVisible(true);
+            setCurrentRow(record);
+          }}
+        >
+          特供價單
+        </a>,
+      ],
     ),
   ];
 
@@ -121,13 +120,26 @@ const CompanyBusiness = () => {
       <CompanyBusinessModalForm
         compananyBusiness={currentRow}
         onFinish={currentRow ? updateCompanyBusinessService : createCompanyBusinessService}
-        onVisibleChange={modalFormVisibleChange}
+        onVisibleChange={(visible) =>
+          proTableOnChangeModalVisible(visible, setModalFormVisible, setCurrentRow)
+        }
         visible={modalFormVisible}
       />
       <CompanyBusinessDeliveryAddressModal
         companyBusiness={currentRow}
-        onVisibleChange={deliveryAddressModalVisibleChange}
+        onFinish={updateCompanyBusinessService}
+        onVisibleChange={(visible) =>
+          proTableOnChangeModalVisible(visible, setDeliveryAddressModalVisible, setCurrentRow)
+        }
         visible={deliveryAddresssModalVisible}
+      />
+      <CompanyBusinessPriceTemplateModal
+        companyBusiness={currentRow}
+        onFinish={updateCompanyBusinessService}
+        setVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setPriceTemplateModalVisible, setCurrentRow)
+        }
+        visible={priceTemplateModalVisible}
       />
     </PageContainer>
   );

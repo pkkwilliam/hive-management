@@ -18,7 +18,7 @@ import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperation
 import ProFormCategorySelect from '@/commons/proForm/ProFormCategorySelect';
 import ItemStockEditableTableModal from '@/commons/itemStock/ItemStockEditableTableModal';
 import ItemStepFormV2 from './Components/ItemStepFormV2';
-import { onChangeModalVisible } from '@/commons/proTable/proTableUtil';
+import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 
 const ItemPage = () => {
   const tableRef = useRef();
@@ -146,20 +146,22 @@ const ItemPage = () => {
       <ItemModalForm
         item={currentRow}
         onFinish={currentRow ? updateItemService : createItemService}
-        setVisible={(visible) => onChangeModalVisible(visible, setShowModalForm, setCurrentRow)}
+        setVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setShowModalForm, setCurrentRow)
+        }
         visible={showModalForm}
       />
       <ItemSpecificationDetailModal
         item={currentRow}
         setVisible={(visible) =>
-          onChangeModalVisible(visible, setShowItemSpecification, setCurrentRow)
+          proTableOnChangeModalVisible(visible, setShowItemSpecification, setCurrentRow)
         }
         visible={showItemSpecification}
       />
       <ItemStockEditableTableModal
         item={currentRow}
         setVisible={(visible) =>
-          onChangeModalVisible(visible, setItemStockEditiableTableVisible, setCurrentRow)
+          proTableOnChangeModalVisible(visible, setItemStockEditiableTableVisible, setCurrentRow)
         }
         visible={itemStockEditableTableVisible}
       />

@@ -119,7 +119,7 @@ export default [
       },
       {
         path: '/companyManager/itemSpecificationPriceTemplate',
-        name: '客戶專屬價單',
+        name: '客戶特供價單',
         component: './companyManager/ItemSpecificationPriceTemplate/index',
       },
       {

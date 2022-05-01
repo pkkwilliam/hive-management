@@ -20,7 +20,7 @@ const OrderItemInfoList = (props) => {
               return (
                 <ProCard
                   bordered
-                  title={`${index + 1}.`}
+                  title={`貨品${index + 1}.`}
                   style={{
                     marginBottom: 8,
                   }}

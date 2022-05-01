@@ -1,11 +1,10 @@
 import React from 'react';
 import { Form } from 'antd';
-import { ModalForm, ProFormDigit, ProFormGroup, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import { ADDRESS_TYPE_SHOP } from '@/enum/addressType';
 import ProFormShopTypeSelect from '@/commons/proForm/ProFormShopTypeSelect';
 import ProFormCountryCodeSelect from '@/commons/proForm/ProFormCountryCodeSelect';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
-import ProFormPrinterSelect from '@/commons/proForm/ProFormPrinterSelect';
 import ProFormCompanyPrinterSelect from '@/commons/proForm/ProFormCompanyPrinterSelect';
 
 const ShopModalForm = (props) => {

@@ -1,14 +1,14 @@
 import { constructBasicRequest } from './config';
 
-const COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_URL =
-  '/company_manager/item_specification_price_template/v1';
+const COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_URL =
+  '/company/item_specification_price_template/v1';
 
 const COMPANY_STAFF_ITEM_SPECIFICATION_STOCK_SERVICE_URL =
   '/company_staff/item_specification_price_template/v1';
 
-export const COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG = {
+export const COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_CONFIG = {
   requireAuth: true,
-  serviceUrl: COMPANY_MANAGER_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_URL,
+  serviceUrl: COMPANY_ITEM_SPECIFICATION_PRICE_TEMPLATE_SERVICE_URL,
 };
 
 export const COMPANY_STAFF_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG = {

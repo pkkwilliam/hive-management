@@ -18,7 +18,7 @@ import OrderItemInfoList from './OrderItemInfoList';
 import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
 import ProFormPaymentChannelRadio from '@/commons/proForm/ProFormPaymentChannelRadio';
 import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
+import { COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
 import { ORDER_PLACE_CHANNEL_INTERNAL_ORDER } from '@/enum/orderPlaceChannel';
 import { ORDER_STATUS_ORDER_PENDING } from '@/enum/orderStatus';
 
@@ -74,7 +74,7 @@ const OrderModalForm = (props) => {
                     ({ getFieldValue }) => ({
                       async validator(_, value) {
                         const companyBusinessUser = await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
-                          COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG,
+                          COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
                           { active: true, id: getFieldValue('companyBusiness').id },
                         );
                         const hasAddress = companyBusinessUser.data[0].deliveryAddress.some(
@@ -95,7 +95,7 @@ const OrderModalForm = (props) => {
       </ProFormDependency>
       <OrderItemInfoList readonly={order} label="訂單內容" name="orderItemInfos" form={form} />
       <ProFormGroup>
-        <ProFormMoney readonly={order} label="拆扣費用" name="discount" />
+        <ProFormMoney readonly={order} label="折扣費用" name="discount" />
         <ProFormMoney readonly={order} label="額外費用" name="extraFee" />
       </ProFormGroup>
       <ProFormOrderPlaceChannelRadio

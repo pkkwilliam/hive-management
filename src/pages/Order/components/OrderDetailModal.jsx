@@ -1,7 +1,8 @@
 import OrderDetail from '@/commons/order/OrderDetail';
+import CompanyHeader from '@/commons/print/CompanyHeader';
 import PrintableHiddenComponentWrapper from '@/commons/print/PrintableHiddenComponentWrapper';
 import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
-import { Button, Modal } from 'antd';
+import { Button, Divider, Modal, Space } from 'antd';
 import React, { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import { useModel } from 'umi';
@@ -49,7 +50,11 @@ const OrderDetailModal = (props) => {
     >
       <OrderDetail order={order} />
       <PrintableHiddenComponentWrapper ref={orderDetailRef} zoom={0.7}>
-        <OrderDetail order={order} />
+        <Space direction="vertical">
+          <CompanyHeader />
+          <Divider />
+          <OrderDetail order={order} />
+        </Space>
       </PrintableHiddenComponentWrapper>
     </Modal>
   );
