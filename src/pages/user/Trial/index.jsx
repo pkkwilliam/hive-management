@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MobileTwoTone } from '@ant-design/icons';
-import { Button, Form, message, Result, Space } from 'antd';
+import { Button, Form, message, Result, Space, Typography } from 'antd';
 import ProForm, { ProFormCaptcha, ProFormText, ProFormGroup } from '@ant-design/pro-form';
 import styles from './index.less';
 import { useIntl, history, useModel } from 'umi';
@@ -62,7 +62,15 @@ const Trial = () => {
             <Result
               status="success"
               title="注冊成功"
-              subTitle="此試用賬號擁有所有包括微信小程序及外部企業訂單功能"
+              // subTitle="此試用賬號擁有所有包括微信小程序及外部企業訂單功能"
+              subTitle={
+                <>
+                  <Text>請使用平板或電腦使用</Text>
+                  <Typography.Paragraph copyable>
+                    https://hive-management.bitcode-lab.com
+                  </Typography.Paragraph>
+                </>
+              }
               extra={[
                 <Button key="console" type="primary" onClick={reDirectToWelcomePage}>
                   開始使用
