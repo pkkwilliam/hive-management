@@ -13,6 +13,8 @@ import ItemSpecificationPriceTemplateModalForm from './ItemSpecificationPriceTem
 import PriceTemplateCompanyBusinessModalForm from './PriceTemplateCompanyBusinessModalForm';
 
 const CreateItemSpecificationPriceTemplateButton = (props) => {
+  const { buttonProps, onFinish = () => {} } = props;
+
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
   const [priceTemplate, setPriceTemplate] = useState();
@@ -38,7 +40,12 @@ const CreateItemSpecificationPriceTemplateButton = (props) => {
           CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
         ]}
       >
-        <Button icon={<PlusOutlined />} onClick={() => setModalFormVisible(true)} type="primary">
+        <Button
+          icon={<PlusOutlined />}
+          onClick={() => setModalFormVisible(true)}
+          type="primary"
+          {...buttonProps}
+        >
           創建特供價單
         </Button>
       </CreatePriorModal>

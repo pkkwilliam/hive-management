@@ -1,3 +1,4 @@
+import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import { getEnumLabelByKey } from '@/enum/enumUtil';
 import { USER_ROLES } from '@/enum/userRole';
@@ -82,17 +83,31 @@ export function UserManage() {
           </Tag>
         )),
     },
-    ProTableOperationColumnButtons(onClickEdit, deactivate, (text, record) => (
-      <Popconfirm
-        cancelText="取消"
-        key="delete"
-        onConfirm={() => resetPassword(record)}
-        okText="確認"
-        title="確認重置密碼?"
-      >
-        <a>重置密碼</a>
-      </Popconfirm>
-    )),
+    {
+      title: '操作',
+      valueType: 'option',
+      render: (text, record, _, action) => [
+        <InactiveableLinkButton
+          key="resetPassword"
+          label="重置密碼"
+          onClick={() => resetPassword(record)}
+          popConfirm
+          popConfirmMessage="確認重置密碼?"
+        />,
+        <InactiveableLinkButton
+          key="edit"
+          label="修改"
+          onClick={() => onClickEdit(record, _, action)}
+        />,
+        <InactiveableLinkButton
+          disabled
+          key="delete"
+          label="删除"
+          onClick={() => onClickDelete(record, _, action)}
+          popConfirm
+        />,
+      ],
+    },
   ];
 
   return (

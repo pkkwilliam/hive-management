@@ -15,15 +15,32 @@ export const Onboard = () => {
   const { onboard, getOnboard } = useModel('onboard');
 
   const [collapsed, setCollapsed] = useState(true);
+  const [finishedAtLeastOne, setFinishedAtLeastOne] = useState(false);
   const [showOnboard, setShowOnboard] = useState(false);
 
   useEffect(() => {
-    for (let key in onboard) {
-      if (!onboard[key]) {
-        setCollapsed(false);
-        break;
-      }
+    // force to show onboard when user press the button, so ignore any other changes
+    if (showOnboard) {
+      return;
     }
+    let shouldCollapse = true;
+    let count = 0;
+    let finishedCount = 0;
+    let unfinishedCount = 0;
+    for (let key in onboard) {
+      // we only need to validate once
+      if (shouldCollapse && onboard[key]) {
+        shouldCollapse = false;
+      }
+      if (onboard[key]) {
+        unfinishedCount += 1;
+      } else {
+        finishedCount += 1;
+      }
+      count += 1;
+    }
+    setCollapsed(shouldCollapse);
+    setFinishedAtLeastOne(finishedCount > 0);
   }, [onboard]);
 
   return (
@@ -45,7 +62,9 @@ export const Onboard = () => {
     >
       <Space direction="vertical" style={{ display: 'flex' }} size="large">
         {/* onboard partial finished */}
-        {!collapsed && !showOnboard ? <a onClick={() => setShowOnboard(true)}>顯示所有</a> : null}
+        {finishedAtLeastOne && !showOnboard ? (
+          <a onClick={() => setShowOnboard(true)}>顯示所有</a>
+        ) : null}
         {showOnboard || onboard?.showCreateShop ? <ShopOnboard /> : null}
         {showOnboard || onboard?.showCreateCategory ? <CategoryOnboard /> : null}
         {showOnboard || onboard?.showCreateCompanyBusiness ? <CompanyBusinessOnboard /> : null}

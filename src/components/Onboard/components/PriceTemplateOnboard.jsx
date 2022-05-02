@@ -1,3 +1,9 @@
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+  CREATE_PRIOR_MODAL_ITEM,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
 import CreateItemSpecificationPriceTemplateButton from '@/pages/companyManager/ItemSpecificationPriceTemplate/components/CreateItemSpecificationPriceTemplateButton';
 import ProCard from '@ant-design/pro-card';
 import { Space } from 'antd';
@@ -8,7 +14,19 @@ const PriceTemplateOnboard = () => {
   return (
     <>
       <ProCard
-        extra={<CreateItemSpecificationPriceTemplateButton />}
+        extra={
+          <CreatePriorModal
+            key="create"
+            priorModals={[
+              CREATE_PRIOR_MODAL_SHOP,
+              CREATE_PRIOR_MODAL_CATEGORY,
+              CREATE_PRIOR_MODAL_ITEM,
+              CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+            ]}
+          >
+            <CreateItemSpecificationPriceTemplateButton />
+          </CreatePriorModal>
+        }
         bordered
         headerBordered
         size="small"

@@ -1,3 +1,9 @@
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+  CREATE_PRIOR_MODAL_ITEM,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
 import CreateOrderButton from '@/pages/Order/components/CreateOrderButton';
 import OrderModalForm from '@/pages/Order/components/OrderModalForm';
 import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
@@ -18,7 +24,18 @@ const PriceTemplateOnboard = () => {
   return (
     <>
       <ProCard
-        extra={<CreateOrderButton />}
+        extra={
+          <CreatePriorModal
+            priorModals={[
+              CREATE_PRIOR_MODAL_SHOP,
+              CREATE_PRIOR_MODAL_CATEGORY,
+              CREATE_PRIOR_MODAL_ITEM,
+              CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+            ]}
+          >
+            <CreateOrderButton />
+          </CreatePriorModal>
+        }
         bordered
         headerBordered
         size="small"

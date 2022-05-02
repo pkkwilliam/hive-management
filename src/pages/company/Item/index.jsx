@@ -19,6 +19,10 @@ import ProFormCategorySelect from '@/commons/proForm/ProFormCategorySelect';
 import ItemStockEditableTableModal from '@/commons/itemStock/ItemStockEditableTableModal';
 import ItemStepFormV2 from './Components/ItemStepFormV2';
 import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
 
 const ItemPage = () => {
   const tableRef = useRef();
@@ -139,7 +143,12 @@ const ItemPage = () => {
           columns={COLUMNS}
           request={queryItemService}
           toolBarRender={() => [
-            <ItemStepFormV2 key="item-onboard" onFinish={tableRef.current.reload} />,
+            <CreatePriorModal
+              key="item-onboard"
+              priorModals={[CREATE_PRIOR_MODAL_SHOP, CREATE_PRIOR_MODAL_CATEGORY]}
+            >
+              <ItemStepFormV2 onFinish={tableRef.current.reload} />
+            </CreatePriorModal>,
           ]}
         />
       </PageContainer>

@@ -6,17 +6,11 @@ import React, { useState } from 'react';
 import { useModel } from 'umi';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import OrderModalForm from './OrderModalForm';
-import CreatePriorModal, {
-  CREATE_PRIOR_MODAL_CATEGORY,
-  CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
-  CREATE_PRIOR_MODAL_ITEM,
-  CREATE_PRIOR_MODAL_SHOP,
-} from '@/commons/CreatePriorModal';
 
 const CreateOrderButton = (props) => {
   const { getOnboard } = useModel('onboard');
 
-  const { onFinish = () => {} } = props;
+  const { buttonProps, onFinish = () => {} } = props;
 
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [order, setOrder] = useState();
@@ -26,25 +20,20 @@ const CreateOrderButton = (props) => {
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ORDER_SERVICE_CONFIG, request);
     setOrder(response);
     setResultVisible(true);
-    getOnboard();
     onFinish();
     return true;
   };
 
   return (
     <>
-      <CreatePriorModal
-        priorModals={[
-          CREATE_PRIOR_MODAL_SHOP,
-          CREATE_PRIOR_MODAL_CATEGORY,
-          CREATE_PRIOR_MODAL_ITEM,
-          CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
-        ]}
+      <Button
+        icon={<PlusOutlined />}
+        onClick={() => setModalFormVisible(true)}
+        type="primary"
+        {...buttonProps}
       >
-        <Button icon={<PlusOutlined />} onClick={() => setModalFormVisible(true)} type="primary">
-          創建企業訂單
-        </Button>
-      </CreatePriorModal>
+        創建企業訂單
+      </Button>
       <OrderModalForm
         onFinish={create}
         onVisibleChange={setModalFormVisible}
@@ -56,6 +45,7 @@ const CreateOrderButton = (props) => {
         onClickClose={() => {
           setOrder(undefined);
           setResultVisible(false);
+          getOnboard();
         }}
         successTitle={`${order?.id}創建成功`}
         visible={resultVisible}

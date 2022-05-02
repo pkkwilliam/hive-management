@@ -10,7 +10,7 @@ import { useModel } from 'umi';
 const CreateShopButton = (props) => {
   const { getOnboard } = useModel('onboard');
 
-  const { buttonProps, onFinish } = props;
+  const { buttonProps, onFinish = () => {} } = props;
 
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
@@ -20,7 +20,6 @@ const CreateShopButton = (props) => {
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_SHOP_SERVICE_CONFIG, request);
     setShop(response);
     setResultVisible(true);
-    getOnboard();
     onFinish();
     return true;
   };
@@ -46,6 +45,7 @@ const CreateShopButton = (props) => {
         onClickClose={() => {
           setShop(undefined);
           setResultVisible(false);
+          getOnboard();
         }}
         successTitle={`${shop?.name}創建成功`}
         visible={resultVisible}

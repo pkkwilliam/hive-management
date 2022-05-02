@@ -3,18 +3,42 @@ import { MobileTwoTone } from '@ant-design/icons';
 import { Button, Form, message, Result, Space } from 'antd';
 import ProForm, { ProFormCaptcha, ProFormText, ProFormGroup } from '@ant-design/pro-form';
 import styles from './index.less';
-import { history } from 'umi';
+import { useIntl, history, useModel } from 'umi';
 
 import ProFormCountryCodeSelect from '@/commons/proForm/ProFormCountryCodeSelect';
 import { TRIAL_REQUEST, TRIAL_VERIFY } from '@/services/hive/trialService';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
 import Text from 'antd/lib/typography/Text';
+import { LOGIN } from '@/services/hive/auth';
+import { saveUserToken } from '@/storage/applicationStorage';
 
 const Trial = () => {
+  const [userLoginState, setUserLoginState] = useState({});
   const [showResult, setShowResult] = useState(false);
   const [verifiedCodeRequested, setVerifiedCodeRequested] = useState(false);
   const [form] = Form.useForm();
+  const { initialState, setInitialState, refresh } = useModel('@@initialState');
+
+  const reDirectToWelcomePage = () => {
+    if (!history) return;
+    const { query } = history.location;
+    const { redirect } = query;
+    history.push(redirect || '/');
+    refresh();
+    return;
+  };
+
+  const login = async (username, password) => {
+    const { data, response } = await LOGIN({
+      username,
+      password,
+    });
+    const authenticationToken = response.headers.get('authorization');
+    saveUserToken(authenticationToken);
+    setInitialState((s) => ({ ...s, currentUser: data }));
+    setUserLoginState(data);
+  };
 
   const requestTrial = async () => {
     await form.validateFields();
@@ -25,6 +49,7 @@ const Trial = () => {
 
   const verifyTrial = async (request) => {
     const response = await TRIAL_VERIFY(request);
+    login(request.admin.username, request.admin.password);
     message.success('註冊成功');
     setShowResult(true);
   };
@@ -39,8 +64,8 @@ const Trial = () => {
               title="注冊成功"
               subTitle="此試用賬號擁有所有包括微信小程序及外部企業訂單功能"
               extra={[
-                <Button key="console" type="primary" onClick={() => history.replace('/user/login')}>
-                  登錄
+                <Button key="console" type="primary" onClick={reDirectToWelcomePage}>
+                  開始使用
                 </Button>,
               ]}
             />

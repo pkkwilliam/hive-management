@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { GET_COMPANY_ONBOARD } from '@/services/hive/companyOnboardService';
+import { useModel } from 'umi';
 
 export default () => {
+  const { initialState } = useModel('@@initialState');
   const [onboard, setOnboard] = useState([]);
 
   const queryOnboard = () => {
@@ -9,8 +11,11 @@ export default () => {
   };
 
   useEffect(() => {
+    if (!initialState?.currentUser) {
+      return;
+    }
     queryOnboard();
-  }, []);
+  }, [initialState?.currentUser]);
 
   const getOnboard = useCallback(queryOnboard, []);
 

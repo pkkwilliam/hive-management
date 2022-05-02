@@ -1,24 +1,22 @@
-import ItemStepForm from '@/pages/company/Item/Components/ItemStepForm';
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
 import ItemStepFormV2 from '@/pages/company/Item/Components/ItemStepFormV2';
-import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_CATEGORY_SERVICE_CONFIG } from '@/services/hive/categoryService';
 import ProCard from '@ant-design/pro-card';
 import { Space } from 'antd';
 import Text from 'antd/lib/typography/Text';
-import React, { useState } from 'react';
+import React from 'react';
 
 const ItemOnboard = () => {
-  const [modalFormVisible, setModalFormVisible] = useState(false);
-
-  const create = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_CATEGORY_SERVICE_CONFIG, request);
-    return true;
-  };
-
   return (
     <>
       <ProCard
-        extra={<ItemStepFormV2 />}
+        extra={
+          <CreatePriorModal priorModals={[CREATE_PRIOR_MODAL_SHOP, CREATE_PRIOR_MODAL_CATEGORY]}>
+            <ItemStepFormV2 />
+          </CreatePriorModal>
+        }
         bordered
         headerBordered
         size="small"

@@ -3,6 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
+  BEDROCK_DEACTIVATE_SERVICE_REQUEST,
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
@@ -17,6 +18,13 @@ import { toDisplayDate } from '@/util/dateUtil';
 import { PAYMENT_CHANNELS } from '@/enum/paymentChannel';
 import OrderDetailModal from './components/OrderDetailModal';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+  CREATE_PRIOR_MODAL_ITEM,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
+import CreateOrderButton from './components/CreateOrderButton';
 
 /**
  * @param {orderPlaceChannel} props
@@ -34,7 +42,11 @@ const Order = (props) => {
     return true;
   };
 
-  const onDelete = async (record) => {};
+  const onDelete = async (record) => {
+    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_ORDER_SERVICE_CONFIG, record.id);
+    tableRef.current.reload();
+    return true;
+  };
 
   const query = async (params, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
@@ -193,14 +205,17 @@ const Order = (props) => {
         columns={COLUMNS}
         request={query}
         toolBarRender={() => [
-          <Button
-            icon={<PlusOutlined />}
-            key="button"
-            type="primary"
-            onClick={() => onChangeModalFormVisible(true)}
+          <CreatePriorModal
+            key="create"
+            priorModals={[
+              CREATE_PRIOR_MODAL_SHOP,
+              CREATE_PRIOR_MODAL_CATEGORY,
+              CREATE_PRIOR_MODAL_ITEM,
+              CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+            ]}
           >
-            新建
-          </Button>,
+            <CreateOrderButton />
+          </CreatePriorModal>,
         ]}
       />
       {props.modalFormComponent({

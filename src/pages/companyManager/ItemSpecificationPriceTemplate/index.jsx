@@ -14,6 +14,13 @@ import {
 } from '@/services/hive/bedrockTemplateService';
 import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 import PriceTemplateCompanyBusinessModalForm from './components/PriceTemplateCompanyBusinessModalForm';
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+  CREATE_PRIOR_MODAL_ITEM,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
+import CreateItemSpecificationPriceTemplateButton from './components/CreateItemSpecificationPriceTemplateButton';
 
 const ItemSpecificationPriceTemplate = () => {
   const tableRef = useRef();
@@ -94,14 +101,17 @@ const ItemSpecificationPriceTemplate = () => {
           >
             關聯客戶
           </Button>,
-          <Button
-            icon={<PlusOutlined />}
-            key="button"
-            type="primary"
-            onClick={() => setModalFormVisible(true)}
+          <CreatePriorModal
+            key="create"
+            priorModals={[
+              CREATE_PRIOR_MODAL_SHOP,
+              CREATE_PRIOR_MODAL_CATEGORY,
+              CREATE_PRIOR_MODAL_ITEM,
+              CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+            ]}
           >
-            新建
-          </Button>,
+            <CreateItemSpecificationPriceTemplateButton />
+          </CreatePriorModal>,
         ]}
       />
       <PriceTemplateCompanyBusinessModalForm

@@ -20,7 +20,6 @@ const CreateCategoryButton = (props) => {
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_CATEGORY_SERVICE_CONFIG, request);
     setCategory(response);
     setResultVisible(true);
-    getOnboard();
     onFinish();
     return true;
   };
@@ -46,6 +45,7 @@ const CreateCategoryButton = (props) => {
         onClickClose={() => {
           setCategory(undefined);
           setResultVisible(false);
+          getOnboard();
         }}
         successTitle={`${category?.name}創建成功`}
         visible={resultVisible}

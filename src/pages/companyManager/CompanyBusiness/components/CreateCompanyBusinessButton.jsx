@@ -23,7 +23,6 @@ const CreateCompanyBusinessButton = (props) => {
     );
     setCompanyBusiness(response);
     setResultVisible(true);
-    getOnboard();
     onFinish();
     return true;
   };
@@ -49,6 +48,7 @@ const CreateCompanyBusinessButton = (props) => {
         onClickClose={() => {
           setCompanyBusiness(undefined);
           setResultVisible(false);
+          getOnboard();
         }}
         successTitle={`${companyBusiness?.name}創建成功`}
         visible={resultVisible}

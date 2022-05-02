@@ -31,7 +31,7 @@ const ItemStepFormV2 = (props) => {
   // model
   const { getOnboard } = useModel('onboard');
 
-  const { buttonProps, onFinish } = props;
+  const { buttonProps, onFinish = () => {} } = props;
 
   const [itemForm] = Form.useForm();
   const [itemSpecificationForm] = Form.useForm();
@@ -57,7 +57,6 @@ const ItemStepFormV2 = (props) => {
       })),
     );
     setItemSpecifications(response);
-    getOnboard();
   };
 
   const onChangeVisible = (visible) => {
@@ -73,7 +72,10 @@ const ItemStepFormV2 = (props) => {
       </Button>
       <Modal
         title=""
-        onCancel={() => setResultVisible(false)}
+        onCancel={() => {
+          setResultVisible(false);
+          getOnboard();
+        }}
         visible={resultVisible}
         width={MODAL_WIDTH}
         footer={null}
@@ -91,6 +93,7 @@ const ItemStepFormV2 = (props) => {
                 // setItem(undefined);
                 // setItemSpecifications([]);
                 setResultVisible(false);
+
                 onChangeVisible(true);
               }}
             >
@@ -113,8 +116,7 @@ const ItemStepFormV2 = (props) => {
           await createItemSpecification(request);
           setVisible(false);
           setResultVisible(true);
-          props?.onFinish();
-          console.log('doneeee');
+          onFinish();
           return true;
         }}
         stepsFormRender={(dom, submitter) => {
