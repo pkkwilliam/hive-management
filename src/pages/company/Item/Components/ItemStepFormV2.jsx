@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProForm, {
+import {
   StepsForm,
   ProFormText,
   ProFormTextArea,
@@ -7,10 +7,6 @@ import ProForm, {
   ProFormMoney,
   ProFormDigit,
   ProFormList,
-  ProFormCheckbox,
-  ProFormDatePicker,
-  ProFormSelect,
-  ProFormDateTimePicker,
 } from '@ant-design/pro-form';
 import { Alert, Button, Form, Modal, Result, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -27,24 +23,22 @@ import ProCard from '@ant-design/pro-card';
 import Text from 'antd/lib/typography/Text';
 import ItemStockEditableTableModal from '@/commons/itemStock/ItemStockEditableTableModal';
 import { useModel } from 'umi';
-import ShopModalForm from '@/pages/companyManager/Shop/components/shopModalForm';
-import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
-import { COMPANY_SHOP_SERVICE_CONFIG } from '@/services/hive/shopService';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
-import { trimEnd } from 'lodash';
 
 const MODAL_WIDTH = 1500;
 
 const ItemStepFormV2 = (props) => {
   // model
-  const { shops, getShops } = useModel('shop');
+  const { getOnboard } = useModel('onboard');
+
+  const { buttonProps, onFinish } = props;
+
   const [itemForm] = Form.useForm();
   const [itemSpecificationForm] = Form.useForm();
   const [item, setItem] = useState();
   const [itemSpecifications, setItemSpecifications] = useState([]);
   const [itemStockEditableTableVisible, setItemStockEditableTableVisible] = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
-  const [shopModalFormVisible, setShopModalFormVisible] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const createItem = async (request) => {
@@ -63,12 +57,7 @@ const ItemStepFormV2 = (props) => {
       })),
     );
     setItemSpecifications(response);
-  };
-
-  const createShop = async (request) => {
-    const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_SHOP_SERVICE_CONFIG, request);
-    getShops();
-    setShopModalFormVisible(false);
+    getOnboard();
   };
 
   const onChangeVisible = (visible) => {
@@ -78,25 +67,10 @@ const ItemStepFormV2 = (props) => {
 
   return (
     <>
-      <Space align="end" direction="vertical">
-        {shops.length < 1 ? (
-          <Alert
-            message="請先添加門店/倉庫"
-            showIcon
-            type="warning"
-            action={
-              <Button onClick={() => setShopModalFormVisible(true)} type="ghost">
-                創建門店/倉庫
-              </Button>
-            }
-          />
-        ) : (
-          <Button type="primary" onClick={() => onChangeVisible(true)}>
-            <PlusOutlined />
-            創建商品
-          </Button>
-        )}
-      </Space>
+      <Button type="primary" onClick={() => onChangeVisible(true)} {...buttonProps}>
+        <PlusOutlined />
+        創建商品
+      </Button>
       <Modal
         title=""
         onCancel={() => setResultVisible(false)}
@@ -282,8 +256,10 @@ const ItemStepFormV2 = (props) => {
                 rules={[{ required: true, message: '請輸入規格名稱' }]}
               />
               <ProFormItemSpecificationStatusSelect
+                defaultActiveFirstOption
                 label="狀態"
                 name={['itemSpecificationStatus']}
+                rules={[{ required: true, message: '請選擇狀態' }]}
               />
             </ProFormGroup>
             <ProFormGroup>
@@ -323,13 +299,6 @@ const ItemStepFormV2 = (props) => {
         key="stock"
         setVisible={setItemStockEditableTableVisible}
         visible={itemStockEditableTableVisible}
-      />
-      <ShopModalForm
-        onClickSubmit={createShop}
-        setModalVisible={(visible) =>
-          proTableOnChangeModalVisible(visible, setShopModalFormVisible)
-        }
-        visible={shopModalFormVisible}
       />
     </>
   );

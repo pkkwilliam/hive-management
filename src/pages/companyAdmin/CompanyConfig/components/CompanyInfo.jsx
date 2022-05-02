@@ -1,6 +1,6 @@
 import { BEDROCK_UPDATE_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ADMIN_COMPANY_CONFIG_SERVICE_CONFIG } from '@/services/hive/companyConfigService';
-import ProForm, { ProFormDigit, ProFormGroup, ProFormSwitch } from '@ant-design/pro-form';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { Form } from 'antd';
 import { useModel } from 'umi';
 import React from 'react';
@@ -23,6 +23,16 @@ const CompanyInfo = () => {
 
   return (
     <ProForm form={form} onFinish={onUpdate}>
+      <ProFormText
+        label="公司中文名稱"
+        readonly
+        value={initialState.companyConfig?.company?.chineseName}
+      />
+      <ProFormText
+        label="公司英文名稱"
+        readonly
+        value={initialState.companyConfig?.company?.englishName}
+      />
       <ProFormMediaUpload label="企業標誌" form={form} max={1} name={['logoImageUrl']} />
     </ProForm>
   );

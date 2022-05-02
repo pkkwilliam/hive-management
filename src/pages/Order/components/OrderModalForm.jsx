@@ -7,7 +7,7 @@ import {
   ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-form';
-import { Form } from 'antd';
+import { Button, Form } from 'antd';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 import ProFormCompanyBusinessSelect from '@/commons/proForm/ProFormCompanyBusinessSelect';
 import ProFormCompanyBusinessAddressSelect from '@/commons/proForm/ProFormCompanyBusinessAddress';
@@ -42,6 +42,19 @@ const OrderModalForm = (props) => {
       modalProps={{ maskClosable: false }}
       onFinish={onFinish}
       onVisibleChange={(visible) => onModalFormVisibleChange(onVisibleChange, form, visible)}
+      submitter={{
+        // 完全自定义整个区域
+        render: (props, doms) => {
+          return [
+            order ? null : (
+              <Button key="reset" onClick={() => props.form?.resetFields()}>
+                重置
+              </Button>
+            ),
+            ...doms,
+          ];
+        },
+      }}
       title={order ? '修改訂單' : '創建訂單'}
       visible={visible}
       width={1200}

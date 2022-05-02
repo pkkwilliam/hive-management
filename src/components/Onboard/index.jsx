@@ -1,4 +1,3 @@
-import { GET_COMPANY_ONBOARD } from '@/services/hive/companyOnboardService';
 import ProCard from '@ant-design/pro-card';
 import { Space } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -9,53 +8,52 @@ import OrderOnobard from './components/OrderOnboard';
 import PriceTemplateOnboard from './components/PriceTemplateOnboard';
 import ShopOnboard from './components/ShopOnboard';
 import { Alert } from 'antd';
-import Title from 'antd/lib/typography/Title';
+import { RightOutlined } from '@ant-design/icons';
+import { useModel } from 'umi';
 
 export const Onboard = () => {
-  const [companyOnboard, setCompanyOnboard] = useState({});
+  const { onboard, getOnboard } = useModel('onboard');
+
+  const [collapsed, setCollapsed] = useState(true);
+  const [showOnboard, setShowOnboard] = useState(false);
 
   useEffect(() => {
-    getCompanyOnboard();
-  }, []);
-
-  const getCompanyOnboard = async () => {
-    const response = await GET_COMPANY_ONBOARD();
-    setCompanyOnboard(response);
-  };
-
-  const showOnboard = () => {
-    let showOnboard = false;
-    for (let key in companyOnboard) {
-      if (companyOnboard[key]) {
-        showOnboard = true;
+    for (let key in onboard) {
+      if (!onboard[key]) {
+        setCollapsed(false);
         break;
       }
     }
-    return showOnboard;
-  };
+  }, [onboard]);
 
   return (
-    <>
-      {showOnboard() ? (
-        <>
-          <Title level={4}>使用嚮導</Title>
-          <Alert
-            message="使用嚮導助您快速熟悉系統及添加必需要的組件"
-            type="success"
-            showIcon
-            banner
-          />
-          <Space direction="vertical" style={{ display: 'flex' }}>
-            {companyOnboard.showCreateShop ? <ShopOnboard /> : null}
-            {companyOnboard.showCreateCategory ? <CategoryOnboard /> : null}
-            {companyOnboard.showCreateItem ? <ItemOnboard /> : null}
-            {companyOnboard.showCreateCompanyBusiness ? <CompanyBusinessOnboard /> : null}
-            {companyOnboard.showCreateOrder ? <OrderOnobard /> : null}
-            {companyOnboard.showCreatePriceTemplate ? <PriceTemplateOnboard /> : null}
-          </Space>
-        </>
-      ) : null}
-    </>
+    <ProCard
+      collapsed={collapsed}
+      collapsible
+      extra={
+        <Space
+          onClick={() => {
+            setCollapsed(!collapsed);
+            setShowOnboard(true);
+          }}
+        >
+          <Alert message="使用嚮導助您快速熟悉系統及添加必需要的組件" type="success" />
+          <RightOutlined rotate={!collapsed ? 90 : undefined} />
+        </Space>
+      }
+      title="使用嚮導"
+    >
+      <Space direction="vertical" style={{ display: 'flex' }} size="large">
+        {/* onboard partial finished */}
+        {!collapsed && !showOnboard ? <a onClick={() => setShowOnboard(true)}>顯示所有</a> : null}
+        {showOnboard || onboard?.showCreateShop ? <ShopOnboard /> : null}
+        {showOnboard || onboard?.showCreateCategory ? <CategoryOnboard /> : null}
+        {showOnboard || onboard?.showCreateCompanyBusiness ? <CompanyBusinessOnboard /> : null}
+        {showOnboard || onboard?.showCreateItem ? <ItemOnboard /> : null}
+        {showOnboard || onboard?.showCreateOrder ? <OrderOnobard /> : null}
+        {showOnboard || onboard?.showCreatePriceTemplate ? <PriceTemplateOnboard /> : null}
+      </Space>
+    </ProCard>
   );
 };
 

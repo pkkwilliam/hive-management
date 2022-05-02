@@ -17,7 +17,14 @@ const ItemOnboard = () => {
 
   return (
     <>
-      <ProCard extra={<ItemStepFormV2 />} headerBordered title="商品">
+      <ProCard
+        extra={<ItemStepFormV2 />}
+        bordered
+        headerBordered
+        size="small"
+        title="商品"
+        type="inner"
+      >
         <Space>
           <Text>創建首個商品</Text>
         </Space>

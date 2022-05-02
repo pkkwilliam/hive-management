@@ -4,7 +4,7 @@ import { ORDER_STATUS_PAYMENT_PENDING, ORDER_STATUS_ORDER_FINISHED } from '@/enu
 import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { calculateTotalCost } from '@/util/orderUtil';
-import { ModalForm } from '@ant-design/pro-form';
+import { ModalForm, ProFormDependency } from '@ant-design/pro-form';
 import { Button, Col, Divider, Form, InputNumber, message, Modal, Result, Row, Space } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import Title from 'antd/lib/typography/Title';
@@ -273,24 +273,39 @@ const RightPanel = (props) => {
         </Col>
       </Row>
       <Divider />
-      <InputNumber
-        onChange={setCashValue}
-        placeholder="現金"
-        size="large"
-        style={{ width: '100%' }}
-        value={cashValue}
-      />
-      <Divider />
-      <Row flex>
-        <Col flex={1}>
-          <Text style={{ fontSize: 22 }}>找零</Text>
-        </Col>
-        <Col>
-          <Text style={{ fontSize: 26 }}>
-            ${(cashValue ?? 0) - calculateTotalCost(order.orderItemInfos)}
-          </Text>
-        </Col>
-      </Row>
+      <ProFormDependency name={['paymentChannel']}>
+        {({ paymentChannel }) => {
+          const cost = calculateTotalCost(order.orderItemInfos);
+          const isCash = paymentChannel === PAYMENT_CHANNEL_CASH.key;
+          return (
+            <>
+              <InputNumber
+                disabled={!isCash}
+                onChange={setCashValue}
+                placeholder="現金"
+                size="large"
+                style={{ width: '100%' }}
+                value={cashValue}
+              />
+              <Divider />
+              <Row flex>
+                <Col flex={1}>
+                  <Text style={{ fontSize: 22 }}>
+                    {isCash
+                      ? '找零'
+                      : getEnumLabelByKey(PAYMENT_CHANNELS, paymentChannel, '選擇支付方式')}
+                  </Text>
+                </Col>
+                <Col>
+                  <Text style={{ fontSize: 26 }}>
+                    {isCash ? `$${(cashValue ?? 0) - cost}` : `$${cost}`}
+                  </Text>
+                </Col>
+              </Row>
+            </>
+          );
+        }}
+      </ProFormDependency>
     </>
   );
 };

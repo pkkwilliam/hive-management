@@ -5,7 +5,13 @@ import ProFormPriceTemplateList from './ProFormTemplatePriceList';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 
 const ItemSpecificationPriceTemplateModalForm = (props) => {
-  const { itemSpecificationPriceTemplate, onFinish, onVisibleChange, visible } = props;
+  const {
+    itemSpecificationPriceTemplate,
+    onFinish,
+    onVisibleChange,
+    readonly = false,
+    visible,
+  } = props;
   const [form] = Form.useForm();
   form.setFieldsValue(itemSpecificationPriceTemplate);
 
@@ -19,15 +25,16 @@ const ItemSpecificationPriceTemplateModalForm = (props) => {
       visible={visible}
       width={1500}
     >
-      <ProFormDigit disabled hidden lable="ID" name="id" />
+      <ProFormDigit hidden lable="ID" name="id" readonly />
       <ProFormText
         label="特供價單名稱"
         name="name"
         placeholder="超市專用 / XX超市專用"
+        readonly={readonly}
         rules={[{ required: true, message: '請輸入特供價單名稱' }]}
       />
-      <ProFormPriceTemplateList label="價格" name="priceTemplates" />
-      <ProFormText label="備註" name="remark" />
+      <ProFormPriceTemplateList label="特供價單商品" name="priceTemplates" readonly={readonly} />
+      <ProFormText label="備註" name="remark" readonly={readonly} />
     </ModalForm>
   );
 };

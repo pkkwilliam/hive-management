@@ -1,3 +1,4 @@
+import CreateOrderButton from '@/pages/Order/components/CreateOrderButton';
 import OrderModalForm from '@/pages/Order/components/OrderModalForm';
 import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
@@ -17,13 +18,12 @@ const PriceTemplateOnboard = () => {
   return (
     <>
       <ProCard
-        extra={
-          <Button onClick={() => setModalFormVisible(true)} type="primary">
-            創建企業訂單
-          </Button>
-        }
+        extra={<CreateOrderButton />}
+        bordered
         headerBordered
+        size="small"
         title="企業訂單"
+        type="inner"
       >
         <Space>
           <Text>創建首個可追蹤，列印，收款的企業訂單。</Text>
