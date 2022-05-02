@@ -10,6 +10,7 @@ import ShopOnboard from './components/ShopOnboard';
 import { Alert } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
+import WechatMiniProgramOnboard from './components/WechatMiniProgramOnboard';
 
 export const Onboard = () => {
   const { onboard, getOnboard } = useModel('onboard');
@@ -67,6 +68,7 @@ export const Onboard = () => {
         <ItemOnboard />
         <OrderOnobard />
         <PriceTemplateOnboard />
+        <WechatMiniProgramOnboard />
         {/* onboard partial finished */}
         {/* {!showOnboard ? <a onClick={() => setShowOnboard(true)}>顯示所有</a> : null}
         {showOnboard || onboard?.showCreateShop ? <ShopOnboard /> : null}
