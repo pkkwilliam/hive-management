@@ -57,6 +57,7 @@ const PriceTemplateCompanyBusinessModalForm = (props) => {
   return (
     <Modal
       destroyOnClose
+      footer={null}
       onOk={() => setVisible(false)}
       onCancel={() => setVisible(false)}
       title="關聯特供價單"

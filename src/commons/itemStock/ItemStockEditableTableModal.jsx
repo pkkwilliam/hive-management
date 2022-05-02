@@ -91,11 +91,7 @@ const ItemStockEditableTableModal = (props) => {
     <Modal
       onCancel={() => onChangeVisible(false)}
       destroyOnClose
-      footer={[
-        <Button key="ok" onClick={() => onChangeVisible(false)} type="primary">
-          確定
-        </Button>,
-      ]}
+      footer={null}
       title={`${item?.brand ? item.brand + ' ' : ''}${item?.name}庫存`}
       visible={visible}
       width={1500}

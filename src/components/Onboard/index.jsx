@@ -61,16 +61,20 @@ export const Onboard = () => {
       title="使用嚮導"
     >
       <Space direction="vertical" style={{ display: 'flex' }} size="large">
+        <ShopOnboard />
+        <CategoryOnboard />
+        <CompanyBusinessOnboard />
+        <ItemOnboard />
+        <OrderOnobard />
+        <PriceTemplateOnboard />
         {/* onboard partial finished */}
-        {finishedAtLeastOne && !showOnboard ? (
-          <a onClick={() => setShowOnboard(true)}>顯示所有</a>
-        ) : null}
+        {/* {!showOnboard ? <a onClick={() => setShowOnboard(true)}>顯示所有</a> : null}
         {showOnboard || onboard?.showCreateShop ? <ShopOnboard /> : null}
         {showOnboard || onboard?.showCreateCategory ? <CategoryOnboard /> : null}
         {showOnboard || onboard?.showCreateCompanyBusiness ? <CompanyBusinessOnboard /> : null}
         {showOnboard || onboard?.showCreateItem ? <ItemOnboard /> : null}
         {showOnboard || onboard?.showCreateOrder ? <OrderOnobard /> : null}
-        {showOnboard || onboard?.showCreatePriceTemplate ? <PriceTemplateOnboard /> : null}
+        {showOnboard || onboard?.showCreatePriceTemplate ? <PriceTemplateOnboard /> : null} */}
       </Space>
     </ProCard>
   );
