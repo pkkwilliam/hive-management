@@ -1,20 +1,44 @@
 import React, { useState } from 'react';
 import { MobileTwoTone } from '@ant-design/icons';
-import { Form, message, Space } from 'antd';
+import { Button, Form, message, Result, Space, Typography } from 'antd';
 import ProForm, { ProFormCaptcha, ProFormText, ProFormGroup } from '@ant-design/pro-form';
-import { SelectLang } from 'umi';
 import styles from './index.less';
-import { history } from 'umi';
+import { useIntl, history, useModel } from 'umi';
 
 import ProFormCountryCodeSelect from '@/commons/proForm/ProFormCountryCodeSelect';
 import { TRIAL_REQUEST, TRIAL_VERIFY } from '@/services/hive/trialService';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
 import Text from 'antd/lib/typography/Text';
+import { LOGIN } from '@/services/hive/auth';
+import { saveUserToken } from '@/storage/applicationStorage';
 
 const Trial = () => {
+  const [userLoginState, setUserLoginState] = useState({});
+  const [showResult, setShowResult] = useState(false);
   const [verifiedCodeRequested, setVerifiedCodeRequested] = useState(false);
   const [form] = Form.useForm();
+  const { initialState, setInitialState, refresh } = useModel('@@initialState');
+
+  const reDirectToWelcomePage = () => {
+    if (!history) return;
+    const { query } = history.location;
+    const { redirect } = query;
+    history.push(redirect || '/');
+    refresh();
+    return;
+  };
+
+  const login = async (username, password) => {
+    const { data, response } = await LOGIN({
+      username,
+      password,
+    });
+    const authenticationToken = response.headers.get('authorization');
+    saveUserToken(authenticationToken);
+    setInitialState((s) => ({ ...s, currentUser: data }));
+    setUserLoginState(data);
+  };
 
   const requestTrial = async () => {
     await form.validateFields();
@@ -25,18 +49,35 @@ const Trial = () => {
 
   const verifyTrial = async (request) => {
     const response = await TRIAL_VERIFY(request);
-    message.success('註冊成功 3秒後跳轉登錄');
-    history.replace('/user/login');
+    login(request.admin.username, request.admin.password);
+    message.success('註冊成功');
+    setShowResult(true);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
-      </div>
-      <div className={styles.content}>
-        <PageContainer title="企業試用申請">
-          <ProCard>
+      <PageContainer title="企業試用申請">
+        <ProCard>
+          {showResult ? (
+            <Result
+              status="success"
+              title="注冊成功"
+              // subTitle="此試用賬號擁有所有包括微信小程序及外部企業訂單功能"
+              subTitle={
+                <>
+                  <Text>請使用平板或電腦使用</Text>
+                  <Typography.Paragraph copyable>
+                    https://hive-management.bitcode-lab.com
+                  </Typography.Paragraph>
+                </>
+              }
+              extra={[
+                <Button key="console" type="primary" onClick={reDirectToWelcomePage}>
+                  開始使用
+                </Button>,
+              ]}
+            />
+          ) : (
             <ProForm
               submitter={{
                 submitButtonProps: {
@@ -60,12 +101,12 @@ const Trial = () => {
                   />
                 </Space>
               </ProFormGroup>
-              <ProFormGroup title="管理人員資料">
+              <ProFormGroup title="管理員資料">
                 <Space direction="vertical">
                   <ProFormText
-                    label="人員名稱"
+                    label="名稱"
                     name={['admin', 'name']}
-                    rules={[{ required: true, message: '請輸入人員名稱' }]}
+                    rules={[{ required: true, message: '請輸入名稱' }]}
                   />
 
                   <ProFormText
@@ -125,9 +166,9 @@ const Trial = () => {
                 </Space>
               </ProFormGroup>
             </ProForm>
-          </ProCard>
-        </PageContainer>
-      </div>
+          )}
+        </ProCard>
+      </PageContainer>
     </div>
   );
 };

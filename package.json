@@ -26,6 +26,7 @@
     "serve": "umi-serve",
     "start": "cross-env UMI_ENV=dev umi dev",
     "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none UMI_ENV=dev umi dev",
+    "start:uat": "cross-env REACT_APP_ENV=uat MOCK=none UMI_ENV=uat umi dev",
     "start:no-mock": "cross-env MOCK=none UMI_ENV=dev umi dev",
     "start:no-ui": "cross-env UMI_UI=none UMI_ENV=dev umi dev",
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev umi dev",
@@ -67,6 +68,7 @@
     "react-dev-inspector": "^1.7.0",
     "react-dom": "^17.0.0",
     "react-helmet-async": "^1.2.0",
+    "react-to-print": "^2.14.6",
     "umi": "^3.5.0"
   },
   "devDependencies": {
@@ -109,7 +111,5 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "gitHooks": {
-
-  }
+  "gitHooks": {}
 }

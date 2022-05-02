@@ -11,12 +11,14 @@ import {
 } from '@/services/hive/bedrockTemplateService';
 import { ITEM_SPECIFICATION_STATUSES } from '@/enum/itemSpecificationStatus';
 import { getValueEnum } from '@/enum/enumUtil';
+import ProFormMediaUpload from '@/commons/proForm/ProFormMediaUpload';
+import { getImageUrl } from '@/util/imageUtil';
 
 const ItemSpecificationDetailModal = (props) => {
   const tableRef = useRef();
   const [form] = Form.useForm();
   const [editableKeys, setEditableRowKeys] = useState([]);
-  const { item, onCancel, visible } = props;
+  const { item, setVisible, visible } = props;
 
   const createItemSpecification = async (request) => {
     delete request.id;
@@ -53,12 +55,15 @@ const ItemSpecificationDetailModal = (props) => {
 
   const COLUMNS = [
     {
-      editable: false,
       title: '圖片',
-      ellipsis: true,
       dataIndex: ['imageUrl'],
-      search: false,
-      tooltip: "圖片可在左則導航欄'管理' -> '商品規格'中修改或增加",
+      renderFormItem: (schema, config, rowForm) => (
+        <ProFormMediaUpload form={rowForm} name={['imageUrl']} max={1} />
+      ),
+      search: {
+        transform: (value) => console.log('TTT', value),
+      },
+      tooltip: "圖片可在左則導航欄'管理' -> '商品規格'中修改或添加",
       valueType: 'image',
     },
     {
@@ -154,34 +159,45 @@ const ItemSpecificationDetailModal = (props) => {
   ];
 
   return (
-    <Modal destroyOnClose onCancel={onCancel} title={item?.name} visible={visible} width={1800}>
+    <Modal
+      destroyOnClose
+      onCancel={() => setVisible(false)}
+      title={item?.name}
+      visible={visible}
+      width={1800}
+    >
       <EditableProTable
         actionRef={tableRef}
         form={form}
         columns={COLUMNS}
         editable={{
-          type: 'multiple',
+          type: 'single',
           editableKeys,
           onChange: setEditableRowKeys,
           onDelete: async (rowKey, data, row) => deleteItemSpecification(data),
           onSave: async (rowKey, data, row) => {
+            const imageUrl = getImageUrl(data.imageUrl);
+            data.imageUrl = imageUrl;
             data.id === 'temp_id' ? createItemSpecification(data) : updateItemSpecification(data);
           },
         }}
-        expandable={{
-          expandedRowRender: (record) => {
-            return (
-              <Card>
-                <ShopItemSpecificationList itemSpecification={record} />
-              </Card>
-            );
-          },
-        }}
+        // expandable={{
+        //   expandedRowRender: (record) => {
+        //     return (
+        //       <Card>
+        //         <ShopItemSpecificationList itemSpecification={record} />
+        //       </Card>
+        //     );
+        //   },
+        // }}
         recordCreatorProps={{
           position: 'top',
           creatorButtonText: '新增規格',
           record: () => ({
             id: 'temp_id',
+            imageUrl:
+              item?.imageUrl ??
+              'https://cloud-storage-general.bitcode-lab.com/application-general/hive_client_image_missing.png',
           }),
         }}
         request={queryItemSpecification}

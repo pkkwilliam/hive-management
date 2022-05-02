@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { COMPANY_MANAGER_SHOP_SERVICE_CONFIG } from '@/services/hive/shopService';
-import { Button, Popconfirm } from 'antd';
+import { COMPANY_SHOP_SERVICE_CONFIG } from '@/services/hive/shopService';
+import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { useModel } from 'umi';
 import ShopModalForm from './components/shopModalForm';
 import { SHOP_TYPES, SHOP_TYPE_REGULAR } from '@/enum/shopType';
-import { convertEnumsToProTableValueEnum, getValueEnum } from '@/enum/enumUtil';
+import { convertEnumsToProTableValueEnum } from '@/enum/enumUtil';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
   BEDROCK_DEACTIVATE_SERVICE_REQUEST,
@@ -17,6 +17,8 @@ import {
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import { COMPANY_TEST_SHOP_PRINTER } from '@/services/hive/printService';
 import { COMPANY_GET_WECHAT_MINI_PROGRAM_QR_CODE } from '@/services/hive/wechatMiniProgramQrCodeService';
+import Text from 'antd/lib/typography/Text';
+import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 
 const Category = () => {
   const { initialState } = useModel('@@initialState');
@@ -42,7 +44,7 @@ const Category = () => {
   };
 
   const createShopServiceRequest = async (shop) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_MANAGER_SHOP_SERVICE_CONFIG, {
+    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_SHOP_SERVICE_CONFIG, {
       ...shop,
       shopType: SHOP_TYPE_REGULAR.key,
     });
@@ -52,7 +54,7 @@ const Category = () => {
   };
 
   const deleteShopServiceRequest = async (shop) => {
-    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_MANAGER_SHOP_SERVICE_CONFIG, shop.id);
+    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, shop.id);
     onDataChanged();
   };
 
@@ -61,7 +63,7 @@ const Category = () => {
   };
 
   const updateShopServiceRequest = async (shop) => {
-    await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_MANAGER_SHOP_SERVICE_CONFIG, shop);
+    await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, shop);
     setModalVisible(false);
     onDataChanged();
     return true;
@@ -103,8 +105,13 @@ const Category = () => {
         setModalVisible(true);
       },
       deleteShopServiceRequest,
-      (text, record) =>
-        record.defaultPrinter ? <a onClick={() => onClickTestPrinter(record)}>測試打印機</a> : '-',
+      (text, record) => (
+        <InactiveableLinkButton
+          disabled={!record.defaultPrinter}
+          label="測試打印機"
+          onClick={() => onClickTestPrinter(record)}
+        />
+      ),
     ),
   ];
 
@@ -114,7 +121,7 @@ const Category = () => {
         actionRef={actionRef}
         columns={COLUMNS}
         request={async (params = {}, sort, filter) => {
-          return BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(COMPANY_MANAGER_SHOP_SERVICE_CONFIG, {
+          return BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, {
             ...params,
             active: true,
           });

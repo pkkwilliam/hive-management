@@ -7,7 +7,6 @@ import {
   COMPANY_ITEM_SERVICE_CONFIG,
   COMPANY_MANAGER_ITEM_SERVICE_CONFIG,
 } from '@/services/hive/itemService';
-import ItemSpecificationModalForm from './Components/ItemSpecificationModalForm';
 import ItemSpecificationDetailModal from '@/pages/companyManager/ItemSpecification/components/ItemSpecificationDetailModal';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
@@ -17,14 +16,20 @@ import {
 } from '@/services/hive/bedrockTemplateService';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import ProFormCategorySelect from '@/commons/proForm/ProFormCategorySelect';
-import ItemStepForm from './Components/ItemStepForm';
+import ItemStockEditableTableModal from '@/commons/itemStock/ItemStockEditableTableModal';
+import ItemStepFormV2 from './Components/ItemStepFormV2';
+import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
 
 const ItemPage = () => {
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
+  const [itemStockEditableTableVisible, setItemStockEditiableTableVisible] = useState(false);
   const [showItemSpecification, setShowItemSpecification] = useState(false);
   const [showModalForm, setShowModalForm] = useState(false);
-  const [showSpecificationModalForm, setShowSpecificationModalForm] = useState(false);
 
   const createItemService = async (item) => {
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(
@@ -36,41 +41,12 @@ const ItemPage = () => {
     return true;
   };
 
-  const createItemSpecificationsService = async (itemSpecifications) => {
-    const response = await BEDROCK_CREATE_SERVICE_REQEUST(
-      COMPANY_MANAGER_ITEM_SERVICE_CONFIG,
-      itemSpecifications,
-    );
-  };
-
   const deleteItemService = async (record) => {
     const response = await BEDROCK_DEACTIVATE_SERVICE_REQUEST(
       COMPANY_MANAGER_ITEM_SERVICE_CONFIG,
       record.id,
     );
     tableRef.current.reload();
-  };
-
-  const onChangeModalFormVisible = (visible) => {
-    if (!visible) {
-      setCurrentRow(undefined);
-    }
-    setShowModalForm(visible);
-  };
-
-  const onClickItem = (record) => {
-    setCurrentRow(record);
-    setShowItemSpecification(record);
-  };
-
-  const onCloseItemDetailModal = () => {
-    setCurrentRow(undefined);
-    setShowItemSpecification(false);
-  };
-
-  const onClickShowItemSpecificationModalForm = (record) => {
-    setCurrentRow(record);
-    setShowSpecificationModalForm(true);
   };
 
   const queryItemService = async (params = {}, sort, filter) => {
@@ -103,11 +79,10 @@ const ItemPage = () => {
     {
       title: '品名',
       dataIndex: 'name',
-      render: (text, record) => <a onClick={() => onClickItem(record)}>{text}</a>,
     },
     { title: '品牌', dataIndex: 'brand' },
     {
-      title: '標簽',
+      title: '標籤/分類',
       dataIndex: 'categories',
       key: 'categoryId',
       render: (text, record) => {
@@ -127,7 +102,7 @@ const ItemPage = () => {
       title: '價格範圍',
       renderText: (text, record) => {
         const { count, startFrom, to } = record.itemSpecificationPriceRangeResponse;
-        return count < 2 ? `$${startFrom}` : `$${startFrom} - $${to}`;
+        return !to ? `$${startFrom ?? '-'}` : `$${startFrom} - $${to}`;
       },
     },
     { title: '備註', dataIndex: 'remark' },
@@ -137,46 +112,69 @@ const ItemPage = () => {
         setShowModalForm(true);
       },
       deleteItemService,
-      (text, record) => <a onClick={() => onClickItem(record)}>規格/庫存</a>,
+      (text, record) => [
+        <a
+          key="itemSpecification"
+          onClick={() => {
+            setCurrentRow(record);
+            setShowItemSpecification(true);
+          }}
+        >
+          規格
+        </a>,
+        <a
+          key="itemStock"
+          onClick={() => {
+            setCurrentRow(record);
+            setItemStockEditiableTableVisible(true);
+          }}
+        >
+          庫存
+        </a>,
+      ],
     ),
   ];
 
   return (
-    <PageContainer>
-      <ProTable
-        actionRef={tableRef}
-        columns={COLUMNS}
-        request={queryItemService}
-        toolBarRender={() => [
-          <ItemStepForm key="item-onboard" onFinish={tableRef.current.reload} />,
-          // <Button
-          //   icon={<PlusOutlined />}
-          //   key="button"
-          //   onClick={() => setShowModalForm(true)}
-          //   type="primary"
-          // >
-          //   新建
-          // </Button>,
-        ]}
-      />
+    <>
+      <PageContainer>
+        <ProTable
+          actionRef={tableRef}
+          columns={COLUMNS}
+          request={queryItemService}
+          toolBarRender={() => [
+            <CreatePriorModal
+              key="item-onboard"
+              priorModals={[CREATE_PRIOR_MODAL_SHOP, CREATE_PRIOR_MODAL_CATEGORY]}
+            >
+              <ItemStepFormV2 onFinish={tableRef.current.reload} />
+            </CreatePriorModal>,
+          ]}
+        />
+      </PageContainer>
       <ItemModalForm
         item={currentRow}
         onFinish={currentRow ? updateItemService : createItemService}
-        onVisibleChange={onChangeModalFormVisible}
+        setVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setShowModalForm, setCurrentRow)
+        }
         visible={showModalForm}
-      />
-      <ItemSpecificationModalForm
-        item={currentRow}
-        onFinish={createItemSpecificationsService}
-        onVisibleChange={showSpecificationModalForm}
-        visible={showSpecificationModalForm}
       />
       <ItemSpecificationDetailModal
         item={currentRow}
+        setVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setShowItemSpecification, setCurrentRow)
+        }
         visible={showItemSpecification}
-        onCancel={onCloseItemDetailModal}
       />
-    </PageContainer>
+      <ItemStockEditableTableModal
+        item={currentRow}
+        setVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setItemStockEditiableTableVisible, setCurrentRow)
+        }
+        visible={itemStockEditableTableVisible}
+      />
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ export const ORDER_PLACE_CHANNEL_DIRECT_SALES_IN_SHOP = {
   key: 'DIRECT_SALES_IN_SHOP',
   label: '地點直銷',
 };
-export const ORDER_PLACE_CHANNEL_INTERNAL_ORDER = { key: 'INTERNAL_ORDER', label: '內部訂單' };
+export const ORDER_PLACE_CHANNEL_INTERNAL_ORDER = { key: 'INTERNAL_ORDER', label: '企業訂單' };
 export const ORDER_PLACE_CHANNEL_EXTERNAL_BUSINESS = {
   key: 'EXTERNAL_BUSINESS',
   label: '外部企業',

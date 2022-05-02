@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
+import { COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
 import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
 import { getValueEnum } from '@/enum/enumUtil';
 import { SHOP_TYPES } from '@/enum/shopType';
 import ProFormItemBrandSelect from '@/commons/proForm/ProFormItemBrandSelect';
+import { PageContainer } from '@ant-design/pro-layout';
+import { Card } from 'antd';
 
 const ItemSpecificationStock = () => {
+  const [shopId, setShopId] = useState();
+
   const query = async (params, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
-      COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
-      { ...params, active: true, itemSpecificationActive: true },
+      COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
+      { ...params, active: true, itemSpecificationActive: true, 'shop.id': shopId },
       sort,
       filter,
     );
@@ -22,7 +26,6 @@ const ItemSpecificationStock = () => {
       title: '品牌',
       dataIndex: ['itemSpecification', 'item', 'brand'],
       key: 'itemSpecification.item.brand',
-      order: 11,
       renderFormItem: (text, record) => <ProFormItemBrandSelect />,
     },
     {
@@ -34,18 +37,20 @@ const ItemSpecificationStock = () => {
       title: '規格',
       dataIndex: ['itemSpecification', 'name'],
       key: ['itemSpecification', 'id'],
+      search: false,
     },
     {
       title: 'SKU',
       dataIndex: ['itemSpecification', 'sku'],
       key: 'itemSpecification.sku',
-      order: 10,
+      order: 1,
     },
     {
       title: '地點',
       dataIndex: ['shop', 'name'],
       key: 'shop.id',
       renderFormItem: (text, record) => <ProFormShopSelect />,
+      search: false,
     },
     {
       title: '地點類型',
@@ -56,7 +61,18 @@ const ItemSpecificationStock = () => {
     { title: '地點庫存', dataIndex: 'stock', search: false },
   ];
 
-  return <ProTable columns={COLUMNS} request={query} />;
+  return (
+    <PageContainer>
+      <Card>
+        <ProFormShopSelect
+          allowClear={false}
+          label="地點"
+          onChange={(shopId) => setShopId(shopId)}
+        />
+      </Card>
+      {!shopId ? null : <ProTable columns={COLUMNS} request={query} />}
+    </PageContainer>
+  );
 };
 
 export default ItemSpecificationStock;

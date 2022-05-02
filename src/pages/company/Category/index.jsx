@@ -12,6 +12,7 @@ import {
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
+import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 
 const Category = () => {
   const actionRef = useRef();
@@ -35,13 +36,6 @@ const Category = () => {
     return true;
   };
 
-  const onChangeModalFormVisible = (visible) => {
-    if (!visible) {
-      setCurrentRow(undefined);
-    }
-    setModalFormVisible(visible);
-  };
-
   const onDataChanged = () => {
     actionRef.current.reload();
   };
@@ -53,7 +47,7 @@ const Category = () => {
       search: false,
       valueType: 'image',
     },
-    { title: '標簽', dataIndex: 'name' },
+    { title: '標籤/分類', dataIndex: 'name' },
     ProTableOperationColumnButtons((record) => {
       setCurrentRow(record);
       setModalFormVisible(true);
@@ -90,7 +84,9 @@ const Category = () => {
       <CategoryModalForm
         category={currentRow}
         onClickSubmit={currentRow ? updateCategoryServiceRequest : createCategoryServiceRequest}
-        setModalVisible={onChangeModalFormVisible}
+        setModalVisible={(visible) =>
+          proTableOnChangeModalVisible(visible, setModalFormVisible, setCurrentRow)
+        }
         visible={modalFormVisible}
       />
     </PageContainer>

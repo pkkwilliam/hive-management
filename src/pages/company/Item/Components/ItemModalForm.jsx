@@ -12,7 +12,7 @@ import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 import ProFormMediaUpload from '@/commons/proForm/ProFormMediaUpload';
 
 const ItemModalForm = (props) => {
-  const { item, onFinish, onVisibleChange, visible } = props;
+  const { item, onFinish, setVisible, visible } = props;
   const [form] = Form.useForm();
   form.setFieldsValue(item);
 
@@ -21,7 +21,7 @@ const ItemModalForm = (props) => {
       destroyOnClose
       form={form}
       onFinish={onFinish}
-      onVisibleChange={(visible) => onModalFormVisibleChange(onVisibleChange, form, visible)}
+      onVisibleChange={(visible) => onModalFormVisibleChange(setVisible, form, visible)}
       title={item ? '修改商品' : '新增商品'}
       visible={visible}
       width={1200}
@@ -40,7 +40,7 @@ const ItemModalForm = (props) => {
         </Space>
       </Space>
 
-      <ProFormCategoryListSelect label="標簽" mode="multiple" name={['categories']} />
+      <ProFormCategoryListSelect label="標籤/分類" mode="multiple" name={['categories']} />
       <Space>
         <ProFormTextArea label="內容" name="content" placeholder="5分包裝 每包25塊" />
         <ProFormTextArea

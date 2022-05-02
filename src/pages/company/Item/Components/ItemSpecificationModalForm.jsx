@@ -13,7 +13,7 @@ import { COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hi
 import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 
 const ItemSpecificationModalForm = (props) => {
-  const { item, onFinish, onVisibleChange, visible } = props;
+  const { item, onFinish, setVisible, visible } = props;
   const [form] = Form.useForm();
 
   const getItemSpecificationByItem = async () => {
@@ -36,7 +36,7 @@ const ItemSpecificationModalForm = (props) => {
         }));
         onFinish(request);
       }}
-      onVisibleChange={onVisibleChange}
+      onVisibleChange={setVisible}
       visible={visible}
       title="商品規格"
     >
@@ -73,7 +73,7 @@ const ItemSpecificationModalForm = (props) => {
             name="price"
             rules={[{ required: true, message: '請輸入品名' }]}
           />
-          <ProFormMoney label="對外拆扣價錢" name="discountPrice" />
+          <ProFormMoney label="對外折扣價錢" name="discountPrice" />
         </ProFormGroup>
         <ProFormGroup title="尺吋/重量">
           <ProFormDigit label="長" name="length" />

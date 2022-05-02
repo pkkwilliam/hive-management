@@ -8,7 +8,13 @@ const ProFormMediaUpload = (props) => {
   const [token, setToken] = useState();
 
   useEffect(() => {
+    // clear the list once the id has changed
+    setCurrentFileList([]);
+
+    // get form imageUrls by name
     let currentValues = props.form.getFieldValue(props.name);
+
+    console.log(props?.form?.getFieldValue('id'), currentFileList);
     if (!isArray) {
       currentValues = [currentValues];
     }
@@ -18,7 +24,7 @@ const ProFormMediaUpload = (props) => {
         currentValues.map((value, index) => ({ uid: index, status: 'done', url: value, index })),
       );
     }
-  }, []);
+  }, [props?.form?.getFieldValue('id')]);
 
   const beforeUpload = async () => {
     const response = await COMPANY_MANAGER_GET_MEDIA_UPLOAD_TOKEN();
@@ -92,6 +98,7 @@ const ProFormMediaUpload = (props) => {
         onChange: onChange,
         onRemove: onRemove,
       }}
+      title="單擊上傳"
       {...props}
     />
   );

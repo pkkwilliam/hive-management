@@ -21,7 +21,7 @@ const CompanyWechatMiniProgramConfigForm = (props) => {
   };
   return (
     <ProForm form={form} onFinish={onUpdate}>
-      <ProFormSwitch label="客戶端小程序" name={['enabled']} />
+      <ProFormSwitch label="允許客戶端小程序被搜索" name={['enabled']} />
     </ProForm>
   );
 };

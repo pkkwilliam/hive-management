@@ -4,18 +4,32 @@ import { ORDER_STATUS_PAYMENT_PENDING, ORDER_STATUS_ORDER_FINISHED } from '@/enu
 import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { calculateTotalCost } from '@/util/orderUtil';
-import ProForm, { ModalForm } from '@ant-design/pro-form';
+import { ModalForm, ProFormDependency } from '@ant-design/pro-form';
 import { Button, Col, Divider, Form, InputNumber, message, Modal, Result, Row, Space } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import Title from 'antd/lib/typography/Title';
 import React, { useState } from 'react';
-import { PAYMENT_CHANNELS, PAYMENT_CHANNEL_CASH } from '@/enum/paymentChannel';
+import {
+  PAMYNET_CHANNEL_MACAU_PASS_CARD,
+  PAYMENT_CHANNELS,
+  PAYMENT_CHANNEL_ALIPAY,
+  PAYMENT_CHANNEL_BOC_PAY,
+  PAYMENT_CHANNEL_CASH,
+  PAYMENT_CHANNEL_M_PAY,
+  PAYMENT_CHANNEL_WECHAT_PAY,
+} from '@/enum/paymentChannel';
 import { PAYMENT_STATUS_PAID, PAYMENT_STATUS_PENDING } from '@/enum/paymentStatus';
 import { getEnumLabelByKey } from '@/enum/enumUtil';
+import { useModel } from 'umi';
+import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
 
 const CheckoutModal = (props) => {
+  // Model
+  const { shops } = useModel('shop');
+
+  // ModalForm
   const [form] = Form.useForm();
-  const [cashValue, setCashValue] = useState(0);
+  const [cashValue, setCashValue] = useState();
   const [orderResponse, setOrderResponse] = useState();
   const { onChangeVisible, order, visible } = props;
   form.setFieldsValue(order);
@@ -33,7 +47,7 @@ const CheckoutModal = (props) => {
     setOrderResponse(undefined);
   };
 
-  const createOrder = async (request) => {
+  const createOrder = async (request, printReceipt = false) => {
     const { paymentChannel } = request;
     let requestBody = {
       ...order,
@@ -42,7 +56,10 @@ const CheckoutModal = (props) => {
     };
 
     // if payment status is CASH then create order with payment status paid, else application need to call payment APIs
-    if (paymentChannel === PAYMENT_CHANNEL_CASH.key) {
+    if (
+      paymentChannel === PAYMENT_CHANNEL_CASH.key ||
+      paymentChannel === PAMYNET_CHANNEL_MACAU_PASS_CARD.key
+    ) {
       requestBody.paymentStatus = PAYMENT_STATUS_PAID.key;
       requestBody.orderStatus = ORDER_STATUS_ORDER_FINISHED.key;
     } else {
@@ -55,8 +72,19 @@ const CheckoutModal = (props) => {
       requestBody,
     );
     setOrderResponse(response);
+    if (printReceipt) {
+      printOrderReceiptRequest(response);
+    }
+
     props.onSuccess();
     message.success('結賬成功');
+  };
+
+  const printOrderReceiptRequest = (order) => {
+    const shop = shops.find((shop) => shop.id === order.distributionShop.id);
+    if (shop.defaultPrinter) {
+      COMPANY_PRINT_ORDER_BY_ID(order.id, shop.defaultPrinter.id);
+    }
   };
 
   const MainContent = orderResponse ? (
@@ -87,9 +115,24 @@ const CheckoutModal = (props) => {
       modalProps={{
         closable: false,
       }}
-      onFinish={createOrder}
+      onFinish={(request) => createOrder(request, true)}
       onChangeVisible={onChangeVisible}
       submitter={{
+        render: (props, defaultDoms) => {
+          if (orderResponse) {
+            return null;
+          }
+          return [
+            <Button
+              key="finishWithoutPrint"
+              onClick={() => createOrder(form.getFieldsValue())}
+              size="large"
+            >
+              完成結賬
+            </Button>,
+            ...defaultDoms,
+          ];
+        },
         resetButtonProps: {
           style: {
             // 隐藏重置按钮
@@ -97,14 +140,11 @@ const CheckoutModal = (props) => {
           },
         },
         searchConfig: {
-          submitText: '完成結賬',
+          submitText: '完成結賬並列印收據',
         },
         submitButtonProps: {
           block: true,
           size: 'large',
-          style: {
-            display: orderResponse ? 'none' : 'inherit',
-          },
         },
       }}
       visible={visible}
@@ -133,7 +173,7 @@ const LeftPanel = (props) => {
           優惠券
         </Button>
         <Button block disabled size="large">
-          整單拆扣
+          整單折扣
         </Button>
         <Button block disabled size="large">
           整單改價
@@ -151,6 +191,14 @@ const LeftPanel = (props) => {
       <Divider>支付方式</Divider>
       <Space direction="horizontal">
         <ProFormPaymentChannelRadio
+          paymentChannels={[
+            PAYMENT_CHANNEL_CASH,
+            PAMYNET_CHANNEL_MACAU_PASS_CARD,
+            PAYMENT_CHANNEL_M_PAY,
+            PAYMENT_CHANNEL_BOC_PAY,
+            PAYMENT_CHANNEL_ALIPAY,
+            PAYMENT_CHANNEL_WECHAT_PAY,
+          ]}
           name={['paymentChannel']}
           rules={[{ required: true, message: '請選擇支付方式' }]}
         />
@@ -225,24 +273,39 @@ const RightPanel = (props) => {
         </Col>
       </Row>
       <Divider />
-      <InputNumber
-        onChange={setCashValue}
-        placeholder="現金"
-        size="large"
-        style={{ width: '100%' }}
-        value={cashValue}
-      />
-      <Divider />
-      <Row flex>
-        <Col flex={1}>
-          <Text style={{ fontSize: 22 }}>找零</Text>
-        </Col>
-        <Col>
-          <Text style={{ fontSize: 26 }}>
-            ${cashValue - calculateTotalCost(order.orderItemInfos)}
-          </Text>
-        </Col>
-      </Row>
+      <ProFormDependency name={['paymentChannel']}>
+        {({ paymentChannel }) => {
+          const cost = calculateTotalCost(order.orderItemInfos);
+          const isCash = paymentChannel === PAYMENT_CHANNEL_CASH.key;
+          return (
+            <>
+              <InputNumber
+                disabled={!isCash}
+                onChange={setCashValue}
+                placeholder="現金"
+                size="large"
+                style={{ width: '100%' }}
+                value={cashValue}
+              />
+              <Divider />
+              <Row flex>
+                <Col flex={1}>
+                  <Text style={{ fontSize: 22 }}>
+                    {isCash
+                      ? '找零'
+                      : getEnumLabelByKey(PAYMENT_CHANNELS, paymentChannel, '選擇支付方式')}
+                  </Text>
+                </Col>
+                <Col>
+                  <Text style={{ fontSize: 26 }}>
+                    {isCash ? `$${(cashValue ?? 0) - cost}` : `$${cost}`}
+                  </Text>
+                </Col>
+              </Row>
+            </>
+          );
+        }}
+      </ProFormDependency>
     </>
   );
 };

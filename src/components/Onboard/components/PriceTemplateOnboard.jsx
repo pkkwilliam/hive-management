@@ -1,40 +1,42 @@
-import CategoryModalForm from '@/pages/company/Category/components/categoryModalForm';
-import ItemSpecificationPriceTemplateModalForm from '@/pages/companyManager/ItemSpecificationPriceTemplate/components/ItemSpecificationPriceTemplateModalFormModalForm';
-import { BEDROCK_CREATE_SERVICE_REQEUST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_CATEGORY_SERVICE_CONFIG } from '@/services/hive/categoryService';
+import CreatePriorModal, {
+  CREATE_PRIOR_MODAL_CATEGORY,
+  CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+  CREATE_PRIOR_MODAL_ITEM,
+  CREATE_PRIOR_MODAL_SHOP,
+} from '@/commons/CreatePriorModal';
+import CreateItemSpecificationPriceTemplateButton from '@/pages/companyManager/ItemSpecificationPriceTemplate/components/CreateItemSpecificationPriceTemplateButton';
 import ProCard from '@ant-design/pro-card';
-import { Button, Space } from 'antd';
+import { Space } from 'antd';
 import Text from 'antd/lib/typography/Text';
-import React, { useState } from 'react';
+import React from 'react';
 
 const PriceTemplateOnboard = () => {
-  const [modalFormVisible, setModalFormVisible] = useState(false);
-
-  const create = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_CATEGORY_SERVICE_CONFIG, request);
-    return true;
-  };
-
   return (
     <>
       <ProCard
         extra={
-          <Button onClick={() => setModalFormVisible(true)} type="primary">
-            創建價格模版
-          </Button>
+          <CreatePriorModal
+            key="create"
+            priorModals={[
+              CREATE_PRIOR_MODAL_SHOP,
+              CREATE_PRIOR_MODAL_CATEGORY,
+              CREATE_PRIOR_MODAL_ITEM,
+              CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+            ]}
+          >
+            <CreateItemSpecificationPriceTemplateButton />
+          </CreatePriorModal>
         }
+        bordered
         headerBordered
-        title="進階功能 價格模版 (非必要)"
+        size="small"
+        title="進階功能 客戶特供價單 (非必要)"
+        type="inner"
       >
         <Space>
-          <Text>創建價格模版，可對散客及固定客戶提供不同的商品價格</Text>
+          <Text>創建特供價單，可對固定客戶提供特供的商品價格</Text>
         </Space>
       </ProCard>
-      <ItemSpecificationPriceTemplateModalForm
-        onFinish={create}
-        onVisibleChange={setModalFormVisible}
-        visible={modalFormVisible}
-      />
     </>
   );
 };

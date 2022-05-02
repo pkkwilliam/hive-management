@@ -10,7 +10,9 @@ const CompanyBusinessDeliveryAddressList = (props) => {
           name="street"
           rules={[{ required: true, message: '請輸入街道' }]}
         />
-        <ProFormText label="單位" name="unit" rules={[{ required: true, message: '請輸入單位' }]} />
+        <ProFormText label="單位" name="unit" />
+        <ProFormText label="聯繫人" name={['contactName']} />
+        <ProFormText label="聯繫人電話" name={['phoneNumber']} />
         <ProFormText label="送貨地址備註" name="remark" />
       </ProFormGroup>
     </ProFormList>

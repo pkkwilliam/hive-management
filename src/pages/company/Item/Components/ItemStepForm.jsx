@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StepsForm,
   ProFormText,
@@ -7,7 +7,7 @@ import {
   ProFormMoney,
   ProFormDigit,
 } from '@ant-design/pro-form';
-import { Alert, Button, Modal, Space } from 'antd';
+import { Alert, Button, Form, Modal, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ProFormCategoryListSelect from '@/commons/proForm/ProFormCategoryListSelect';
 import ProFormItemSpecificationStatusSelect from '@/commons/proForm/ProFormItemSpecificationStatusSelect';
@@ -18,7 +18,7 @@ import {
 } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ITEM_SERVICE_CONFIG } from '@/services/hive/itemService';
 import { ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
-import { COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
+import { COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
 import { EditableProTable } from '@ant-design/pro-table';
 import { getValueEnum } from '@/enum/enumUtil';
 import { SHOP_TYPES } from '@/enum/shopType';
@@ -26,8 +26,11 @@ import {
   ITEM_SPECIFICATION_STOCK_TYPES,
   ITEM_SPECIFICATION_STOCK_TYPE_LIMITED,
 } from '@/enum/itemSpecificationStockType';
+import ProFormMediaUpload from '@/commons/proForm/ProFormMediaUpload';
 
 const ItemStepForm = (props) => {
+  const [itemForm] = Form.useForm();
+  const [itemSpecificationForm] = Form.useForm();
   const [editableKeys, setEditableKeys] = useState();
   const [item, setItem] = useState();
   const [itemSpecification, setItemSpecification] = useState();
@@ -79,7 +82,7 @@ const ItemStepForm = (props) => {
 
   const queryItemSpecificationStock = async (itemSpecificationResponse) => {
     const response = await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
-      COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
       {
         'itemSpecification.id': itemSpecificationResponse.id,
         active: true,
@@ -95,7 +98,7 @@ const ItemStepForm = (props) => {
   const updateBatchItemSpecificationStock = async (request) => {
     console.log(request);
     await BEDROCK_UPDATE_BATCH_SERVICE_REQUEST(
-      COMPANY_SHOP_MANAGER_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
       request,
     );
     setVisible(false);
@@ -131,17 +134,18 @@ const ItemStepForm = (props) => {
         }}
       >
         <StepsForm.StepForm
+          form={itemForm}
           onFinish={createItem}
           name="base"
           stepProps={{
-            description: '增加商品，如: 巧克力餅乾',
+            description: '添加商品，如: 巧克力餅乾',
           }}
           title="創建商品"
         >
           <Space direction="vertical">
             <Alert
-              message="此為快速創建商品通道，商品圖片可在左則導航欄'管理' -> '商品'中增加"
-              type="success"
+              message="基本商品的資料，商品中的不同規格會在下一步中設置。"
+              type="warning"
               showIcon
               banner
               style={{
@@ -158,10 +162,20 @@ const ItemStepForm = (props) => {
               />
               <ProFormText label="品牌" name="brand" placeholder="品牌 如: 維他" />
             </Space>
+            <ProFormMediaUpload form={itemForm} label="圖片" max={1} name={['imageUrl']} />
           </Space>
-          <ProFormCategoryListSelect label="標簽" mode="multiple" name={['categories']} />
+          <ProFormCategoryListSelect
+            label="標籤/分類"
+            mode="multiple"
+            name={['categories']}
+            tooltip="如分類為空，請先添加 標籤/分類"
+          />
           <Space>
-            <ProFormTextArea label="內容" name="content" placeholder="5分包裝 每包25塊" />
+            <ProFormTextArea
+              label="內容"
+              name="content"
+              placeholder="（一）主要成分或材料。（二）淨重、容量、數量或度量等；其淨重、容量或度量應標示法定度量衡單位，必要時，得加註其他單位。"
+            />
             <ProFormTextArea
               label="描述"
               name="description"
@@ -171,16 +185,17 @@ const ItemStepForm = (props) => {
           <ProFormText label="備註" name="remark" />
         </StepsForm.StepForm>
         <StepsForm.StepForm
+          form={itemSpecificationForm}
           name="checkbox"
           stepProps={{
-            description: '增加規格，如: 250克包裝',
+            description: '添加規格，如: 250克包裝',
           }}
           title="創建規格"
           onFinish={createItemSpecification}
         >
           <Alert
-            message="此為快速創建商品通道，規格圖片可在左則導航欄'管理' -> '商品規格'中增加"
-            type="success"
+            message="此為快速創建商品通道，更多規格可在 '商品管理' -> '商品規格' 中添加"
+            type="warning"
             showIcon
             banner
             style={{
@@ -188,8 +203,10 @@ const ItemStepForm = (props) => {
               marginBottom: 24,
             }}
           />
+
           <ProFormGroup title="基本資料">
             {/* <ProFormItemSelect label="商品" name={['item', 'id']} /> */}
+
             <ProFormText
               disabled
               hidden
@@ -210,6 +227,15 @@ const ItemStepForm = (props) => {
               rules={[{ required: true, message: '請輸入規格名稱' }]}
             />
             <ProFormItemSpecificationStatusSelect label="狀態" name={['itemSpecificationStatus']} />
+          </ProFormGroup>
+          <ProFormGroup>
+            <ProFormMediaUpload
+              form={itemSpecificationForm}
+              label="圖片"
+              max={1}
+              name={['imageUrl']}
+              tooltip="如不上傳圖片，則會使用上一步商品的圖片。"
+            />
           </ProFormGroup>
           <ProFormGroup title="庫存管理">
             <ProFormText label="SKU" name={['sku']} />

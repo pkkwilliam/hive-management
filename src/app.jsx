@@ -66,8 +66,8 @@ export const layout = ({ initialState, setInitialState }) => {
         <Link to={'/checkoutCounter'}>
           <Button>收銀</Button>
         </Link>
-        <Link to={'/shopManager/internalOrder'}>
-          <Button>銷售訂單</Button>
+        <Link to={'/order/internalOrder'}>
+          <Button>企業訂單</Button>
         </Link>
       </Space>
     ),
@@ -110,7 +110,7 @@ export const layout = ({ initialState, setInitialState }) => {
       return (
         <>
           {children}
-          {!props.location?.pathname?.includes('/login') && (
+          {!props.location?.pathname?.includes('/login') && isDev && (
             <SettingDrawer
               disableUrlParams
               enableDarkTheme

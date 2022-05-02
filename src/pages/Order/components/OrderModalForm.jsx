@@ -7,7 +7,7 @@ import {
   ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-form';
-import { Form } from 'antd';
+import { Button, Form } from 'antd';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 import ProFormCompanyBusinessSelect from '@/commons/proForm/ProFormCompanyBusinessSelect';
 import ProFormCompanyBusinessAddressSelect from '@/commons/proForm/ProFormCompanyBusinessAddress';
@@ -18,11 +18,11 @@ import OrderItemInfoList from './OrderItemInfoList';
 import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
 import ProFormPaymentChannelRadio from '@/commons/proForm/ProFormPaymentChannelRadio';
 import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
-import { COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
+import { COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
 import { ORDER_PLACE_CHANNEL_INTERNAL_ORDER } from '@/enum/orderPlaceChannel';
 import { ORDER_STATUS_ORDER_PENDING } from '@/enum/orderStatus';
 
-const InternalOrderModalForm = (props) => {
+const OrderModalForm = (props) => {
   const [form] = Form.useForm();
   const { order, onFinish, onVisibleChange, visible } = props;
   if (order?.id) {
@@ -42,6 +42,19 @@ const InternalOrderModalForm = (props) => {
       modalProps={{ maskClosable: false }}
       onFinish={onFinish}
       onVisibleChange={(visible) => onModalFormVisibleChange(onVisibleChange, form, visible)}
+      submitter={{
+        // 完全自定义整个区域
+        render: (props, doms) => {
+          return [
+            order ? null : (
+              <Button key="reset" onClick={() => props.form?.resetFields()}>
+                重置
+              </Button>
+            ),
+            ...doms,
+          ];
+        },
+      }}
       title={order ? '修改訂單' : '創建訂單'}
       visible={visible}
       width={1200}
@@ -74,7 +87,7 @@ const InternalOrderModalForm = (props) => {
                     ({ getFieldValue }) => ({
                       async validator(_, value) {
                         const companyBusinessUser = await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
-                          COMPANY_MANAGER_COMPANY_BUSINESS_SERVICE_CONFIG,
+                          COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
                           { active: true, id: getFieldValue('companyBusiness').id },
                         );
                         const hasAddress = companyBusinessUser.data[0].deliveryAddress.some(
@@ -93,10 +106,10 @@ const InternalOrderModalForm = (props) => {
           );
         }}
       </ProFormDependency>
-      <OrderItemInfoList label="訂單內容" name="orderItemInfos" form={form} />
+      <OrderItemInfoList readonly={order} label="訂單內容" name="orderItemInfos" form={form} />
       <ProFormGroup>
-        <ProFormMoney label="拆扣費用" name="discount" />
-        <ProFormMoney label="額外費用" name="extraFee" />
+        <ProFormMoney readonly={order} label="折扣費用" name="discount" />
+        <ProFormMoney readonly={order} label="額外費用" name="extraFee" />
       </ProFormGroup>
       <ProFormOrderPlaceChannelRadio
         initialValue={ORDER_PLACE_CHANNEL_INTERNAL_ORDER.key}
@@ -125,4 +138,4 @@ const InternalOrderModalForm = (props) => {
   );
 };
 
-export default InternalOrderModalForm;
+export default OrderModalForm;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { ModalForm, ProFormDigit, ProFormGroup, ProFormText } from '@ant-design/pro-form';
-import ProFormCompanyBusinessPaymentTypeSelect from '@/commons/proForm/ProFormCompanyBusinessPaymentTypeSelect';
 import ProFormCountryCodeSelect from '@/commons/proForm/ProFormCountryCodeSelect';
 import { Form } from 'antd';
 import ProFormItemSpecificationPriceTemplate from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
@@ -31,11 +30,13 @@ const CompanyBusinessModalForm = (props) => {
         rules={[{ required: true, message: '請輸入企業名稱' }]}
       />
       <ProFormItemSpecificationPriceTemplate
-        label="價格模版"
+        label="特供價單"
         name={['itemSpecificationPriceTemplate', 'id']}
+        placeholder="客戶特供價單"
+        tooltip="此為進階功能，此功能可為客戶設定客戶専有價格，如列表中没有選項，請先到'管理 -> 客戶特供價單'中創建。"
       />
-      <ProFormCompanyBusinessPaymentTypeSelect label="支付方式" name="companyBusinessPaymentType" />
-      <ProFormGroup title="外部下單用戶(客戶可由微信小程序或網頁直接下單)">
+      {/* <ProFormCompanyBusinessPaymentTypeSelect label="支付方式" name="companyBusinessPaymentType" /> */}
+      <ProFormGroup title="外部下單企業用戶登入 (企業客戶可由網站直接下單至後台)">
         <ProFormCountryCodeSelect label="區號" name={['businessUser', 'countryCode']} />
         <ProFormDigit label="電話" name={['businessUser', 'smsNumber']} />
       </ProFormGroup>

@@ -7,7 +7,7 @@ export const SYSTEM_LOG_TYPE_ITEM = { key: 'ITEM', label: '商品' };
 export const SYSTEM_LOG_TYPE_ITEM_SPECIFICATION = { key: 'ITEM_SPECIFICATION', label: '規格' };
 export const SYSTEM_LOG_TYPE_ITEM_SPECIFICATION_PRICE_TEMPLATE = {
   key: 'ITEM_SPECIFICATION_PRICE_TEMPLATE',
-  label: '價格模版',
+  label: '特供價單',
 };
 export const SYSTEM_LOG_TYPE_ITEM_STOCK = { key: 'ITEM_STOCK', label: '庫存' };
 export const SYSTEM_LOG_TYPE_ORDER = { key: 'ORDER', label: '訂單' };

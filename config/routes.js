@@ -108,14 +108,19 @@ export default [
         component: './companyManager/Shop/index',
       },
       {
+        path: '/companyManager/user',
+        name: '內部人員',
+        component: './companyManager/UserManage/index',
+      },
+      {
         path: '/companyManager/companyBusiness',
         name: '客戶',
         component: './companyManager/CompanyBusiness/index',
       },
       {
-        path: '/companyManager/user',
-        name: '內部人員',
-        component: './companyManager/UserManage/index',
+        path: '/companyManager/itemSpecificationPriceTemplate',
+        name: '客戶特供價單',
+        component: './companyManager/ItemSpecificationPriceTemplate/index',
       },
       {
         path: '/companyManager/printer',
@@ -125,53 +130,59 @@ export default [
     ],
   },
   {
+    path: '/financial',
+    name: '財務管理',
+    routes: [
+      {
+        path: '/financial/companyBusiness',
+        name: '客戶賬單',
+        component: './financial/FinancialCompanyBusiness/index',
+      },
+    ],
+  },
+  {
+    path: '/category',
+    name: '標籤/分類',
+    component: './company/Category/index',
+  },
+  {
     path: '/companyManagerItem',
     name: '商品管理',
     routes: [
-      {
-        path: '/companyManagerItem/category',
-        name: '標簽',
-        component: './company/Category/index',
-      },
       {
         path: '/companyManagerItem/item',
         name: '商品',
         component: './company/Item/index',
       },
-      {
-        path: '/companyManagerItem/itemSpecification',
-        name: '商品規格',
-        component: './companyManager/ItemSpecification/index',
-      },
-      {
-        path: '/companyManagerItem/itemSpecificationStock',
-        name: '地點庫存',
-        component: './shopManager/ItemSpecificationStock/index',
-      },
-      {
-        path: '/companyManagerItem/itemSpecificationPriceTemplate',
-        name: '價格模版',
-        component: './companyManager/ItemSpecificationPriceTemplate/index',
-      },
+      // {
+      //   path: '/companyManagerItem/itemSpecification',
+      //   name: '商品規格',
+      //   component: './companyManager/ItemSpecification/index',
+      // },
+      // {
+      //   path: '/companyManagerItem/itemSpecificationStock',
+      //   name: '地點庫存',
+      //   component: './shopManager/ItemSpecificationStock/index',
+      // },
     ],
   },
   {
     path: '/order',
     name: '訂單',
     routes: [
-      {
-        path: '/order',
-        name: '銷售訂單',
-        component: './Order/index',
-      },
+      // {
+      //   path: '/order',
+      //   name: '銷售訂單',
+      //   component: './Order/index',
+      // },
       {
         path: '/order/internalOrder',
-        name: '內部訂單',
+        name: '企業訂單',
         component: './Order/OrderInternal/index',
       },
       {
         path: '/order/externalCompanyBusiness',
-        name: '外部訂單(客戶)',
+        name: '外部訂單(企業)',
         component: './Order/OrderExternalCompanyBusiness/index',
       },
       {
@@ -181,7 +192,7 @@ export default [
       },
       {
         path: '/order/directSale',
-        name: '門店直銷',
+        name: '地點直銷',
         component: './Order/OrderDirectSale/index',
       },
     ],
