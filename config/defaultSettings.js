@@ -7,7 +7,7 @@ const Settings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'HIVE銷售庫儲集成',
+  title: '數字螞蟻銷售倉儲管理',
   pwa: false,
   logo: '/logo.png',
   iconfontUrl: '',

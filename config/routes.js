@@ -67,7 +67,7 @@ export default [
             path: '/user',
             routes: [
               {
-                name: 'Hive試用',
+                name: '試用',
                 path: '/user/trial',
                 component: './user/Trial',
               },
@@ -83,7 +83,7 @@ export default [
   },
   {
     path: '/admin',
-    name: 'Hive管理',
+    name: '數字螞蟻管理',
     access: 'canAdmin',
     routes: [
       {
