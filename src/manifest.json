@@ -1,6 +1,6 @@
 {
-  "name": "源代碼科技銷售庫儲集成",
-  "short_name": "銷售庫儲集成",
+  "name": "數字螞蟻銷售倉儲管理",
+  "short_name": "數字螞蟻",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",
