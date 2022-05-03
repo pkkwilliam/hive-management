@@ -161,6 +161,7 @@ const ItemSpecificationDetailModal = (props) => {
   return (
     <Modal
       destroyOnClose
+      footer={null}
       onCancel={() => setVisible(false)}
       title={item?.name}
       visible={visible}
