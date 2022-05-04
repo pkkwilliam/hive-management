@@ -6,35 +6,13 @@ import { useModel } from 'umi';
 import RecommendItemTransfer from './components/RecommendItemTransfer';
 import CategoryTransfer from './components/CategoryTransfer';
 import ItemSpecificationTransfer from './components/ItemSpecificationTransfer';
-import {
-  BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
-  BEDROCK_UPDATE_SERVICE_REQUEST,
-} from '@/services/hive/bedrockTemplateService';
+import { BEDROCK_UPDATE_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_WECHAT_MINI_PROGRAM_CONFIG_SERVICE_CONFIG } from '@/services/hive/wechatMiniProgramConfigService';
-import ProTable from '@ant-design/pro-table';
-import { COMPANY_SHOP_SERVICE_CONFIG } from '@/services/hive/shopService';
-import { convertEnumsToProTableValueEnum } from '@/enum/enumUtil';
-import { SHOP_TYPES } from '@/enum/shopType';
+import ShopProTable from '../companyManager/Shop/components/ShopProTable';
 
 const WechatMiniProgram = () => {
   const { initialState } = useModel('@@initialState');
   const [wechatMiniProgramConfig, setWechatMiniProgramConfig] = useState({});
-
-  const COLUMNS = [
-    { title: '店名/倉名', dataIndex: 'name' },
-    {
-      title: '類型',
-      dataIndex: 'shopType',
-      valueEnum: convertEnumsToProTableValueEnum(SHOP_TYPES),
-    },
-    {
-      title: '小程序二維碼',
-      render: (text, record) => (
-        <a onClick={() => onClickMiniProgramQrCode(record)}>小程序二維碼</a>
-      ),
-      search: false,
-    },
-  ];
 
   const query = async () => {
     const { currentUser } = initialState || {};
@@ -59,17 +37,15 @@ const WechatMiniProgram = () => {
   return (
     <PageContainer>
       <ProCard bordered title="門店二維碼">
-        <ProTable
-          columns={COLUMNS}
-          options={false}
-          pagination={{ pageSize: 5 }}
-          request={async (params = {}, sort, filter) => {
-            return BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, {
-              ...params,
-              active: true,
-            });
+        <ShopProTable
+          tableProps={{
+            columnsProps: {
+              showOperationButtons: false,
+            },
+            options: false,
+            search: false,
+            toolBarRender: () => null,
           }}
-          search={false}
         />
       </ProCard>
       <ProCard
