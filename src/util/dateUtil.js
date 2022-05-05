@@ -12,6 +12,9 @@ export function toApplicationLocalDate(date) {
 }
 
 export function toApplicationOffsetDateTime(date) {
+  if (!date) {
+    return;
+  }
   const applicationDate = new Date(date);
   applicationDate.setSeconds(0);
   return applicationDate.toISOString();

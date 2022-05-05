@@ -1,9 +1,12 @@
 import OrderDetail from '@/commons/order/OrderDetail';
 import CompanyHeader from '@/commons/print/CompanyHeader';
 import PrintableHiddenComponentWrapper from '@/commons/print/PrintableHiddenComponentWrapper';
+import { getEnumLabelByKey } from '@/enum/enumUtil';
 import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
-import { Button, Modal, Space } from 'antd';
-import React, { useRef } from 'react';
+import { ProFormRadio } from '@ant-design/pro-form';
+import { Button, Dropdown, Menu, Modal, Space } from 'antd';
+import Title from 'antd/lib/typography/Title';
+import React, { useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import { useModel } from 'umi';
 
@@ -37,7 +40,7 @@ const OrderDetailModal = (props) => {
           key="printButoon"
           trigger={() => (
             <Button key="print" type="primary">
-              列印
+              列印發票
             </Button>
           )}
           content={() => orderDetailRef.current}
@@ -52,6 +55,7 @@ const OrderDetailModal = (props) => {
       <PrintableHiddenComponentWrapper ref={orderDetailRef} zoom={0.7}>
         <Space direction="vertical">
           <CompanyHeader />
+          <Title level={3}>發票 INVOICE</Title>
           <OrderDetail order={order} />
         </Space>
       </PrintableHiddenComponentWrapper>

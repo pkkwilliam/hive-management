@@ -167,7 +167,7 @@ const Order = (props) => {
             onChangeDetailModalVisible(true);
           }}
         >
-          打印配貨單
+          打印發票
         </a>,
         <InactiveableLinkButton
           disabled={record.orderStatus === ORDER_STATUS_ORDER_FINISHED.key}
