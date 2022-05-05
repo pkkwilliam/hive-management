@@ -1,8 +1,8 @@
 import CompanyBusinessOrders from '@/commons/CompanyBusinessOrders';
 import CompanyHeader from '@/commons/print/CompanyHeader';
 import PrintableHiddenComponentWrapper from '@/commons/print/PrintableHiddenComponentWrapper';
-import { Button, Divider, Modal, Space } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, Modal, Space } from 'antd';
+import React, { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 
 const FinancialCompanyBusinessPaymentPendingOrders = (props) => {
@@ -34,7 +34,6 @@ const FinancialCompanyBusinessPaymentPendingOrders = (props) => {
       <PrintableHiddenComponentWrapper ref={companyBusinessOrdersRef} zoom={0.7}>
         <Space direction="vertical">
           <CompanyHeader />
-          <Divider />
           <CompanyBusinessOrders orders={orders} />
         </Space>
       </PrintableHiddenComponentWrapper>
