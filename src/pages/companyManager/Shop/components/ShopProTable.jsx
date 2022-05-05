@@ -131,7 +131,9 @@ const ShopProTable = (props) => {
         search={{
           labelWidth: 'auto',
         }}
-        toolBarRender={() => [<CreateShopButton key="create" />]}
+        toolBarRender={() => [
+          <CreateShopButton key="create" onFinish={actionRef.current.reload} />,
+        ]}
         {...tableProps}
       />
       <ShopModalForm

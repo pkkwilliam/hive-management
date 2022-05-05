@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   ModalForm,
+  ProFormDateTimePicker,
   ProFormDependency,
   ProFormDigit,
   ProFormGroup,
@@ -21,6 +22,7 @@ import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTempl
 import { COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
 import { ORDER_PLACE_CHANNEL_INTERNAL_ORDER } from '@/enum/orderPlaceChannel';
 import { ORDER_STATUS_ORDER_PENDING } from '@/enum/orderStatus';
+import ProFormCurrencyRadio from '@/commons/proForm/ProFormCurrencyRadio';
 
 const OrderModalForm = (props) => {
   const [form] = Form.useForm();
@@ -106,6 +108,24 @@ const OrderModalForm = (props) => {
           );
         }}
       </ProFormDependency>
+      <ProFormGroup>
+        <ProFormDateTimePicker
+          label="送貨日期"
+          name={['deliveryDate']}
+          fieldProps={{
+            showTime: true,
+            showSecond: false,
+            minuteStep: 30,
+            secondStep: 30,
+            format: 'YYYY-MM-DD HH:mm',
+          }}
+        />
+        <ProFormText
+          label="客戶採購訂單號(PO)"
+          name={['companyBusinessPurchaseOrder']}
+          tooltip="外部企業採購訂單號，方便企業查找對方的採購單。"
+        />
+      </ProFormGroup>
       <OrderItemInfoList readonly={order} label="訂單內容" name="orderItemInfos" form={form} />
       <ProFormGroup>
         <ProFormMoney readonly={order} label="折扣費用" name="discount" />
@@ -122,6 +142,11 @@ const OrderModalForm = (props) => {
         label="訂單狀態"
         name="orderStatus"
         rules={[{ required: true, message: '請選擇訂單狀態' }]}
+      />
+      <ProFormCurrencyRadio
+        label="幣種"
+        name={['currency']}
+        rules={[{ required: true, message: '請選擇支付幣種' }]}
       />
       <ProFormPaymentChannelRadio
         label="支付渠道"
