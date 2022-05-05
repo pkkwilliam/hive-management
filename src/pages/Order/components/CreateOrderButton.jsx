@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useModel } from 'umi';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import OrderModalForm from './OrderModalForm';
+import { toApplicationOffsetDateTime } from '@/util/dateUtil';
 
 const CreateOrderButton = (props) => {
   const { getOnboard } = useModel('onboard');
@@ -17,7 +18,10 @@ const CreateOrderButton = (props) => {
   const [resultVisible, setResultVisible] = useState(false);
 
   const create = async (request) => {
-    const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ORDER_SERVICE_CONFIG, request);
+    const response = await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ORDER_SERVICE_CONFIG, {
+      ...request,
+      deliveryDate: toApplicationOffsetDateTime(request.deliveryDate),
+    });
     setOrder(response);
     setResultVisible(true);
     onFinish();

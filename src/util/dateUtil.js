@@ -10,3 +10,9 @@ export function toDisplayDate(date, format = 'yyyy-MM-DD') {
 export function toApplicationLocalDate(date) {
   return moment(date).format('YYYY-MM-DD');
 }
+
+export function toApplicationOffsetDateTime(date) {
+  const applicationDate = new Date(date);
+  applicationDate.setSeconds(0);
+  return applicationDate.toISOString();
+}

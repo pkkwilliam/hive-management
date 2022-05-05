@@ -89,8 +89,8 @@ const ItemSpecificationPriceTemplate = () => {
   return (
     <PageContainer>
       <ProTable
-        columns={COLUMNS}
         actionRef={tableRef}
+        columns={COLUMNS}
         request={queryItemSpecificationPriceTemplateService}
         toolBarRender={() => [
           <Button
@@ -110,7 +110,7 @@ const ItemSpecificationPriceTemplate = () => {
               CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
             ]}
           >
-            <CreateItemSpecificationPriceTemplateButton />
+            <CreateItemSpecificationPriceTemplateButton onFinish={tableRef.current.reload} />
           </CreatePriorModal>,
         ]}
       />

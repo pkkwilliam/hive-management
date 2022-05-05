@@ -7,14 +7,11 @@ import {
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import { COMPANY_ORDER_SERVICE_CONFIG } from '@/services/hive/orderService';
 import { getValueEnum } from '@/enum/enumUtil';
 import { ORDER_STATUSES, ORDER_STATUS_ORDER_FINISHED } from '@/enum/orderStatus';
 import { PAYMENT_STATUSES, PAYMENT_STATUS_PAID } from '@/enum/paymentStatus';
-import { ORDER_PLACE_CHANNELS } from '@/enum/orderPlaceChannel';
-import { toDisplayDate } from '@/util/dateUtil';
+import { toApplicationOffsetDateTime, toDisplayDate } from '@/util/dateUtil';
 import { PAYMENT_CHANNELS } from '@/enum/paymentChannel';
 import OrderDetailModal from './components/OrderDetailModal';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
@@ -25,6 +22,7 @@ import CreatePriorModal, {
   CREATE_PRIOR_MODAL_SHOP,
 } from '@/commons/CreatePriorModal';
 import CreateOrderButton from './components/CreateOrderButton';
+import { CURRENCIES } from '@/enum/currency';
 
 /**
  * @param {orderPlaceChannel} props
@@ -62,7 +60,10 @@ const Order = (props) => {
   };
 
   const onUpdate = async (request) => {
-    const response = await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_ORDER_SERVICE_CONFIG, request);
+    const response = await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_ORDER_SERVICE_CONFIG, {
+      ...request,
+      deliveryDate: toApplicationOffsetDateTime(request.deliveryDate),
+    });
     tableRef.current.reload();
     return true;
   };
@@ -98,9 +99,14 @@ const Order = (props) => {
       ),
     },
     {
+      title: '企業採購單號',
+      dataIndex: ['companyBusinessPurchaseOrder'],
+      hideInTable: true,
+    },
+    {
       title: '創單日期',
       dataIndex: ['createTime'],
-      renderText: (text, record) => toDisplayDate(text),
+      renderText: (text, record) => toDisplayDate(text, 'MM月DD日'),
     },
     { title: '狀態', dataIndex: ['orderStatus'], valueEnum: getValueEnum(ORDER_STATUSES) },
     { title: '支付狀態', dataIndex: ['paymentStatus'], valueEnum: getValueEnum(PAYMENT_STATUSES) },
@@ -112,16 +118,28 @@ const Order = (props) => {
       search: false,
     },
     { title: '配貨地點', dataIndex: ['distributionShop', 'name'] },
+    // {
+    //   title: '渠道',
+    //   dataIndex: ['orderPlaceChannel'],
+    //   valueEnum: getValueEnum(ORDER_PLACE_CHANNELS),
+    // },
     {
-      title: '渠道',
-      dataIndex: ['orderPlaceChannel'],
-      valueEnum: getValueEnum(ORDER_PLACE_CHANNELS),
+      title: '送貨時間',
+      dataIndex: ['deliveryDate'],
+      renderText: (text, record) => toDisplayDate(text),
+      search: false,
     },
     {
       title: '支付渠道',
       dataIndex: ['paymentChannel'],
       valueEnum: getValueEnum(PAYMENT_CHANNELS),
     },
+    {
+      title: '幣種',
+      dataIndex: ['currency'],
+      valueEnum: getValueEnum(CURRENCIES),
+    },
+
     {
       title: '總價',
       dataIndex: ['cost'],
@@ -214,7 +232,7 @@ const Order = (props) => {
               CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
             ]}
           >
-            <CreateOrderButton />
+            <CreateOrderButton onFinish={tableRef.current.reload} />
           </CreatePriorModal>,
         ]}
       />

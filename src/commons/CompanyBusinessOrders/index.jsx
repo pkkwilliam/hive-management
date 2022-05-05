@@ -1,4 +1,8 @@
+import { CURRENCIES } from '@/enum/currency';
+import { getEnumLabelByKey } from '@/enum/enumUtil';
 import { toDisplayDate } from '@/util/dateUtil';
+import { money } from '@/util/numberUtil';
+import { calculateTotalCostByCurrency } from '@/util/orderUtil';
 import { StatisticCard } from '@ant-design/pro-card';
 import { Card, Descriptions, Space, Table } from 'antd';
 import Title from 'antd/lib/typography/Title';
@@ -11,10 +15,21 @@ const CompanyBusinessOrders = (props) => {
   const COLUMNS = [
     { title: '單號', dataIndex: ['id'] },
     {
+      title: '採購單號',
+      dataIndex: ['companyBusinessPurchaseOrder'],
+      render: (text, record) => (text ? text : '-'),
+    },
+    {
       title: '創單日期',
       dataIndex: ['createTime'],
       render: (text, record) => toDisplayDate(text, 'YYYY-MM-DD'),
     },
+    {
+      title: '送貨日期',
+      dataIndex: ['deliveryDate'],
+      render: (text, record) => (text ? toDisplayDate(text, 'YYYY-MM-DD') : '-'),
+    },
+
     {
       title: '送貨地址',
       render: (text, record) =>
@@ -28,10 +43,16 @@ const CompanyBusinessOrders = (props) => {
       search: false,
     },
     {
+      title: '幣種',
+      render: (text, record) => getEnumLabelByKey(CURRENCIES, record.currency),
+      search: false,
+    },
+    {
       title: '總價',
       dataIndex: ['cost'],
-      valueType: 'money',
+      render: (text, record) => money(text),
       search: false,
+      valueType: 'money',
     },
   ];
 
@@ -77,7 +98,7 @@ const CompanyBusinessOrders = (props) => {
 
 const BillSummary = (props) => {
   const { orders } = props;
-
+  const costByCurrency = calculateTotalCostByCurrency(orders);
   return (
     <StatisticCard.Group direction="row">
       <StatisticCard
@@ -89,8 +110,22 @@ const BillSummary = (props) => {
       <StatisticCard.Divider type={'vertical'} />
       <StatisticCard
         statistic={{
-          title: '總金額',
-          value: `$${orders.reduce((previous, current) => previous + current.cost, 0)}`,
+          title: '香港元總金額',
+          value: money(costByCurrency.HKD),
+        }}
+      />
+      <StatisticCard.Divider type={'vertical'} />
+      <StatisticCard
+        statistic={{
+          title: '澳門元總金額',
+          value: money(costByCurrency.MOP),
+        }}
+      />
+      <StatisticCard.Divider type={'vertical'} />
+      <StatisticCard
+        statistic={{
+          title: '人民幣總金額',
+          value: money(costByCurrency.CNY),
         }}
       />
     </StatisticCard.Group>

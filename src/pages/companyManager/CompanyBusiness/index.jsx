@@ -17,6 +17,7 @@ import {
 import CompanyBusinessDeliveryAddressModal from './components/CompanyBusinessDeliveryAddressModal';
 import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 import CompanyBusinessPriceTemplateModal from './components/CompanyBusinessPriceTemplateModal';
+import CreateCompanyBusinessButton from './components/CreateCompanyBusinessButton';
 
 const CompanyBusiness = () => {
   const tableRef = useRef();
@@ -107,14 +108,7 @@ const CompanyBusiness = () => {
         columns={COLUMNS}
         request={queryCompanyBusinessService}
         toolBarRender={() => [
-          <Button
-            icon={<PlusOutlined />}
-            key="button"
-            type="primary"
-            onClick={() => setModalFormVisible(true)}
-          >
-            新建
-          </Button>,
+          <CreateCompanyBusinessButton key="create" onFinish={tableRef.current.reload} />,
         ]}
       />
       <CompanyBusinessModalForm
