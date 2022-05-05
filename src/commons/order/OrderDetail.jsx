@@ -113,7 +113,9 @@ const OrderDetail = (props) => {
       <Card size="small" title="訂單資料">
         <Descriptions>
           <Descriptions.Item label="單號">{id}</Descriptions.Item>
-          <Descriptions.Item label="採購單號(PO)">{companyBusinessPurchaseOrder}</Descriptions.Item>
+          <Descriptions.Item label="採購單號(PO)">
+            {companyBusinessPurchaseOrder ? companyBusinessPurchaseOrder : '-'}
+          </Descriptions.Item>
           <Descriptions.Item label="開單日期">
             {toDisplayDate(createTime, 'YYYY-MM-DD HH:mm:SS')}
           </Descriptions.Item>
@@ -128,7 +130,7 @@ const OrderDetail = (props) => {
             {getEnumLabelByKey(CURRENCIES, currency)}
           </Descriptions.Item>
           <Descriptions.Item label="備註" span={3}>
-            {remark}
+            {remark ? remark : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="折扣">{money(discount)}</Descriptions.Item>
           <Descriptions.Item label="額外費用">{money(extraFee)}</Descriptions.Item>
