@@ -1,10 +1,9 @@
 import OrderDetail from '@/commons/order/OrderDetail';
 import CompanyHeader from '@/commons/print/CompanyHeader';
 import PrintableHiddenComponentWrapper from '@/commons/print/PrintableHiddenComponentWrapper';
-import { getEnumLabelByKey } from '@/enum/enumUtil';
 import { COMPANY_PRINT_ORDER_BY_ID } from '@/services/hive/printService';
-import { ProFormRadio } from '@ant-design/pro-form';
-import { Button, Dropdown, Menu, Modal, Space } from 'antd';
+import { Button, Modal, Space } from 'antd';
+import Text from 'antd/lib/typography/Text';
 import Title from 'antd/lib/typography/Title';
 import React, { useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
@@ -58,6 +57,9 @@ const OrderDetailModal = (props) => {
           <Title level={3}>發票 INVOICE</Title>
           <OrderDetail order={order} />
         </Space>
+        <div style={{ position: 'fixed', bottom: 0 }}>
+          <Text style={{ fontSize: 9 }}>源代碼科技 - 數字螞蟻銷售倉儲管理</Text>
+        </div>
       </PrintableHiddenComponentWrapper>
     </Modal>
   );
