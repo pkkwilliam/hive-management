@@ -57,11 +57,6 @@ const ItemStockEditableTableModal = (props) => {
     query();
   }, [shopId]);
 
-  // useEffect(() => {
-  //   setItemSpecificationStock([]);
-  //   setShopId();
-  // }, [item]);
-
   const query = async (params, sort, filter) => {
     let response = await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
       COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
