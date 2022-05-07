@@ -8,9 +8,10 @@ import {
 } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
 import { ProFormText } from '@ant-design/pro-form';
+import { onModalFormVisibleChange } from '../proForm/proformUtil';
 
 const ItemStockEditableTableModal = (props) => {
-  const { item, setVisible, visible } = props;
+  const { item, onFinish = () => {}, setVisible, visible } = props;
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [itemSpecificationStock, setItemSpecificationStock] = useState([]);
   const [shopId, setShopId] = useState();
@@ -56,13 +57,6 @@ const ItemStockEditableTableModal = (props) => {
     query();
   }, [shopId]);
 
-  const onChangeVisible = (visible) => {
-    if (!visible) {
-      form.resetFields();
-    }
-    setVisible(visible);
-  };
-
   const query = async (params, sort, filter) => {
     let response = await BEDROCK_QUERY_LIST_SERVICE_REQUEST(
       COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG,
@@ -89,7 +83,12 @@ const ItemStockEditableTableModal = (props) => {
 
   return (
     <Modal
-      onCancel={() => onChangeVisible(false)}
+      onCancel={() => {
+        onModalFormVisibleChange(setVisible, form, false);
+        setItemSpecificationStock([]);
+        setShopId();
+        onFinish();
+      }}
       destroyOnClose
       footer={null}
       title={`${item?.brand ? item.brand + ' ' : ''}${item?.name}庫存`}
@@ -101,7 +100,7 @@ const ItemStockEditableTableModal = (props) => {
         columns={COLUMNS}
         editable={{
           actionRender: (row, config, defaultDom) => [defaultDom.save, defaultDom.cancel],
-          type: 'single',
+          type: 'multiple',
           editableKeys,
           onChange: setEditableRowKeys,
           onSave: (rowKey, data, row) => {

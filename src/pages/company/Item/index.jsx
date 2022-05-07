@@ -23,6 +23,7 @@ import CreatePriorModal, {
   CREATE_PRIOR_MODAL_CATEGORY,
   CREATE_PRIOR_MODAL_SHOP,
 } from '@/commons/CreatePriorModal';
+import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 
 const ItemPage = () => {
   const tableRef = useRef();
@@ -122,15 +123,15 @@ const ItemPage = () => {
         >
           規格
         </a>,
-        <a
+        <InactiveableLinkButton
+          disabled={record.itemSpecificationPriceRangeResponse.count < 1}
           key="itemStock"
           onClick={() => {
             setCurrentRow(record);
             setItemStockEditiableTableVisible(true);
           }}
-        >
-          庫存
-        </a>,
+          label="庫存"
+        />,
       ],
     ),
   ];
@@ -169,6 +170,7 @@ const ItemPage = () => {
       />
       <ItemStockEditableTableModal
         item={currentRow}
+        onFinish={tableRef?.current?.reload}
         setVisible={(visible) =>
           proTableOnChangeModalVisible(visible, setItemStockEditiableTableVisible, setCurrentRow)
         }

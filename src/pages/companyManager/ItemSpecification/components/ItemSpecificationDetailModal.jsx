@@ -172,7 +172,7 @@ const ItemSpecificationDetailModal = (props) => {
         form={form}
         columns={COLUMNS}
         editable={{
-          type: 'single',
+          type: 'multiple',
           editableKeys,
           onChange: setEditableRowKeys,
           onDelete: async (rowKey, data, row) => deleteItemSpecification(data),
