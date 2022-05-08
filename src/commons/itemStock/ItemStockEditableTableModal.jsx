@@ -110,6 +110,9 @@ const ItemStockEditableTableModal = (props) => {
         form={form}
         recordCreatorProps={false}
         rowKey="id"
+        scroll={{
+          x: true,
+        }}
         value={itemSpecificationStock}
       />
     </Modal>

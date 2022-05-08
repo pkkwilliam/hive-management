@@ -1,5 +1,11 @@
 import React from 'react';
-import { ModalForm, ProFormDatePicker, ProFormDigit, ProFormText } from '@ant-design/pro-form';
+import {
+  ModalForm,
+  ProFormDatePicker,
+  ProFormDigit,
+  ProFormSwitch,
+  ProFormText,
+} from '@ant-design/pro-form';
 import { Form } from 'antd';
 import ProFormCompanyAccountType from '@/commons/proForm/ProFormCompanyAccountTypeSelect';
 
@@ -30,6 +36,7 @@ const CompanyModalForm = (props) => {
       />
       <ProFormText label="公司前序" placeholder="請輸入企業英文前序" required name="prefix" />
       <ProFormCompanyAccountType label="賬戶類型" name={['companyAccountType']} />
+      <ProFormSwitch label="商城搜索" name={['clientSearchable']} />
       <ProFormDigit
         label="允許用戶數量"
         placeholder="允許用戶數量"

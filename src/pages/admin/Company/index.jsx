@@ -98,6 +98,17 @@ const Compamy = () => {
       },
     },
     {
+      title: '商城搜索',
+      dataIndex: 'clientSearchable',
+      valueEnum: {
+        true: { text: '允許', status: 'Success' },
+        false: {
+          text: '禁止',
+          status: 'Default',
+        },
+      },
+    },
+    {
       title: '賬戶種型',
       dataIndex: 'companyAccountType',
       search: false,

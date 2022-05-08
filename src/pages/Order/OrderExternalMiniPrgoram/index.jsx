@@ -8,6 +8,7 @@ const OrderExternalMiniProgram = () => {
     <Order
       modalFormComponent={(props) => <OrderExternalMiniProgramModalForm {...props} />}
       orderPlaceChannel={ORDER_PLACE_CHANNEL_EXTERNAL_CUSTOMER_WECHAT.key}
+      showCreateButton={false}
     />
   );
 };

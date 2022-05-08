@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
 import { Button, Card, Form, Modal, Table, Upload } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
-import ShopItemSpecificationList from '../../ShopItemSpecificationStock/components/ShopItemSpecificationList';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
   BEDROCK_DEACTIVATE_SERVICE_REQUEST,
@@ -109,38 +108,32 @@ const ItemSpecificationDetailModal = (props) => {
       },
       search: false,
       valueType: 'money',
-      width: 100,
     },
     {
       title: '折扣價格',
       dataIndex: 'discountPrice',
       search: false,
       valueType: 'money',
-      width: 100,
     },
     {
       title: '長',
       dataIndex: 'length',
       search: false,
-      width: 80,
     },
     {
       title: '寬',
       dataIndex: 'width',
       search: false,
-      width: 80,
     },
     {
       title: '高',
       dataIndex: 'height',
       search: false,
-      width: 80,
     },
     {
       title: '重量',
       dataIndex: 'weight',
       search: false,
-      width: 80,
     },
     {
       title: '備註',
@@ -165,7 +158,7 @@ const ItemSpecificationDetailModal = (props) => {
       onCancel={() => setVisible(false)}
       title={item?.name}
       visible={visible}
-      width={1800}
+      width={1500}
     >
       <EditableProTable
         actionRef={tableRef}
@@ -203,6 +196,9 @@ const ItemSpecificationDetailModal = (props) => {
         }}
         request={queryItemSpecification}
         rowKey="id"
+        scroll={{
+          x: true,
+        }}
         search={false}
       />
     </Modal>

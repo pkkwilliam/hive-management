@@ -25,10 +25,11 @@ import CreateOrderButton from './components/CreateOrderButton';
 import { CURRENCIES } from '@/enum/currency';
 
 /**
- * @param {orderPlaceChannel} props
+ * @param {orderPlaceChannel, showCreateButton} props
  * @returns
  */
 const Order = (props) => {
+  const { orderPlaceChannel, showCreateButton = true } = props;
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
   const [detailModalVisible, setDetailModalVisible] = useState(false);
@@ -51,7 +52,7 @@ const Order = (props) => {
       COMPANY_ORDER_SERVICE_CONFIG,
       {
         ...params,
-        orderPlaceChannel: props.orderPlaceChannel,
+        orderPlaceChannel,
         active: true,
       },
       sort,
@@ -223,17 +224,19 @@ const Order = (props) => {
         columns={COLUMNS}
         request={query}
         toolBarRender={() => [
-          <CreatePriorModal
-            key="create"
-            priorModals={[
-              CREATE_PRIOR_MODAL_SHOP,
-              CREATE_PRIOR_MODAL_CATEGORY,
-              CREATE_PRIOR_MODAL_ITEM,
-              CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
-            ]}
-          >
-            <CreateOrderButton onFinish={tableRef.current.reload} />
-          </CreatePriorModal>,
+          showCreateButton ? (
+            <CreatePriorModal
+              key="create"
+              priorModals={[
+                CREATE_PRIOR_MODAL_SHOP,
+                CREATE_PRIOR_MODAL_CATEGORY,
+                CREATE_PRIOR_MODAL_ITEM,
+                CREATE_PRIOR_MODAL_COMPANY_BUSINESS,
+              ]}
+            >
+              <CreateOrderButton onFinish={tableRef.current.reload} />
+            </CreatePriorModal>
+          ) : null,
         ]}
       />
       {props.modalFormComponent({

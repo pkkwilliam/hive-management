@@ -8,6 +8,7 @@ const OrderExternalCompanyBusiness = () => {
     <Order
       modalFormComponent={(props) => <OrderExternalCompanyBusinessModalForm {...props} />}
       orderPlaceChannel={ORDER_PLACE_CHANNEL_EXTERNAL_BUSINESS.key}
+      showCreateButton={false}
     />
   );
 };
