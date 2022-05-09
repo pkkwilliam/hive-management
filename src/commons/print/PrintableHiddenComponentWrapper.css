@@ -1,0 +1,4 @@
+thead,
+tfoot {
+  display: table-row-group;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './PrintableHiddenComponentWrapper.css';
 
 export const AutoLineBreakWrapper = (props) => {
   const { children } = props;
@@ -13,7 +14,7 @@ export const LineBreakWrapper = (props) => {
 
 const PrintableHiddenComponentWrapper = React.forwardRef((props, ref) => {
   return (
-    <div style={{ display: 'none' }}>
+    <div style={{ display: 'none', pageBreakAfter: 'always' }}>
       <div style={{ zoom: props?.zoom ?? 0.75 }} ref={ref}>
         {props.children}
       </div>

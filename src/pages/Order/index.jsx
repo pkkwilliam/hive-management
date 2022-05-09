@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import {
-  BEDROCK_CREATE_SERVICE_REQEUST,
   BEDROCK_DEACTIVATE_SERVICE_REQUEST,
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
@@ -23,6 +22,7 @@ import CreatePriorModal, {
 } from '@/commons/CreatePriorModal';
 import CreateOrderButton from './components/CreateOrderButton';
 import { CURRENCIES } from '@/enum/currency';
+import OrderExportDateRangeButton from './components/OrderExportDateRangeButton';
 
 /**
  * @param {orderPlaceChannel, showCreateButton} props
@@ -30,13 +30,13 @@ import { CURRENCIES } from '@/enum/currency';
  */
 const Order = (props) => {
   const { orderPlaceChannel, showCreateButton = true } = props;
+  const formRef = useRef();
   const tableRef = useRef();
   const [currentRow, setCurrentRow] = useState();
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [modalFormVisible, setShowModalFormVisible] = useState(false);
 
   const onCreate = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ORDER_SERVICE_CONFIG, request);
     tableRef.current.reload();
     return true;
   };
@@ -71,7 +71,6 @@ const Order = (props) => {
 
   const onChangeDetailModalVisible = (visible) => {
     if (!visible) {
-      console.log('removeeee');
       setCurrentRow(undefined);
     }
     setDetailModalVisible(visible);
@@ -100,7 +99,7 @@ const Order = (props) => {
       ),
     },
     {
-      title: '企業採購單號',
+      title: '採購單號',
       dataIndex: ['companyBusinessPurchaseOrder'],
       hideInTable: true,
     },
@@ -111,14 +110,14 @@ const Order = (props) => {
     },
     { title: '狀態', dataIndex: ['orderStatus'], valueEnum: getValueEnum(ORDER_STATUSES) },
     { title: '支付狀態', dataIndex: ['paymentStatus'], valueEnum: getValueEnum(PAYMENT_STATUSES) },
-    { title: '客戶', dataIndex: ['companyBusiness', 'name'] },
+    { title: '客戶', dataIndex: ['companyBusiness', 'name'], search: false },
     {
       title: '送貨地址',
       renderText: (text, record) =>
         `${record.deliveryAddress?.street ?? '-'} ${record.deliveryAddress?.unit ?? ''}`,
       search: false,
     },
-    { title: '配貨地點', dataIndex: ['distributionShop', 'name'] },
+    { title: '配貨地點', dataIndex: ['distributionShop', 'name'], search: false },
     // {
     //   title: '渠道',
     //   dataIndex: ['orderPlaceChannel'],
@@ -222,8 +221,14 @@ const Order = (props) => {
       <ProTable
         actionRef={tableRef}
         columns={COLUMNS}
+        formRef={formRef}
         request={query}
         toolBarRender={() => [
+          <OrderExportDateRangeButton
+            key="export"
+            formRef={formRef}
+            params={{ orderPlaceChannel }}
+          />,
           showCreateButton ? (
             <CreatePriorModal
               key="create"
