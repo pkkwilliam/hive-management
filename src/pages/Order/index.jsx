@@ -23,6 +23,7 @@ import CreatePriorModal, {
 import CreateOrderButton from './components/CreateOrderButton';
 import { CURRENCIES } from '@/enum/currency';
 import OrderExportDateRangeButton from './components/OrderExportDateRangeButton';
+import { queryCompanyBusiness } from '@/commons/proForm/ProFormCompanyBusinessSelect';
 
 /**
  * @param {orderPlaceChannel, showCreateButton} props
@@ -110,7 +111,15 @@ const Order = (props) => {
     },
     { title: '狀態', dataIndex: ['orderStatus'], valueEnum: getValueEnum(ORDER_STATUSES) },
     { title: '支付狀態', dataIndex: ['paymentStatus'], valueEnum: getValueEnum(PAYMENT_STATUSES) },
-    { title: '客戶', dataIndex: ['companyBusiness', 'name'], search: false },
+    {
+      title: '客戶',
+      dataIndex: ['companyBusiness', 'name'],
+      key: 'companyBusiness.id',
+      valueType: 'select',
+      showSearch: true,
+      fieldProps: { showSearch: true },
+      request: queryCompanyBusiness,
+    },
     {
       title: '送貨地址',
       renderText: (text, record) =>

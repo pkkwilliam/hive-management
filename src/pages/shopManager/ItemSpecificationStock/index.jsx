@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 import { COMPANY_ITEM_SPECIFICATION_STOCK_SERVICE_CONFIG } from '@/services/hive/itemSpecificationStockService';
-import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
+import ProFormShopSelect, { queryShop } from '@/commons/proForm/ProFormShopSelect';
 import { getValueEnum } from '@/enum/enumUtil';
 import { SHOP_TYPES } from '@/enum/shopType';
-import ProFormItemBrandSelect from '@/commons/proForm/ProFormItemBrandSelect';
+import { queryItemBrand } from '@/commons/proForm/ProFormItemBrandSelect';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card } from 'antd';
 
@@ -26,7 +26,9 @@ const ItemSpecificationStock = () => {
       title: '品牌',
       dataIndex: ['itemSpecification', 'item', 'brand'],
       key: 'itemSpecification.item.brand',
-      renderFormItem: (text, record) => <ProFormItemBrandSelect />,
+      fieldProps: { showSearch: true },
+      request: queryItemBrand,
+      valueType: 'select',
     },
     {
       title: '品名',
@@ -49,8 +51,9 @@ const ItemSpecificationStock = () => {
       title: '地點',
       dataIndex: ['shop', 'name'],
       key: 'shop.id',
-      renderFormItem: (text, record) => <ProFormShopSelect />,
-      search: false,
+      fieldProps: { showSearch: true },
+      request: queryShop,
+      valueType: 'select',
     },
     {
       title: '地點類型',

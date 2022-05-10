@@ -15,7 +15,7 @@ import {
   BEDROCK_UPDATE_SERVICE_REQUEST,
 } from '@/services/hive/bedrockTemplateService';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
-import ProFormCategorySelect from '@/commons/proForm/ProFormCategorySelect';
+import { queryCategory } from '@/commons/proForm/ProFormCategorySelect';
 import ItemStockEditableTableModal from '@/commons/itemStock/ItemStockEditableTableModal';
 import ItemStepFormV2 from './Components/ItemStepFormV2';
 import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
@@ -85,11 +85,13 @@ const ItemPage = () => {
     {
       title: '標籤/分類',
       dataIndex: 'categories',
+      fieldProps: { showSearch: true },
       key: 'categoryId',
       render: (text, record) => {
         return record.categories.map((category) => <Tag color="success">{category.name}</Tag>);
       },
-      renderFormItem: (text, record) => <ProFormCategorySelect />,
+      request: queryCategory,
+      valueType: 'select',
     },
     {
       title: '規格數量',

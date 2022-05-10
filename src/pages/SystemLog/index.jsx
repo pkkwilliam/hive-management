@@ -29,14 +29,14 @@ const SystemLog = () => {
     {
       title: '日誌類型',
       dataIndex: 'systemLogOperation',
-      renderFormItem: (text, record) => <ProFormSystemLogOperationSelect />,
       valueEnum: getValueEnum(SYSTEM_LOG_OPERATIONS),
+      valueType: 'select',
     },
     {
       title: '日誌內容',
       dataIndex: 'systemLogType',
-      renderFormItem: (text, record) => <ProFormSystemLogTypeSelect />,
       valueEnum: getValueEnum(SYSTEM_LOG_TYPES),
+      valueType: 'select',
     },
     {
       title: '目標ID',

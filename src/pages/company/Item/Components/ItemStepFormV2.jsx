@@ -139,6 +139,8 @@ const ItemStepFormV2 = (props) => {
           form={itemForm}
           onFinish={async (request) => {
             await createItem(request);
+            // calling parent onFinish so that if the user quit in the middle and the table will still refresh
+            onFinish();
             return true;
           }}
           name="base"

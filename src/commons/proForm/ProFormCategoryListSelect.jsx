@@ -4,12 +4,13 @@ import { ProFormList, ProFormSelect } from '@ant-design/pro-form';
 import { BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 
 const ProFormCategoryListSelect = (props) => {
-  const queryCateory = async (keyword) => {
+  const queryCateory = async (params) => {
     const response = await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
       COMPANY_CATEGORY_SERVICE_CONFIG,
       {
         active: true,
         current: 1,
+        name: params.keyWords,
         pageSize: 20,
       },
     );
@@ -18,7 +19,7 @@ const ProFormCategoryListSelect = (props) => {
 
   return (
     <ProFormList {...props}>
-      <ProFormSelect request={queryCateory} name={['id']} />
+      <ProFormSelect request={queryCateory} name={['id']} showSearch />
     </ProFormList>
   );
 };

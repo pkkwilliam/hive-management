@@ -3,11 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG } from '@/services/hive/companyBusinessService';
 import CompanyBusinessModalForm from './components/CompanyBusinessModalForm';
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
-import { COMPANY_BUSINESS_PAYMENT_TYPES } from '@/enum/companyBusinessPaymentType';
-import { getValueEnum } from '@/enum/enumUtil';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
   BEDROCK_DEACTIVATE_SERVICE_REQUEST,
@@ -18,6 +14,7 @@ import CompanyBusinessDeliveryAddressModal from './components/CompanyBusinessDel
 import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 import CompanyBusinessPriceTemplateModal from './components/CompanyBusinessPriceTemplateModal';
 import CreateCompanyBusinessButton from './components/CreateCompanyBusinessButton';
+import { queryItemSpecificationPriceTemplate } from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
 
 const CompanyBusiness = () => {
   const tableRef = useRef();
@@ -61,15 +58,24 @@ const CompanyBusiness = () => {
   const COLUMNS = [
     { title: '企業名稱', dataIndex: 'name' },
     { title: '外部下單用戶', dataIndex: ['businessUser', 'smsNumber'], search: false },
-    { title: '特供價單', dataIndex: ['itemSpecificationPriceTemplate', 'name'] },
     {
-      title: '支款方式',
-      dataIndex: 'companyBusinessPaymentType',
-      valueEnum: getValueEnum(COMPANY_BUSINESS_PAYMENT_TYPES),
+      title: '特供價單',
+      dataIndex: ['itemSpecificationPriceTemplate', 'name'],
+      fieldProps: { showSearch: true },
+      key: 'itemSpecificationPriceTemplate.id',
+      request: queryItemSpecificationPriceTemplate,
+      valueType: 'select',
     },
+    // {
+    //   title: '支款方式',
+    //   dataIndex: 'companyBusinessPaymentType',
+    //   search: false,
+    //   valueEnum: getValueEnum(COMPANY_BUSINESS_PAYMENT_TYPES),
+    // },
     {
       title: '地址數量',
       renderText: (text, record) => record.deliveryAddress.length,
+      search: false,
     },
     { title: '備註', dataIndex: 'remark', search: false },
     ProTableOperationColumnButtons(
