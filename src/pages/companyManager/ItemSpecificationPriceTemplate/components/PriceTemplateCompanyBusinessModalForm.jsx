@@ -1,4 +1,4 @@
-import ProFormItemSpecificationPriceTemplate from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
+import { queryItemSpecificationPriceTemplate } from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
 import {
   BEDROCK_QUERY_LIST_SERVICE_REQUEST,
   BEDROCK_UPDATE_SERVICE_REQUEST,
@@ -19,9 +19,9 @@ const PriceTemplateCompanyBusinessModalForm = (props) => {
     {
       title: '特供價單',
       dataIndex: ['itemSpecificationPriceTemplate', 'name'],
-      renderFormItem: (text, record) => (
-        <ProFormItemSpecificationPriceTemplate formItemProps={{ style: { marginBottom: 0 } }} />
-      ),
+      fieldProps: { showSearch: true },
+      request: queryItemSpecificationPriceTemplate,
+      valueType: 'select',
     },
     {
       title: '操作',

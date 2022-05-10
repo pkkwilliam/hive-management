@@ -1,10 +1,9 @@
-import ProFormCategorySelect from '@/commons/proForm/ProFormCategorySelect';
+import { queryCategory } from '@/commons/proForm/ProFormCategorySelect';
 import { BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
 import { PUBLIC_ITEM_SERVICE_CONFIG } from '@/services/hive/itemService';
-import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
-import { Col, Row, Tag } from 'antd';
-import React, { useState } from 'react';
+import { Tag } from 'antd';
+import React from 'react';
 
 const CompanyMallItemList = (props) => {
   const { onClickItem } = props;
@@ -29,10 +28,12 @@ const CompanyMallItemList = (props) => {
       title: '標籤/分類',
       dataIndex: 'categories',
       key: 'categoryId',
+      fieldProps: { showSearch: true },
       render: (text, record) => {
         return record.categories.map((category) => <Tag color="success">{category.name}</Tag>);
       },
-      renderFormItem: (text, record) => <ProFormCategorySelect />,
+      request: queryCategory,
+      valueType: 'select',
     },
     {
       title: '規格數量',

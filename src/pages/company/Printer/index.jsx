@@ -1,4 +1,3 @@
-import ProFormPrinterSelect from '@/commons/proForm/ProFormPrinterSelect';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import { getValueEnum } from '@/enum/enumUtil';
 import { PRINTERS } from '@/enum/printer';
@@ -57,7 +56,6 @@ const Printer = () => {
     {
       title: '打印機類型',
       dataIndex: ['printer'],
-      renderFormItem: (text, record) => <ProFormPrinterSelect />,
       valueEnum: getValueEnum(PRINTERS),
     },
     { title: '打印機SN', dataIndex: ['serialNumber'], search: false },
