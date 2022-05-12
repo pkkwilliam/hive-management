@@ -11,7 +11,7 @@ const ProFormCompanyBusinessAddressSelect = (props) => {
     );
     return response.data[0].deliveryAddress.map((address) => ({
       value: address.id,
-      label: `${address.street} ${address.unit}`,
+      label: `${address.street} ${address.unit ?? ''}`,
     }));
   };
   return <ProFormSelect request={query} {...props} />;
