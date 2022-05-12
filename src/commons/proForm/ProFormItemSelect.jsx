@@ -15,7 +15,7 @@ const ProFormItemSelect = (props) => {
       },
     );
     const transformedResponse = response.content.map((item) => ({
-      label: item.name,
+      label: `${item?.brand ? item.brand + ' ' : ''}${item.name}`,
       value: item.id,
       data: item,
     }));

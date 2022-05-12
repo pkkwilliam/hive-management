@@ -79,7 +79,7 @@ const OrderDetail = (props) => {
           labelStyle={{ fontSize: HEADER_FONT_SIZE }}
           label="送貨地址"
         >
-          {`${deliveryAddress?.street ?? '-'}${deliveryAddress?.unit ?? '-'}`}
+          {`${deliveryAddress?.street ?? '-'}${deliveryAddress?.unit ?? ''}`}
         </Descriptions.Item>
         <Descriptions.Item
           contentStyle={{ fontSize: HEADER_FONT_SIZE }}
@@ -100,7 +100,7 @@ const OrderDetail = (props) => {
             {`${deliveryAddress?.phoneNumber ?? '-'}`}
           </Descriptions.Item>
           <Descriptions.Item label="送貨地址">
-            {`${deliveryAddress?.street ?? '-'}${deliveryAddress?.unit ?? '-'}`}
+            {`${deliveryAddress?.street ?? '-'}${deliveryAddress?.unit ?? ''}`}
           </Descriptions.Item>
           <Descriptions.Item label="送貨日期">
             {toDisplayDate(deliveryDate, 'YYYY-MM-DD HH:mm')}
