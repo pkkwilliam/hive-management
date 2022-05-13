@@ -100,6 +100,7 @@ const Compamy = () => {
     {
       title: '商城搜索',
       dataIndex: 'clientSearchable',
+      key: 'clientSearchableHelper',
       valueEnum: {
         true: { text: '允許', status: 'Success' },
         false: {

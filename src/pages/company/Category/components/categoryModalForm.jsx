@@ -27,11 +27,12 @@ const CategoryModalForm = (props) => {
         name={['imageUrl']}
         tooltip="此圖片將會顯示在微信小程序的商品分類列表提升用戶體驗"
       />
+      <ProFormText label="中文名稱" placeholder="新品 / 熱賣 / 化妝品..." required name="name" />
       <ProFormText
-        label="標籤/分類名稱"
-        placeholder="新品 / 熱賣 / 化妝品..."
+        label="英文名稱"
+        placeholder="New / Hot / Make-up..."
         required
-        name="name"
+        name="englishName"
       />
     </ModalForm>
   );
