@@ -47,7 +47,8 @@ const Category = () => {
       search: false,
       valueType: 'image',
     },
-    { title: '標籤/分類', dataIndex: 'name' },
+    { title: '中文名稱', dataIndex: 'name' },
+    { title: '英文名稱', dataIndex: 'englishName' },
     ProTableOperationColumnButtons((record) => {
       setCurrentRow(record);
       setModalFormVisible(true);
