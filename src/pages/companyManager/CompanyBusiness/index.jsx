@@ -15,6 +15,8 @@ import { proTableOnChangeModalVisible } from '@/commons/proTable/proTableUtil';
 import CompanyBusinessPriceTemplateModal from './components/CompanyBusinessPriceTemplateModal';
 import CreateCompanyBusinessButton from './components/CreateCompanyBusinessButton';
 import { queryItemSpecificationPriceTemplate } from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
+import ProTableActiveStatusColumn from '@/commons/proTable/ProTableActiveStatusColumn';
+import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 
 const CompanyBusiness = () => {
   const tableRef = useRef();
@@ -40,7 +42,7 @@ const CompanyBusiness = () => {
   const queryCompanyBusinessService = async (params, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
       COMPANY_COMPANY_BUSINESS_SERVICE_CONFIG,
-      { ...params, active: true },
+      { ...params },
       sort,
       filter,
     );
@@ -56,6 +58,7 @@ const CompanyBusiness = () => {
   };
 
   const COLUMNS = [
+    ProTableActiveStatusColumn(),
     { title: '企業名稱', dataIndex: 'name' },
     { title: '外部下單用戶', dataIndex: ['businessUser', 'smsNumber'], search: false },
     {
@@ -85,24 +88,24 @@ const CompanyBusiness = () => {
       },
       deleteCompanyBusinessService,
       (text, record) => [
-        <a
+        <InactiveableLinkButton
+          disabled={!record.active}
           key="deliveryAddresss"
+          label="送貨地址"
           onClick={() => {
             setDeliveryAddressModalVisible(true);
             setCurrentRow(record);
           }}
-        >
-          送貨地址
-        </a>,
-        <a
+        />,
+        <InactiveableLinkButton
+          disabled={!record.active}
           key="priceTemplate"
+          label="特供價單"
           onClick={() => {
             setPriceTemplateModalVisible(true);
             setCurrentRow(record);
           }}
-        >
-          特供價單
-        </a>,
+        />,
       ],
     ),
   ];

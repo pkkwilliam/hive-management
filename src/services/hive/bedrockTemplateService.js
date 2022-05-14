@@ -1,5 +1,16 @@
 import { constructBasicRequest, contructPaginationRequest } from './config';
 
+export async function BEDROCK_ACTIVATE_SERVICE_REQEUST(serviceConfig, entityId) {
+  const request = {
+    authenticated: serviceConfig.requireAuth,
+    body: requestBody,
+    method: 'UPDATE',
+    requestUrl: serviceConfig.serviceUrl + `/${entityId}/activate`,
+    successMessage: '恢復成功',
+  };
+  return constructBasicRequest(request);
+}
+
 export async function BEDROCK_CREATE_SERVICE_REQEUST(serviceConfig, requestBody) {
   const request = {
     authenticated: serviceConfig.requireAuth,

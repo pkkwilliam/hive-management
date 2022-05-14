@@ -3,19 +3,15 @@ import { COMPANY_SHOP_SERVICE_CONFIG } from '@/services/hive/shopService';
 import ProTable from '@ant-design/pro-table';
 import { useModel } from 'umi';
 import ShopModalForm from './shopModalForm';
-import { SHOP_TYPES, SHOP_TYPE_REGULAR } from '@/enum/shopType';
+import { SHOP_TYPES } from '@/enum/shopType';
 import { convertEnumsToProTableValueEnum } from '@/enum/enumUtil';
-import {
-  BEDROCK_CREATE_SERVICE_REQEUST,
-  BEDROCK_DEACTIVATE_SERVICE_REQUEST,
-  BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
-  BEDROCK_UPDATE_SERVICE_REQUEST,
-} from '@/services/hive/bedrockTemplateService';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
 import { COMPANY_TEST_SHOP_PRINTER } from '@/services/hive/printService';
 import { COMPANY_GET_WECHAT_MINI_PROGRAM_QR_CODE } from '@/services/hive/wechatMiniProgramQrCodeService';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 import CreateShopButton from './CreateShopButton';
+import ProTableActiveStatusColumn from '@/commons/proTable/ProTableActiveStatusColumn';
+import { proTableCrudServiceGenerator } from '@/commons/proTable/proTableUtil';
 
 const ShopProTable = (props) => {
   const { tableProps } = props;
@@ -26,6 +22,8 @@ const ShopProTable = (props) => {
   const [currentRow, setCurrentRow] = useState();
   // const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const serviceGenerator = proTableCrudServiceGenerator(COMPANY_SHOP_SERVICE_CONFIG, actionRef);
 
   const onChangeModalFormVisible = (visible) => {
     if (!visible) {
@@ -42,37 +40,12 @@ const ShopProTable = (props) => {
     });
   };
 
-  const createShopServiceRequest = async (shop) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_SHOP_SERVICE_CONFIG, {
-      ...shop,
-      shopType: SHOP_TYPE_REGULAR.key,
-    });
-    setModalVisible(false);
-    onDataChanged();
-    return TextTrackCueList;
-  };
-
-  const deleteShopServiceRequest = async (shop) => {
-    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, shop.id);
-    onDataChanged();
-  };
-
   const onClickTestPrinter = async (record) => {
     COMPANY_TEST_SHOP_PRINTER(record.id);
   };
 
-  const updateShopServiceRequest = async (shop) => {
-    await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, shop);
-    setModalVisible(false);
-    onDataChanged();
-    return true;
-  };
-
-  const onDataChanged = () => {
-    actionRef.current.reload();
-  };
-
   const COLUMNS = [
+    ProTableActiveStatusColumn(),
     { title: '店名/倉名', dataIndex: 'name' },
     {
       title: '類型',
@@ -104,7 +77,7 @@ const ShopProTable = (props) => {
             setCurrentRow(record);
             setModalVisible(true);
           },
-          deleteShopServiceRequest,
+          serviceGenerator.deactivate,
           (text, record) => (
             <InactiveableLinkButton
               disabled={!record.defaultPrinter}
@@ -122,12 +95,7 @@ const ShopProTable = (props) => {
       <ProTable
         actionRef={actionRef}
         columns={COLUMNS}
-        request={async (params = {}, sort, filter) => {
-          return BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(COMPANY_SHOP_SERVICE_CONFIG, {
-            ...params,
-            active: true,
-          });
-        }}
+        request={serviceGenerator.queryPagination}
         rowKey="id"
         search={{
           labelWidth: 'auto',
@@ -138,7 +106,7 @@ const ShopProTable = (props) => {
         {...tableProps}
       />
       <ShopModalForm
-        onClickSubmit={currentRow ? updateShopServiceRequest : createShopServiceRequest}
+        onClickSubmit={currentRow ? serviceGenerator.update : serviceGenerator.create}
         setModalVisible={onChangeModalFormVisible}
         shop={currentRow}
         visible={modalVisible}
