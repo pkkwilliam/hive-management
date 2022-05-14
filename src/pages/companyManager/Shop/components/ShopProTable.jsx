@@ -112,6 +112,7 @@ const ShopProTable = (props) => {
               onClick={() => onClickTestPrinter(record)}
             />
           ),
+          { deletePopConfirmMessage: '删除門店會一併删除該門店所有庫存，確認刪除?' },
         )
       : {},
   ];

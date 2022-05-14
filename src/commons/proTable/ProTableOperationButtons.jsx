@@ -9,7 +9,7 @@ const ProTableOperationColumnButtons = (
   onClickEdit,
   onClickDelete,
   inFront = (text, record) => null,
-  inRear = (text, record) => null,
+  { deletePopConfirmMessage = '確認刪除?' } = {},
 ) => {
   return {
     title: '操作',
@@ -24,7 +24,7 @@ const ProTableOperationColumnButtons = (
         key="delete"
         onConfirm={() => onClickDelete(record, _, action)}
         okText="確定"
-        title="確認刪除?"
+        title={deletePopConfirmMessage}
       >
         <a>删除</a>
       </Popconfirm>,

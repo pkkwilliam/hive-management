@@ -49,10 +49,16 @@ const Category = () => {
     },
     { title: '中文名稱', dataIndex: 'name' },
     { title: '英文名稱', dataIndex: 'englishName' },
-    ProTableOperationColumnButtons((record) => {
-      setCurrentRow(record);
-      setModalFormVisible(true);
-    }, deleteCategoryServiceRequest),
+    ProTableOperationColumnButtons(
+      (record) => {
+        setCurrentRow(record);
+        setModalFormVisible(true);
+      },
+      deleteCategoryServiceRequest,
+      undefined,
+      { deletePopConfirmMessage: '删除此標籤會把商品的標籤一併刪除，確認刪除?' },
+    ),
+    ,
   ];
 
   return (

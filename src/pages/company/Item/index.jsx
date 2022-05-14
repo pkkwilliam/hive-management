@@ -135,6 +135,7 @@ const ItemPage = () => {
           label="庫存"
         />,
       ],
+      { deletePopConfirmMessage: '删除商品會一併删除所有規格及庫存，確認刪除?' },
     ),
   ];
 
