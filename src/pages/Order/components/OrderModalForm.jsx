@@ -80,6 +80,11 @@ const OrderModalForm = (props) => {
                   readonly={companyBusiness?.id}
                   rules={[{ required: true, message: '請選擇客戶' }]}
                   width={'md'}
+                  onChange={(companyBusiness, values) => {
+                    if (values.data?.defaultCurrency) {
+                      form.setFieldsValue({ currency: values.data?.defaultCurrency });
+                    }
+                  }}
                 />
                 <ProFormCompanyBusinessAddressSelect
                   dependencies={['companyBusiness', 'id']}

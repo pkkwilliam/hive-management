@@ -17,6 +17,8 @@ import CreateCompanyBusinessButton from './components/CreateCompanyBusinessButto
 import { queryItemSpecificationPriceTemplate } from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
 import ProTableActiveStatusColumn from '@/commons/proTable/ProTableActiveStatusColumn';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
+import { getValueEnum } from '@/enum/enumUtil';
+import { CURRENCIES } from '@/enum/currency';
 
 const CompanyBusiness = () => {
   const tableRef = useRef();
@@ -60,6 +62,7 @@ const CompanyBusiness = () => {
   const COLUMNS = [
     ProTableActiveStatusColumn(),
     { title: '企業名稱', dataIndex: 'name' },
+    { title: '默認幣種', dataIndex: ['defaultCurrency'], valueEnum: getValueEnum(CURRENCIES) },
     { title: '外部下單用戶', dataIndex: ['businessUser', 'smsNumber'], search: false },
     {
       title: '特供價單',
