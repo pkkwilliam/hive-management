@@ -35,7 +35,7 @@ export const proTableCrudServiceGenerator = (serviceConfig, tableActionRef) => {
       onSuccess();
       return true;
     },
-    queryList: async (params, { onSuccess = () => {} } = {}) => {
+    queryFirst: async (params, { onSuccess = () => {} } = {}) => {
       const response = await BEDROCK_QUERY_FIRST_SERVICE_REQUEST(serviceConfig, params);
       onSuccess();
       return response;
