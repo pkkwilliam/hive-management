@@ -5,6 +5,7 @@ import { Form } from 'antd';
 import ProFormItemSpecificationPriceTemplate from '@/commons/proForm/ProFormItemSpecificationPriceTemplate';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 import CompanyBusinessDeliveryAddressList from './CompanyBusinessDeliveryAddressList';
+import ProFormCurrencyRadio from '@/commons/proForm/ProFormCurrencyRadio';
 
 const CompanyBusinessModalForm = (props) => {
   const [form] = Form.useForm();
@@ -29,6 +30,7 @@ const CompanyBusinessModalForm = (props) => {
         name="name"
         rules={[{ required: true, message: '請輸入企業名稱' }]}
       />
+      <ProFormCurrencyRadio label="默認幣種" name={['defaultCurrency']} />
       <ProFormItemSpecificationPriceTemplate
         label="特供價單"
         name={['itemSpecificationPriceTemplate', 'id']}

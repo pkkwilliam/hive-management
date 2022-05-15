@@ -166,6 +166,7 @@ const ItemSpecificationDetailModal = (props) => {
         columns={COLUMNS}
         editable={{
           type: 'multiple',
+          deletePopconfirmMessage: '删除規格會一併删除庫存，確認刪除?',
           editableKeys,
           onChange: setEditableRowKeys,
           onDelete: async (rowKey, data, row) => deleteItemSpecification(data),

@@ -1,4 +1,5 @@
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
+import { proTableCrudServiceGenerator } from '@/commons/proTable/proTableUtil';
 import { getValueEnum } from '@/enum/enumUtil';
 import { PRINTERS } from '@/enum/printer';
 import {
@@ -19,6 +20,11 @@ const Printer = () => {
   const tableActionRef = useRef();
   const [currentRow, setCurrentRow] = useState();
   const [modalFormVisible, setModalFormVisible] = useState();
+
+  const serviceGenerator = proTableCrudServiceGenerator(
+    COMPANY_PRINTER_SERVICE_CONFIG,
+    tableActionRef,
+  );
 
   const create = async (request) => {
     await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_PRINTER_SERVICE_CONFIG, request);
@@ -64,7 +70,7 @@ const Printer = () => {
     ProTableOperationColumnButtons((record) => {
       setCurrentRow(record);
       setModalFormVisible(true);
-    }, inactivate),
+    }, serviceGenerator.deactivate),
   ];
 
   return (
@@ -72,7 +78,7 @@ const Printer = () => {
       <ProTable
         actionRef={tableActionRef}
         columns={COLUMNS}
-        request={query}
+        request={serviceGenerator.queryPagination}
         toolBarRender={() => [
           <Button
             icon={<PlusOutlined />}
@@ -85,7 +91,7 @@ const Printer = () => {
         ]}
       />
       <PrinterModalForm
-        onFinish={currentRow ? update : create}
+        onFinish={currentRow ? serviceGenerator.update : serviceGenerator.create}
         onVisibleChange={onVisibleChange}
         printer={currentRow}
         visible={modalFormVisible}

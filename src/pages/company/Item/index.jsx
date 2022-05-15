@@ -24,6 +24,7 @@ import CreatePriorModal, {
   CREATE_PRIOR_MODAL_SHOP,
 } from '@/commons/CreatePriorModal';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
+import ProTableActiveStatusColumn from '@/commons/proTable/ProTableActiveStatusColumn';
 
 const ItemPage = () => {
   const tableRef = useRef();
@@ -54,7 +55,6 @@ const ItemPage = () => {
     // return await COMPANY_MANAGER_QUERY_WITH_STOCK({ ...params, active: true }, sort, filter);
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(COMPANY_ITEM_SERVICE_CONFIG, {
       ...params,
-      active: true,
       showPriceRange: true,
       showStock: true,
     });
@@ -71,6 +71,7 @@ const ItemPage = () => {
   };
 
   const COLUMNS = [
+    ProTableActiveStatusColumn(),
     {
       title: '圖片',
       dataIndex: ['imageUrl'],
@@ -135,6 +136,7 @@ const ItemPage = () => {
           label="庫存"
         />,
       ],
+      { deletePopConfirmMessage: '删除商品會一併删除所有規格及庫存，確認刪除?' },
     ),
   ];
 
