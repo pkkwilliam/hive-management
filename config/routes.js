@@ -101,6 +101,7 @@ export default [
   {
     path: '/companyManager',
     name: '管理',
+    icon: 'reconciliation',
     routes: [
       {
         path: '/companyManager/shop',
@@ -132,6 +133,7 @@ export default [
   {
     path: '/financial',
     name: '財務管理',
+    icon: 'accountBook',
     routes: [
       {
         path: '/financial/companyBusiness',
@@ -143,32 +145,19 @@ export default [
   {
     path: '/category',
     name: '標籤/分類',
+    icon: 'tags',
     component: './company/Category/index',
   },
   {
     path: '/companyManagerItem',
-    name: '商品管理',
-    routes: [
-      {
-        path: '/companyManagerItem/item',
-        name: '商品',
-        component: './company/Item/index',
-      },
-      // {
-      //   path: '/companyManagerItem/itemSpecification',
-      //   name: '商品規格',
-      //   component: './companyManager/ItemSpecification/index',
-      // },
-      // {
-      //   path: '/companyManagerItem/itemSpecificationStock',
-      //   name: '地點庫存',
-      //   component: './shopManager/ItemSpecificationStock/index',
-      // },
-    ],
+    name: '商品',
+    icon: 'shopping',
+    component: './company/Item/index',
   },
   {
     path: '/order',
     name: '訂單',
+    icon: 'container',
     routes: [
       // {
       //   path: '/order',

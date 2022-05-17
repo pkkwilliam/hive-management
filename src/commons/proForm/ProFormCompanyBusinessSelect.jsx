@@ -14,7 +14,9 @@ export const queryCompanyBusiness = async (params) => {
   );
   return response.data.map((business) => ({
     value: business.id,
-    label: business.name,
+    label: `${business.name} ${
+      business.defaultCurrency ? '默認幣種:' + business.defaultCurrency : ''
+    } ${business.remark ? '備註:' + business.remark : ''}`,
     data: business,
   }));
 };
