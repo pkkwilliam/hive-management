@@ -1,15 +1,27 @@
+const DEFAULT_PRICE = '$-';
+
+export function getPrice(price) {
+  if (!price) {
+    return DEFAULT_PRICE;
+  }
+  return `$${price.toFixed(2)}`;
+}
+
 export function getItemPriceRange(item) {
-  const defaultResponse = '$-';
   if (!item?.itemSpecificationPriceRangeResponse) {
-    return defaultResponse;
+    return DEFAULT_PRICE;
   }
   if (item.itemSpecificationPriceRangeResponse.count === 0) {
-    return defaultResponse;
+    return DEFAULT_PRICE;
   }
-  const startFrom = (item.itemSpecificationPriceRangeResponse?.startFrom ?? 0).toFixed(2);
+  const startFrom = getPrice(item.itemSpecificationPriceRangeResponse?.startFrom ?? 0);
   if (item.itemSpecificationPriceRangeResponse.count === 1) {
-    return `$${startFrom}`;
+    return startFrom;
+  }
+  const to = getPrice(item.itemSpecificationPriceRangeResponse?.to ?? 0);
+  if (startFrom === to) {
+    return to;
   } else {
-    return `$${startFrom}-$${(item.itemSpecificationPriceRangeResponse?.to ?? 0).toFixed(2)}`;
+    return `${startFrom}-${to}`;
   }
 }

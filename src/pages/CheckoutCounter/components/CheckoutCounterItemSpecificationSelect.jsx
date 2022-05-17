@@ -5,7 +5,7 @@ import { ProFormSelect } from '@ant-design/pro-form';
 const CheckoutCounterItemSpecificationSelect = (props) => {
   const selectRef = useRef();
 
-  const { setRef, shopId } = props;
+  const { onSelect = (itemSpecificationId, quantity) => {}, setRef, shopId } = props;
 
   useEffect(() => {
     setRef(selectRef);
@@ -40,7 +40,11 @@ const CheckoutCounterItemSpecificationSelect = (props) => {
     <ProFormSelect
       debounceTime={500}
       request={query}
-      fieldProps={{ autoFocus: true, onSelect: props.onSelect, ref: selectRef }}
+      fieldProps={{
+        autoFocus: true,
+        onSelect: (value, option) => onSelect(option.data, 1),
+        ref: selectRef,
+      }}
       {...props}
     />
   );

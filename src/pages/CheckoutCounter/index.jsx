@@ -26,10 +26,10 @@ const CheckoutCounter = () => {
     setCheckoutModalVisible(true);
   };
 
-  const onSelectItemSpecification = (value, option, quantity = 1) => {
+  const onSelectItemSpecification = (itemSpecification, quantity = 1) => {
     let containeItem = false;
     let updatedItems = selectedItemSpecifications.map((selectedItemSpecification) => {
-      if (selectedItemSpecification.itemSpecification.id === option.data.id) {
+      if (selectedItemSpecification.itemSpecification.id === itemSpecification.id) {
         containeItem = true;
         return {
           itemSpecification: selectedItemSpecification.itemSpecification,
@@ -40,7 +40,7 @@ const CheckoutCounter = () => {
       }
     });
     if (!containeItem) {
-      updatedItems.push({ itemSpecification: option.data, quantity: 1 });
+      updatedItems.push({ itemSpecification, quantity: 1 });
     }
     setSelectedItemSpecifications(updatedItems);
   };
@@ -118,7 +118,7 @@ const CheckoutCounter = () => {
             </ProCard>
           </ProCard>
           <ProCard colSpan={8} ghost>
-            <CheckoutCounterQuickSelector />
+            <CheckoutCounterQuickSelector onSelect={onSelectItemSpecification} />
           </ProCard>
         </ProCard>
       )}

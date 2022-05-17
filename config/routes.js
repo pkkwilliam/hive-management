@@ -84,6 +84,7 @@ export default [
   {
     path: '/admin',
     name: '數字螞蟻管理',
+    icon: 'cluster',
     access: 'canAdmin',
     routes: [
       {
