@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
-import { Button, Card, Form, Modal, Table, Upload } from 'antd';
+import { COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
+import { Form, Modal } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import {
   BEDROCK_CREATE_SERVICE_REQEUST,
@@ -22,22 +22,19 @@ const ItemSpecificationDetailModal = (props) => {
   const createItemSpecification = async (request) => {
     delete request.id;
     const response = await BEDROCK_CREATE_SERVICE_REQEUST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG,
       { ...request, item },
     );
     tableRef.current.reload();
   };
 
   const deleteItemSpecification = async (record) => {
-    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
-      record.id,
-    );
+    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG, record.id);
     tableRef.current.reload();
   };
 
   const queryItemSpecification = async () => {
-    return BEDROCK_QUERY_LIST_SERVICE_REQUEST(COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG, {
+    return BEDROCK_QUERY_LIST_SERVICE_REQUEST(COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG, {
       active: true,
       'item.id': item?.id,
       showStock: true,
@@ -46,7 +43,7 @@ const ItemSpecificationDetailModal = (props) => {
 
   const updateItemSpecification = async (record) => {
     const response = await BEDROCK_UPDATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG,
       record,
     );
     tableRef.current.reload();

@@ -1,4 +1,3 @@
-import ProTable from '@ant-design/pro-table';
 import { Button, InputNumber, Row, Table } from 'antd';
 import React from 'react';
 import { Typography, Space } from 'antd';
@@ -76,7 +75,7 @@ const CheckoutCounterItemSpecificationTable = (props) => {
     },
   ];
   return (
-    <ProTable
+    <Table
       options={false}
       columns={COLUMNS}
       pagination={false}

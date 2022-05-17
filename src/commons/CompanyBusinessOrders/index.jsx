@@ -28,7 +28,11 @@ const CompanyBusinessOrders = (props) => {
       dataIndex: ['deliveryDate'],
       render: (text, record) => (text ? toDisplayDate(text, 'YYYY-MM-DD') : '-'),
     },
-
+    {
+      title: '支付日期',
+      dataIndex: ['paymentTime'],
+      render: (text, record) => (text ? toDisplayDate(text, 'YYYY-MM-DD') : '-'),
+    },
     {
       title: '送貨地址',
       render: (text, record) =>

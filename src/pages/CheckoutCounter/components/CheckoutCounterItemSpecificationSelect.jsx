@@ -1,8 +1,4 @@
-import { BEDROCK_QUERY_LIST_SERVICE_REQUEST } from '@/services/hive/bedrockTemplateService';
-import {
-  COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
-  COMPANY_SPECIFICATION_FUZZY_SEARCH,
-} from '@/services/hive/itemSpecificationService';
+import { COMPANY_SPECIFICATION_FUZZY_SEARCH } from '@/services/hive/itemSpecificationService';
 import React, { useEffect, useRef } from 'react';
 import { ProFormSelect } from '@ant-design/pro-form';
 

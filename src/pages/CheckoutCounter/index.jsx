@@ -6,8 +6,12 @@ import CheckoutCounterItemSpecificationTable from './components/CheckoutCounterI
 import { Button, Card, Space } from 'antd';
 import CheckoutModal from './components/CheckoutModal';
 import ProFormShopSelect from '@/commons/proForm/ProFormShopSelect';
+import { useModel } from 'umi';
+import CheckoutCounterQuickSelector from './components/CheckoutCounterQuickSelector';
+import { ProFormGroup } from '@ant-design/pro-form';
 
 const CheckoutCounter = () => {
+  const { initialState, setInitialState } = useModel('@@initialState');
   const [checkoutModalVisible, setCheckoutModalVisible] = useState(false);
   const [currentRow, setCurrentRow] = useState();
   const [distributionShop, setDistributionShop] = useState();
@@ -44,11 +48,28 @@ const CheckoutCounter = () => {
   return (
     <>
       <Card>
-        <ProFormShopSelect
-          allowClear={false}
-          label="銷售地點"
-          onChange={(shopId) => setDistributionShop(shopId)}
-        />
+        <ProFormGroup>
+          <ProFormShopSelect
+            allowClear={false}
+            disabled={distributionShop}
+            formItemProps={{ style: { margin: 0 } }}
+            label="銷售地點"
+            onChange={(shopId) => {
+              setDistributionShop(shopId);
+              setInitialState({ ...initialState, fullScreen: true, menuCollapsed: true });
+            }}
+            value={distributionShop}
+          />
+          <Button
+            disabled={!distributionShop}
+            onClick={() => {
+              setDistributionShop();
+              clear();
+            }}
+          >
+            重置
+          </Button>
+        </ProFormGroup>
       </Card>
       {!distributionShop ? null : (
         <ProCard direction="row" ghost gutter={16}>
@@ -89,9 +110,15 @@ const CheckoutCounter = () => {
                   <Button block disabled size="large">
                     掛單F12
                   </Button>
+                  <Button block disabled size="large">
+                    補打上單
+                  </Button>
                 </Space>
               </ProCard>
             </ProCard>
+          </ProCard>
+          <ProCard colSpan={8} ghost>
+            <CheckoutCounterQuickSelector />
           </ProCard>
         </ProCard>
       )}

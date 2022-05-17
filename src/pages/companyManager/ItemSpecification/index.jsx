@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import ProTableOperationColumnButtons from '@/commons/proTable/ProTableOperationButtons';
-import { COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
+import { COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG } from '@/services/hive/itemSpecificationService';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import {
@@ -21,19 +21,13 @@ const ItemSpecification = () => {
   const tableRef = useRef();
 
   const create = async (request) => {
-    await BEDROCK_CREATE_SERVICE_REQEUST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
-      request,
-    );
+    await BEDROCK_CREATE_SERVICE_REQEUST(COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG, request);
     tableRef.current.reload();
     return true;
   };
 
   const deleteItemSpecification = async (record) => {
-    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
-      record.id,
-    );
+    await BEDROCK_DEACTIVATE_SERVICE_REQUEST(COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG, record.id);
     tableRef.current.reload();
   };
 
@@ -46,7 +40,7 @@ const ItemSpecification = () => {
 
   const queryItemSpecification = async (params, sort, filter) => {
     return await BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
+      COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG,
       { ...params, active: true, showStock: true },
       sort,
       filter,
@@ -54,10 +48,7 @@ const ItemSpecification = () => {
   };
 
   const update = async (request) => {
-    await BEDROCK_UPDATE_SERVICE_REQUEST(
-      COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG,
-      request,
-    );
+    await BEDROCK_UPDATE_SERVICE_REQUEST(COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG, request);
     tableRef.current.reload();
     return true;
   };

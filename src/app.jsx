@@ -49,6 +49,8 @@ export async function getInitialState() {
       companyOnBoard,
       companyConfig,
       currentUser,
+      fullScreen: false,
+      menuCollapsed: false,
       settings: defaultSettings,
     };
   }
@@ -60,7 +62,11 @@ export async function getInitialState() {
 } // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
 export const layout = ({ initialState, setInitialState }) => {
+  const { fullScreen, menuCollapsed } = initialState;
   return {
+    collapsed: menuCollapsed,
+    onCollapse: (collapsed) => setInitialState({ ...initialState, menuCollapsed: collapsed }),
+    contentStyle: fullScreen ? { margin: 0 } : {},
     headerContentRender: () => (
       <Space style={{ marginLeft: 16 }}>
         <Link to={'/checkoutCounter'}>
@@ -76,9 +82,10 @@ export const layout = ({ initialState, setInitialState }) => {
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
-    footerRender: () => <Footer />,
+    footerRender: () => (menuCollapsed ? null : <Footer />),
     onPageChange: () => {
       const { location } = history; // 如果没有登录，重定向到 login
+      setInitialState({ ...initialState, fullScreen: false });
       if (
         !initialState?.currentUser &&
         location.pathname !== companyMallPath &&

@@ -1,12 +1,12 @@
 import { constructBasicRequest } from './config';
 
-const COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_URL = '/company_manager/item_specification/v1';
+const COMPANY_ITEM_SPECIFICATION_SERVICE_URL = '/company_manager/item_specification/v1';
 
 const ITEM_SPECIFICATION_SERVICE_URL = '/company/item_specification/v1';
 
-export const COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_CONFIG = {
+export const COMPANY_ITEM_SPECIFICATION_SERVICE_CONFIG = {
   requireAuth: true,
-  serviceUrl: COMPANY_MANAGER_ITEM_SPECIFICATION_SERVICE_URL,
+  serviceUrl: COMPANY_ITEM_SPECIFICATION_SERVICE_URL,
 };
 
 export const ITEM_SPECIFICATION_SERVICE_CONFIG = {

@@ -66,7 +66,7 @@ export async function BEDROCK_QUERY_FIRST_SERVICE_REQUEST(serviceConfig, params,
   return { data: response, success: true, total: response.length };
 }
 
-export async function BEDROCK_QUERY_LIST_SERVICE_REQUEST(serviceConfig, params, sort, filter) {
+export async function BEDROCK_QUERY_LIST_SERVICE_REQUEST(serviceConfig, params = {}, sort, filter) {
   const request = {
     authenticated: serviceConfig.requireAuth,
     method: 'GET',
