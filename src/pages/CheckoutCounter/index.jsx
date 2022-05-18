@@ -118,7 +118,10 @@ const CheckoutCounter = () => {
             </ProCard>
           </ProCard>
           <ProCard colSpan={8} ghost>
-            <CheckoutCounterQuickSelector onSelect={onSelectItemSpecification} />
+            <CheckoutCounterQuickSelector
+              distributionShopId={distributionShop}
+              onSelect={onSelectItemSpecification}
+            />
           </ProCard>
         </ProCard>
       )}
