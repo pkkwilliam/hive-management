@@ -9,10 +9,13 @@ import { GET_USER_PROFILE } from './services/hive/userProfile';
 import { PUBLIC_GET_COMPANY_CONFIG_BY_COMPANY_ID } from './services/hive/companyConfigService';
 import { Button, Space } from 'antd';
 import { GET_COMPANY_ONBOARD } from './services/hive/companyOnboardService';
+import { BEDROCK_GET_BY_ID_SERVICE_REQUEST } from './services/hive/bedrockTemplateService';
+import { PUBLIC_COMAPNY_SERVICE_CONFIG } from './services/hive/companyService';
 
 const isDev = process.env.NODE_ENV === 'development';
 const companyMallPath = '/company/mall';
 const mpayHelper = '/mpayH5Helper';
+const renewalPath = '/companyManager/renewal';
 const loginPath = '/user/login';
 const trialPath = '/user/trial';
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -44,8 +47,14 @@ export async function getInitialState() {
     const currentUser = await fetchUserInfo();
     const companyConfig = await PUBLIC_GET_COMPANY_CONFIG_BY_COMPANY_ID(currentUser.company.id);
     const companyOnBoard = await GET_COMPANY_ONBOARD();
+    const company = await BEDROCK_GET_BY_ID_SERVICE_REQUEST(
+      PUBLIC_COMAPNY_SERVICE_CONFIG,
+      currentUser.company.id,
+    );
+
     return {
       fetchUserInfo,
+      company,
       companyOnBoard,
       companyConfig,
       currentUser,
@@ -84,7 +93,15 @@ export const layout = ({ initialState, setInitialState }) => {
     },
     footerRender: () => (menuCollapsed ? null : <Footer />),
     onPageChange: () => {
-      const { location } = history; // 如果没有登录，重定向到 login
+      const { location } = history;
+
+      // check if company payment due date is valid to use, if not redirect user to proper page to make payment
+      const { expired } = initialState.company || {};
+      if (expired && location.pathname !== renewalPath && location.pathname !== loginPath) {
+        history.push(renewalPath);
+      }
+
+      // 如果没有登录，重定向到 login
       setInitialState({ ...initialState, fullScreen: false });
       if (
         !initialState?.currentUser &&

@@ -129,6 +129,11 @@ export default [
         name: '打印機',
         component: './company/Printer/index',
       },
+      {
+        path: '/companyManager/renewal',
+        name: '續期',
+        component: './companyManager/CompanyRenewal/index',
+      },
     ],
   },
   {
