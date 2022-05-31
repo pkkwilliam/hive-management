@@ -9,6 +9,7 @@ import {
 } from '@ant-design/pro-form';
 import { Form } from 'antd';
 import ProFormCompanyAccountType from '@/commons/proForm/ProFormCompanyAccountTypeSelect';
+import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 
 const CompanyModalForm = (props) => {
   const [form] = Form.useForm();
@@ -19,7 +20,7 @@ const CompanyModalForm = (props) => {
       destroyOnClose
       form={form}
       onFinish={(values) => onClickSubmit({ ...values, id: company?.id })}
-      onVisibleChange={setModalVisible}
+      onVisibleChange={(visible) => onModalFormVisibleChange(setModalVisible, form, visible)}
       title={company ? '修改企業' : '新增企業'}
       visible={visible}
     >
