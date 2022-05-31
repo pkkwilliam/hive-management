@@ -1,5 +1,6 @@
 import { getServiceUrl } from './config';
 import { request } from 'umi';
+import { message } from 'antd';
 
 const AUTH_SERVICE_URL = '/login/v1';
 
@@ -11,5 +12,10 @@ export async function LOGIN(body, options) {
       'Content-Type': 'application/json',
     },
     data: body,
+    errorHandler: (error) => {
+      const { data } = error;
+      message.error(data.message);
+      return data;
+    },
   });
 }

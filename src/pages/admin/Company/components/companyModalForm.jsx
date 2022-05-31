@@ -5,6 +5,7 @@ import {
   ProFormDigit,
   ProFormSwitch,
   ProFormText,
+  ProFormTextArea,
 } from '@ant-design/pro-form';
 import { Form } from 'antd';
 import ProFormCompanyAccountType from '@/commons/proForm/ProFormCompanyAccountTypeSelect';
@@ -44,6 +45,7 @@ const CompanyModalForm = (props) => {
         name="allowedUserNumber"
       />
       <ProFormDatePicker label="到期日" placeholder="請輸入企業到期日" required name="expiryDate" />
+      <ProFormTextArea label="定制JSON" placeholder="{...}" name={['customJson']} />
     </ModalForm>
   );
 };
