@@ -70,7 +70,7 @@ export async function getInitialState() {
   };
 } // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
-export const layout = ({ initialState, setInitialState }) => {
+export const layout = ({ initialState = { fullScreen: false }, setInitialState }) => {
   const { fullScreen, menuCollapsed } = initialState;
   return {
     collapsed: menuCollapsed,
@@ -78,12 +78,12 @@ export const layout = ({ initialState, setInitialState }) => {
     contentStyle: fullScreen ? { margin: 0 } : {},
     headerContentRender: () => (
       <Space style={{ marginLeft: 16 }}>
-        <Link to={'/checkoutCounter'}>
+        {/* <Link to={'/checkoutCounter'}>
           <Button>收銀</Button>
         </Link>
         <Link to={'/order/internalOrder'}>
           <Button>企業訂單</Button>
-        </Link>
+        </Link> */}
       </Space>
     ),
     rightContentRender: () => <RightContent />,

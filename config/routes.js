@@ -82,6 +82,12 @@ export default [
     ],
   },
   {
+    path: '/invest',
+    name: 'Invest',
+    icon: 'reconciliation',
+    component: './Invest/index',
+  },
+  {
     path: '/admin',
     name: '數字螞蟻管理',
     icon: 'cluster',

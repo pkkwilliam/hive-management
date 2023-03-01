@@ -17,7 +17,7 @@ export default () => {
     if (!initialState?.currentUser) {
       return;
     }
-    queryShops();
+    // queryShops();
   }, [initialState?.currentUser]);
 
   const getShops = useCallback(queryShops, []);

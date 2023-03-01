@@ -19,8 +19,8 @@ const Welcome = () => {
   return (
     <PageContainer>
       <Space direction="vertical" style={{ width: '100%' }}>
-        <OrderSummary />
-        <Onboard />
+        {/* <OrderSummary /> */}
+        {/* <Onboard /> */}
       </Space>
     </PageContainer>
   );

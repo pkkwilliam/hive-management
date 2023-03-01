@@ -7,7 +7,7 @@ export default () => {
   const [onboard, setOnboard] = useState([]);
 
   const queryOnboard = () => {
-    GET_COMPANY_ONBOARD().then((response) => setOnboard(response));
+    // GET_COMPANY_ONBOARD().then((response) => setOnboard(response));
   };
 
   useEffect(() => {

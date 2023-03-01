@@ -1,0 +1,11 @@
+export const AUTOMATE_ORDER_STATUS_CLOSED = { key: 'CLOSED', label: 'Closed' };
+export const AUTOMATE_ORDER_STATUS_FILLED = { key: 'FILLED', label: 'Filled' };
+export const AUTOMATE_ORDER_STATUS_SELLING = { key: 'SELLING', label: 'Selling' };
+export const AUTOMATE_ORDER_STATUS_SUBMITTED = { key: 'SUBMITTED', label: 'Submitted' };
+
+export const AUTOMATE_ORDER_STATUS = [
+  AUTOMATE_ORDER_STATUS_CLOSED,
+  AUTOMATE_ORDER_STATUS_FILLED,
+  AUTOMATE_ORDER_STATUS_SELLING,
+  AUTOMATE_ORDER_STATUS_SUBMITTED,
+];

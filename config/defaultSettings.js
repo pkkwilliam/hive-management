@@ -7,7 +7,7 @@ const Settings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '數字螞蟻銷售倉儲管理',
+  title: '數字螞蟻全自動投資系統',
   pwa: false,
   logo: '/logo.png',
   iconfontUrl: '',

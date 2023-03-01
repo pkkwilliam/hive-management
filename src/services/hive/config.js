@@ -45,7 +45,16 @@ export async function constructBasicRequest(requestInfo, options) {
 }
 
 export async function contructPaginationRequest(requestInfo, options) {
-  return constructBasicRequest(requestInfo, options).then((response) => ({
+  return constructBasicRequest(
+    {
+      ...requestInfo,
+      params: {
+        ...requestInfo.params,
+        pageRequest: requestInfo.params.current - 1,
+      },
+    },
+    options,
+  ).then((response) => ({
     ...response,
     success: true,
     data: response.content,

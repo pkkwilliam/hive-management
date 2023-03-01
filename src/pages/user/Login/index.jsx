@@ -86,7 +86,7 @@ const Login = () => {
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.png" />}
-          title="數字螞蟻銷售倉儲管理"
+          title="數字螞蟻全自動投資系統"
           subTitle={intl.formatMessage({
             id: 'pages.layouts.userLayout.title',
             default: '',

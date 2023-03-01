@@ -17,7 +17,7 @@ export default () => {
     if (!initialState?.currentUser) {
       return;
     }
-    queryPrinters();
+    // queryPrinters();
   }, [initialState?.currentUser]);
 
   const getPrinters = useCallback(queryPrinters, []);

@@ -10,11 +10,11 @@ export function convertEnumsToProTableValueEnum(enums) {
   return result;
 }
 
-export function getEnumLabelByKey(enums, key, undefinedLabel = '未知') {
+export function getEnumLabelByKey(enums, key, undefinedLabel = 'UNKNOWN') {
   return getEnumObjectByKey(enums, key, undefinedLabel).label;
 }
 
-export function getEnumObjectByKey(enums, key, undefinedLabel = '未知') {
+export function getEnumObjectByKey(enums, key, undefinedLabel = 'UNKNOWN') {
   for (let index = 0; index < enums.length; index++) {
     if (enums[index].key === key) {
       return enums[index];
