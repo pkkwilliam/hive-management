@@ -4,6 +4,7 @@ import { ALGORITHM_TYPES } from '@/enum/Algorithm';
 import { CHANNEL_TYPES } from '@/enum/Channel';
 import { getEnumLabelByKey } from '@/enum/enumUtil';
 import {
+  BEDROCK_ACTIVATE_SERVICE_REQEUST,
   BEDROCK_CREATE_SERVICE_REQEUST,
   BEDROCK_DEACTIVATE_SERVICE_REQUEST,
   BEDROCK_QUERY_PAGINATION_SERVICE_REQUEST,
@@ -13,16 +14,16 @@ import { INVEST_SYNC } from '@/services/hive/investSyncService';
 import { LoadingOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space } from 'antd';
+import { Badge, Button, Space, Switch } from 'antd';
 import { useRef, useState } from 'react';
 import { USER_INVEST_SERVICE_CONFIG } from '../../services/hive/investService';
 import AutomateOrderTable from './components/AutomateOrderTable';
 import InvestDetailModal from './components/InvestDetailModal';
 
-const POLLING_INTERVAL = 10000;
+const POLLING_INTERVAL = 5000;
 
 const Invest = () => {
-  const [polling, setPolling] = useState(POLLING_INTERVAL);
+  const [polling, setPolling] = useState(undefined);
   const [time, setTime] = useState(new Date());
   const tableRef = useRef();
 
@@ -31,6 +32,16 @@ const Invest = () => {
 
   const onCreate = async (request) => {
     await BEDROCK_CREATE_SERVICE_REQEUST(USER_INVEST_SERVICE_CONFIG, request);
+    tableRef.current.reload();
+    return true;
+  };
+
+  const onActivateToggled = async (record) => {
+    if (record.active) {
+      await BEDROCK_DEACTIVATE_SERVICE_REQUEST(USER_INVEST_SERVICE_CONFIG, record.id);
+    } else {
+      await BEDROCK_ACTIVATE_SERVICE_REQEUST(USER_INVEST_SERVICE_CONFIG, record.id);
+    }
     tableRef.current.reload();
     return true;
   };
@@ -75,13 +86,9 @@ const Invest = () => {
     {
       title: 'Status',
       dataIndex: ['active'],
-      valueEnum: {
-        true: { text: '', status: 'Success' },
-        false: {
-          text: '',
-          status: 'Error',
-        },
-      },
+      render: (_, record) => (
+        <Badge status={record.active ? 'success' : 'error'} text={record.id} />
+      ),
     },
     {
       title: 'Channel',
@@ -89,27 +96,33 @@ const Invest = () => {
       render: (text, record) => getEnumLabelByKey(CHANNEL_TYPES, record.channel),
     },
     {
-      title: 'Product Name',
+      title: 'Name',
       dataIndex: ['productName'],
+      tooltip: 'Product Name',
     },
-    { title: 'Channel Product ID', dataIndex: ['channelProductId'] },
+    { title: 'PID', dataIndex: ['channelProductId'], tooltip: 'Channel Product ID' },
     {
       title: 'Algoirthm',
       dataIndex: ['algorithmType'],
       render: (text, record) => getEnumLabelByKey(ALGORITHM_TYPES, record.algorithmType),
     },
     { title: 'Price', dataIndex: ['price'] },
-    { title: 'Max Concurrent', dataIndex: ['maxConcurrent'] },
-    { title: 'Gain Sell Rate', dataIndex: ['gainSellRate'] },
-    { title: 'Loss Sell Rate', dataIndex: ['lossSellRate'] },
-    { title: 'Max Buy In Price', dataIndex: ['maxBuyInPrice'] },
-    { title: 'Min Buy In Price', dataIndex: ['minBuyInPrice'] },
+    { title: 'Concurrent', dataIndex: ['maxConcurrent'], tooltip: 'Max Concurrent' },
+    {
+      title: 'Gain',
+      dataIndex: ['gainSellRate'],
+      render: (text) => `${text}%`,
+      tooltip: 'Gain Sell Rate',
+    },
+    {
+      title: 'Loss',
+      dataIndex: ['lossSellRate'],
+      render: (text) => `${text}%`,
+      tooltip: 'Loss Sell Rate',
+    },
+    { title: 'Max Buy', dataIndex: ['maxBuyInPrice'], tooltip: 'Max Buy In Price' },
+    { title: 'Min Buuy', dataIndex: ['minBuyInPrice'], tooltip: 'Min Buy In Price' },
     { title: 'Size', dataIndex: ['size'] },
-    // {
-    //   title: '支款方式',
-    //   dataIndex: 'companyBusinessPaymentType',
-    //   valueEnum: getValueEnum(COMPANY_BUSINESS_PAYMENT_TYPES),
-    // },
     {
       title: 'Operation',
       valueType: 'option',
@@ -123,12 +136,11 @@ const Invest = () => {
               setDetailModalVisibleWithPolling(true);
             }}
           />,
-          <InactiveableLinkButton
-            key="remove"
-            label="Remove"
-            onClick={() => {
-              onDelete(record);
-            }}
+          <Switch
+            key="switch"
+            checked={record.active}
+            onChange={() => onActivateToggled(record)}
+            size="small"
           />,
         ];
       },

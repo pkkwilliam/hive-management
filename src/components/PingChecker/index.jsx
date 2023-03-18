@@ -7,7 +7,7 @@ import { useEffect } from 'react';
  * this should only be use in one place through out the whole application
  */
 
-const PING_INTERVAL = 5000;
+const PING_INTERVAL = 60000;
 
 const PingChecker = () => {
   let interval;

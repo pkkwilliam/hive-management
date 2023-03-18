@@ -3,15 +3,15 @@ import Text from 'antd/lib/typography/Text';
 import React from 'react';
 
 const InactiveableLinkButton = (props) => {
-  const { disabled, label, onClick, popConfirm, popConfirmMessage } = props;
+  const { disabled, key = 'delete', label, onClick, popConfirm, popConfirmMessage } = props;
   let button;
   if (popConfirm) {
     button = (
       <Popconfirm
-        cancelText="取消"
-        key="delete"
+        cancelText="Cancel"
+        key={key}
         onConfirm={onClick}
-        okText="確定"
+        okText="OK"
         title={popConfirmMessage ? popConfirmMessage : '確定執行?'}
       >
         <a>{label}</a>

@@ -1,28 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { GET_INVEST_AUTOMATE_ORDERS } from '@/services/hive/automateOrderService';
+import { BUY_ORDER, SELL_ORDER } from '@/services/hive/manualOrderService';
 import { getEnumLabelByKey } from '@/enum/enumUtil';
 import { AUTOMATE_ORDER_STATUS } from '@/enum/AutomateOrderStatus';
 import { Badge, Button, Popover } from 'antd';
 import { LoadingOutlined, ReloadOutlined } from '@ant-design/icons';
-
-const COLUMNS = [
-  {
-    title: 'ID',
-    dataIndex: ['active'],
-    render: (text, item) => <AutomateOrderPopover item={item} />,
-  },
-  {
-    title: 'Status',
-    dataIndex: ['status'],
-    render: (text, record) => getEnumLabelByKey(AUTOMATE_ORDER_STATUS, record.status),
-  },
-  { title: 'Actual In Price', dataIndex: ['actualBuyInPrice'] },
-  { title: 'Actual Out Price', dataIndex: ['actualSellOutPrice'] },
-  { title: 'Actual Size', dataIndex: ['actualBuyInSize'] },
-  { title: 'Target', dataIndex: ['targetSellOutPrice'], renderText: (text) => text ?? '-' },
-  { title: 'Profit', dataIndex: ['profit'], renderText: (text) => text ?? '-' },
-];
+import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 
 const AutomateOrderPopover = ({ item }) => {
   return (
@@ -47,7 +31,7 @@ const AutomateOrderPopover = ({ item }) => {
       }
       title={`ID: ${item.id}`}
     >
-      <Badge status={item.active ? 'processing' : 'default'} text={item.id} />
+      <Badge status={item.active ? 'processing' : 'default'} text={<a>{item.id}</a>} />
     </Popover>
   );
 };
@@ -55,9 +39,56 @@ const AutomateOrderPopover = ({ item }) => {
 const POLLING_INTERVAL = 5000;
 
 const AutomateOrderTable = (props) => {
-  const [polling, setPolling] = useState(POLLING_INTERVAL);
+  const [polling, setPolling] = useState(undefined);
   const [time, setTime] = useState(new Date());
+  const tableRef = useRef();
   const { invest } = props;
+
+  const COLUMNS = [
+    {
+      title: 'ID',
+      dataIndex: ['active'],
+      render: (text, item) => <AutomateOrderPopover item={item} />,
+    },
+    {
+      title: 'Status',
+      dataIndex: ['status'],
+      render: (text, record) => getEnumLabelByKey(AUTOMATE_ORDER_STATUS, record.status),
+    },
+    { title: 'Actual In Price', dataIndex: ['actualBuyInPrice'] },
+    { title: 'Actual Out Price', dataIndex: ['actualSellOutPrice'] },
+    { title: 'Actual Size', dataIndex: ['actualBuyInSize'] },
+    { title: 'Target', dataIndex: ['targetSellOutPrice'], renderText: (text) => text ?? '-' },
+    { title: 'Profit', dataIndex: ['profit'], renderText: (text) => text ?? '-' },
+    {
+      title: 'Operation',
+      valueType: 'option',
+      render: (text, record) => {
+        return [
+          <InactiveableLinkButton
+            disabled={!record.active}
+            key="sell"
+            label="Sell"
+            onClick={() => onClickSellOrder(record)}
+            popConfirm
+            popConfirmMessage="Sell this order?"
+          />,
+        ];
+      },
+    },
+  ];
+
+  const onClickBuyOrder = async (invest) => {
+    await BUY_ORDER(invest.id, { actualBuyInSize: invest.size });
+    tableRef.current.reload();
+    return true;
+  };
+
+  const onClickSellOrder = async (record) => {
+    await SELL_ORDER(record.id, { actualSellOutSize: record.invest.size });
+    tableRef.current.reload();
+    return true;
+  };
 
   const query = async (params, sort, filter) => {
     const result = await GET_INVEST_AUTOMATE_ORDERS(
@@ -74,13 +105,11 @@ const AutomateOrderTable = (props) => {
 
   return (
     <ProTable
+      actionRef={tableRef}
       cardBordered
       columns={COLUMNS}
-      headerTitle={`ID: ${invest.id} | ${
-        invest.productName ?? '-'
-      } | Last Updated: ${time.toLocaleTimeString()}`}
+      headerTitle={`Last Updated: ${time.toLocaleTimeString()}`}
       request={query}
-      options={false}
       pagination={{
         pageSize: 10,
         showSizeChanger: true,
@@ -89,7 +118,6 @@ const AutomateOrderTable = (props) => {
       toolBarRender={() => [
         <Button
           key="polling"
-          type="primary"
           onClick={() => {
             if (polling) {
               setPolling(undefined);
@@ -101,6 +129,11 @@ const AutomateOrderTable = (props) => {
           {polling ? <LoadingOutlined /> : <ReloadOutlined />}
           {polling ? 'Stop Polling' : 'Start Polling'}
         </Button>,
+        <Button
+          key="buy"
+          type="primary"
+          onClick={() => onClickBuyOrder(invest)}
+        >{`Buy: ${invest.size}`}</Button>,
       ]}
       search={false}
       size="small"
