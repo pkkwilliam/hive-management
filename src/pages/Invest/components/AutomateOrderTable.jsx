@@ -2,9 +2,9 @@ import React, { useRef, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { GET_INVEST_AUTOMATE_ORDERS } from '@/services/hive/automateOrderService';
 import { BUY_ORDER, SELL_ORDER } from '@/services/hive/manualOrderService';
-import { getEnumLabelByKey } from '@/enum/enumUtil';
+import { getEnumLabelByKey, getEnumObjectByKey } from '@/enum/enumUtil';
 import { AUTOMATE_ORDER_STATUS } from '@/enum/AutomateOrderStatus';
-import { Badge, Button, Popover } from 'antd';
+import { Badge, Button, Popover, Progress } from 'antd';
 import { LoadingOutlined, ReloadOutlined } from '@ant-design/icons';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 
@@ -36,6 +36,21 @@ const AutomateOrderPopover = ({ item }) => {
   );
 };
 
+const StatusBar = (props) => {
+  const [showInfo, setShowInfo] = useState(false);
+  const { record } = props;
+  const enumObject = getEnumObjectByKey(AUTOMATE_ORDER_STATUS, record.status);
+  return (
+    <Progress
+      format={() => enumObject.label}
+      percent={enumObject.percentComplete}
+      showInfo={showInfo}
+      steps={4}
+      onClick={() => setShowInfo(!showInfo)}
+    />
+  );
+};
+
 const POLLING_INTERVAL = 5000;
 
 const AutomateOrderTable = (props) => {
@@ -53,7 +68,7 @@ const AutomateOrderTable = (props) => {
     {
       title: 'Status',
       dataIndex: ['status'],
-      render: (text, record) => getEnumLabelByKey(AUTOMATE_ORDER_STATUS, record.status),
+      render: (text, record) => <StatusBar record={record} />,
     },
     { title: 'Actual In Price', dataIndex: ['actualBuyInPrice'] },
     { title: 'Actual Out Price', dataIndex: ['actualSellOutPrice'] },

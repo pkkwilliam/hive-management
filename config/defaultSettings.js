@@ -7,7 +7,7 @@ const Settings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '數字螞蟻全自動投資系統',
+  title: 'Digit Ant',
   pwa: false,
   logo: '/logo.png',
   iconfontUrl: '',

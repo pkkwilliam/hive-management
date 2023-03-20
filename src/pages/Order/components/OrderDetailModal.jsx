@@ -58,7 +58,7 @@ const OrderDetailModal = (props) => {
           <OrderDetail order={order} />
         </Space>
         <div style={{ position: 'fixed', bottom: 0 }}>
-          <Text style={{ fontSize: 9 }}>源代碼科技 - 數字螞蟻全自動投資系統</Text>
+          <Text style={{ fontSize: 9 }}>Bitcode - Digit Ant</Text>
         </div>
       </PrintableHiddenComponentWrapper>
     </Modal>

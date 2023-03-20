@@ -130,6 +130,7 @@ const Invest = () => {
       title: 'GS-CM',
       dataIndex: ['gainSellCalculateMethod'],
       render: (text) => getEnumLabelByKey(CALCULATE_METHODS, text),
+      tooltip: 'Gain Sell Calculate Method',
     },
     {
       title: 'Gain',
