@@ -10,8 +10,13 @@ export function convertEnumsToProTableValueEnum(enums) {
   return result;
 }
 
-export function getEnumLabelByKey(enums, key, undefinedLabel = 'UNKNOWN') {
-  return getEnumObjectByKey(enums, key, undefinedLabel).label;
+export function getEnumLabelByKey(
+  enums,
+  key,
+  labelFieldName = 'label',
+  undefinedLabel = 'UNKNOWN',
+) {
+  return getEnumObjectByKey(enums, key, undefinedLabel)[labelFieldName];
 }
 
 export function getEnumObjectByKey(enums, key, undefinedLabel = 'UNKNOWN') {

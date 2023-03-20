@@ -1,6 +1,11 @@
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 import PingChecker from '@/components/PingChecker';
 import { ALGORITHM_TYPES } from '@/enum/Algorithm';
+import {
+  CALCULATE_METHODS,
+  CALCULATE_METHOD_FIXED,
+  CALCULATE_METHOD_PERCENTAGE,
+} from '@/enum/CalculateMethod';
 import { CHANNEL_TYPES } from '@/enum/Channel';
 import { getEnumLabelByKey } from '@/enum/enumUtil';
 import {
@@ -21,6 +26,17 @@ import AutomateOrderTable from './components/AutomateOrderTable';
 import InvestDetailModal from './components/InvestDetailModal';
 
 const POLLING_INTERVAL = 5000;
+
+function getGetSellRateLabel(gainSellCalculateMethod, gainSellRate) {
+  switch (gainSellCalculateMethod) {
+    case CALCULATE_METHOD_FIXED.key:
+      return '$' + gainSellRate;
+    case CALCULATE_METHOD_PERCENTAGE.key:
+      return gainSellRate + '%';
+    default:
+      return gainSellRate;
+  }
+}
 
 const Invest = () => {
   const [polling, setPolling] = useState(undefined);
@@ -84,34 +100,41 @@ const Invest = () => {
 
   const COLUMNS = [
     {
-      title: 'Status',
+      title: 'Product',
       dataIndex: ['active'],
       render: (_, record) => (
-        <Badge status={record.active ? 'success' : 'error'} text={record.id} />
+        <Badge status={record.active ? 'success' : 'error'} text={record.productName} />
       ),
     },
     {
-      title: 'Channel',
+      title: 'Ch',
       dataIndex: ['channel'],
-      render: (text, record) => getEnumLabelByKey(CHANNEL_TYPES, record.channel),
+      render: (text, record) => getEnumLabelByKey(CHANNEL_TYPES, record.channel, 'shortLabel'),
+      tooltip: 'Channel',
     },
+    // {
+    //   title: 'Name',
+    //   dataIndex: ['productName'],
+    //   tooltip: 'Product Name',
+    // },
+    // { title: 'PID', dataIndex: ['channelProductId'], tooltip: 'Channel Product ID' },
     {
-      title: 'Name',
-      dataIndex: ['productName'],
-      tooltip: 'Product Name',
-    },
-    { title: 'PID', dataIndex: ['channelProductId'], tooltip: 'Channel Product ID' },
-    {
-      title: 'Algoirthm',
+      title: 'Algo',
       dataIndex: ['algorithmType'],
       render: (text, record) => getEnumLabelByKey(ALGORITHM_TYPES, record.algorithmType),
+      tooltip: 'Algoirthm Type',
     },
     { title: 'Price', dataIndex: ['price'] },
-    { title: 'Concurrent', dataIndex: ['maxConcurrent'], tooltip: 'Max Concurrent' },
+    { title: 'Con', dataIndex: ['maxConcurrent'], tooltip: 'Max Concurrent' },
+    {
+      title: 'GS-CM',
+      dataIndex: ['gainSellCalculateMethod'],
+      render: (text) => getEnumLabelByKey(CALCULATE_METHODS, text),
+    },
     {
       title: 'Gain',
       dataIndex: ['gainSellRate'],
-      render: (text) => `${text}%`,
+      render: (text, record) => getGetSellRateLabel(record.gainSellCalculateMethod, text),
       tooltip: 'Gain Sell Rate',
     },
     {
@@ -120,8 +143,8 @@ const Invest = () => {
       render: (text) => `${text}%`,
       tooltip: 'Loss Sell Rate',
     },
-    { title: 'Max Buy', dataIndex: ['maxBuyInPrice'], tooltip: 'Max Buy In Price' },
-    { title: 'Min Buuy', dataIndex: ['minBuyInPrice'], tooltip: 'Min Buy In Price' },
+    { title: 'Max', dataIndex: ['maxBuyInPrice'], tooltip: 'Max Buy In Price' },
+    { title: 'Min', dataIndex: ['minBuyInPrice'], tooltip: 'Min Buy In Price' },
     { title: 'Size', dataIndex: ['size'] },
     {
       title: 'Operation',

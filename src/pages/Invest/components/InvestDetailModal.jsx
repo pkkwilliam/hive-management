@@ -11,6 +11,7 @@ import ProFormChannelSelect from '@/commons/proForm/ProFormChannelSelect';
 import { Form, Space } from 'antd';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 import { ALGORITHM_GRID_TRADING } from '@/enum/Algorithm';
+import ProFormCalculateMerhodSelect from '@/commons/proForm/ProFormCalculateMethodSelect';
 
 const InvestModalForm = (props) => {
   const { invest, onFinish, setVisible, visible } = props;
@@ -77,6 +78,10 @@ const InvestModalForm = (props) => {
         </Space>
       </Space>
       <Space>
+        <ProFormCalculateMerhodSelect
+          label="Gain Sell Calculate Method"
+          name={['gainSellCalculateMethod']}
+        />
         <ProFormDigit label="Gain Sell Rate" name={['gainSellRate']} />
         <ProFormDigit label="Loss Sell Rate" name={['lossSellRate']} />
         <ProFormDigit label="Max Buy In Price" name={['maxBuyInPrice']} />
