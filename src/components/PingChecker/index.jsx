@@ -7,7 +7,14 @@ import { useEffect } from 'react';
  * this should only be use in one place through out the whole application
  */
 
+const OFF_COLOR = 'default';
+const ON_COLOR = 'processing';
+
 const PING_INTERVAL = 60000;
+
+const StatusTag = ({ isOn, text }) => {
+  return <Tag color={isOn ? ON_COLOR : OFF_COLOR}>{text}</Tag>;
+};
 
 const PingChecker = () => {
   let interval;
@@ -25,16 +32,10 @@ const PingChecker = () => {
 
   return (
     <Space>
-      <Tag color={pingResponse.connected ? 'green' : 'red'}>{`MDC`}</Tag>
-      <Tag
-        color={pingResponse?.channelsHealth?.['COINBASE_CRYPTO'] ? 'green' : 'red'}
-      >{`CoinBase`}</Tag>
-      <Tag
-        color={pingResponse?.channelsHealth?.['FOREX_STANDARD_ACCOUNT'] ? 'green' : 'red'}
-      >{`Forex`}</Tag>
-      <Tag
-        color={pingResponse?.channelsHealth?.['INTERACTIVE_BROKERS_STOCK'] ? 'green' : 'red'}
-      >{`IB`}</Tag>
+      <StatusTag isOn={pingResponse.connected} text="MDC" />
+      <StatusTag isOn={pingResponse?.channelsHealth?.['COINBASE_CRYPTO']} text="CoinBase" />
+      <StatusTag isOn={pingResponse?.channelsHealth?.['FOREX_STANDARD_ACCOUNT']} text="Forex" />
+      <StatusTag isOn={pingResponse?.channelsHealth?.['INTERACTIVE_BROKERS_STOCK']} text="MDC" />
     </Space>
   );
 };

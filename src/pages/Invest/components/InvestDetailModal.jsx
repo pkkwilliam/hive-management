@@ -12,6 +12,8 @@ import { Form, Space } from 'antd';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
 import { ALGORITHM_GRID_TRADING } from '@/enum/Algorithm';
 import ProFormCalculateMerhodSelect from '@/commons/proForm/ProFormCalculateMethodSelect';
+import ProFormInvestTypeSelect from '@/commons/proForm/ProFormInvestTypeSelect';
+import ProFormChannelAccountSelect from '@/commons/proForm/ProFormChannelAccontSelect';
 
 const InvestModalForm = (props) => {
   const { invest, onFinish, setVisible, visible } = props;
@@ -35,6 +37,11 @@ const InvestModalForm = (props) => {
         </Space>
         <Space>
           <ProFormChannelSelect label="Channel" name={['channel']} rules={[{ required: true }]} />
+          <ProFormChannelAccountSelect
+            label="Channel Account"
+            name={['tradeAccount']}
+            rules={[{ required: true }]}
+          />
           <ProFormText
             label="Product Name"
             name={['productName']}
@@ -49,19 +56,24 @@ const InvestModalForm = (props) => {
           />
         </Space>
         <Space>
-          <ProFormDigit
-            label="Max Concurrent"
-            name={['maxConcurrent']}
-            rules={[{ required: true }]}
+          <ProFormInvestTypeSelect
+            label="Invest Type"
+            name={['investType']}
+            rules={[[{ required: true }]]}
           />
-          <ProFormDigit label="Size" name={['size']} />
-        </Space>
-        <Space>
           <ProFormAlgorithmSelect
             label="Algorithm"
             name={['algorithmType']}
             rules={[{ required: true }]}
           />
+        </Space>
+        <Space>
+          <ProFormDigit
+            label="Max Concurrent"
+            name={['maxConcurrent']}
+            rules={[{ required: true }]}
+          />
+          <ProFormDigit label="Size" name={['size']} rules={[{ required: true }]} />
         </Space>
         <Space>
           <ProFormDependency name={['algorithmType']}>
@@ -84,8 +96,8 @@ const InvestModalForm = (props) => {
         />
         <ProFormDigit label="Gain Sell Rate" name={['gainSellRate']} />
         <ProFormDigit label="Loss Sell Rate" name={['lossSellRate']} />
-        <ProFormDigit label="Max Buy In Price" name={['maxBuyInPrice']} />
-        <ProFormDigit label="Min Buy In Price" name={['minBuyInPrice']} />
+        <ProFormDigit label="Max Price" name={['maxPrice']} />
+        <ProFormDigit label="Min Price" name={['minPrice']} />
       </Space>
     </ModalForm>
   );

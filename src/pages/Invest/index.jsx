@@ -8,6 +8,7 @@ import {
 } from '@/enum/CalculateMethod';
 import { CHANNEL_TYPES } from '@/enum/Channel';
 import { getEnumLabelByKey } from '@/enum/enumUtil';
+import { INVEST_TYPES } from '@/enum/investType';
 import {
   BEDROCK_ACTIVATE_SERVICE_REQEUST,
   BEDROCK_CREATE_SERVICE_REQEUST,
@@ -24,6 +25,7 @@ import { useRef, useState } from 'react';
 import { USER_INVEST_SERVICE_CONFIG } from '../../services/hive/investService';
 import AutomateOrderTable from './components/AutomateOrderTable';
 import InvestDetailModal from './components/InvestDetailModal';
+import Text from 'antd/lib/typography/Text';
 
 const POLLING_INTERVAL = 5000;
 
@@ -101,17 +103,29 @@ const Invest = () => {
   const COLUMNS = [
     {
       title: 'Product',
-      dataIndex: ['active'],
-      render: (_, record) => (
-        <Badge status={record.active ? 'success' : 'error'} text={record.productName} />
+      render: (_, { active, channel, productName }) => (
+        <Space>
+          <Badge status={active ? 'success' : 'error'} />
+          <Space direction="vertical" size={0}>
+            <Text>{getEnumLabelByKey(CHANNEL_TYPES, channel, 'shortLabel')}</Text>
+            <Text>{productName}</Text>
+          </Space>
+        </Space>
       ),
     },
-    {
-      title: 'Ch',
-      dataIndex: ['channel'],
-      render: (text, record) => getEnumLabelByKey(CHANNEL_TYPES, record.channel, 'shortLabel'),
-      tooltip: 'Channel',
-    },
+    // {
+    //   title: 'Product',
+    //   dataIndex: ['active'],
+    //   render: (_, record) => (
+    //     <Badge status={record.active ? 'success' : 'error'} text={record.productName} />
+    //   ),
+    // },
+    // {
+    //   title: 'Ch',
+    //   dataIndex: ['channel'],
+    //   render: (text, record) => getEnumLabelByKey(CHANNEL_TYPES, record.channel, 'shortLabel'),
+    //   tooltip: 'Channel',
+    // },
     // {
     //   title: 'Name',
     //   dataIndex: ['productName'],
@@ -119,34 +133,113 @@ const Invest = () => {
     // },
     // { title: 'PID', dataIndex: ['channelProductId'], tooltip: 'Channel Product ID' },
     {
-      title: 'Algo',
-      dataIndex: ['algorithmType'],
-      render: (text, record) => getEnumLabelByKey(ALGORITHM_TYPES, record.algorithmType),
-      tooltip: 'Algoirthm Type',
+      title: 'Type/Algo',
+
+      render: (_, { algorithmType, investType }) => (
+        <Space direction="vertical" size={0}>
+          <Text>{getEnumLabelByKey(INVEST_TYPES, investType)}</Text>
+          <Text>{getEnumLabelByKey(ALGORITHM_TYPES, algorithmType)}</Text>
+        </Space>
+      ),
+      tooltip: '1. Invest Type (Position Type) 2. Algoirthm Type',
     },
-    { title: 'Price', dataIndex: ['price'] },
-    { title: 'Con', dataIndex: ['maxConcurrent'], tooltip: 'Max Concurrent' },
+    // {
+    //   title: 'Type',
+    //   dataIndex: ['investType'],
+    //   render: (text, record) => getEnumLabelByKey(INVEST_TYPES, record.investType),
+    //   tooltip: 'Invest Type (Position Type)',
+    // },
+    // {
+    //   title: 'Algo',
+    //   dataIndex: ['algorithmType'],
+    //   render: (text, record) => getEnumLabelByKey(ALGORITHM_TYPES, record.algorithmType),
+    //   tooltip: 'Algoirthm Type',
+    // },
     {
-      title: 'GS-CM',
-      dataIndex: ['gainSellCalculateMethod'],
-      render: (text) => getEnumLabelByKey(CALCULATE_METHODS, text),
-      tooltip: 'Gain Sell Calculate Method',
+      title: 'Price',
+      render: (_, { ticking }) => {
+        const { bidPrice, offerPrice } = ticking ?? { bidPrice: 0, offerPrice: 0 };
+        const spread = (offerPrice - bidPrice).toFixed(5);
+        return (
+          <Space direction="vertical" size={0}>
+            <Text type="success">{offerPrice}</Text>
+            <Text type="secondary">{spread}</Text>
+            <Text type="danger">{bidPrice}</Text>
+          </Space>
+        );
+      },
+      tooltip: '1. Offer Price 2. Bid Price',
     },
+    // { title: 'Offer', dataIndex: ['ticking', 'offerPrice'] },
+    // { title: 'Bid', dataIndex: ['ticking', 'bidPrice'] },
+    // {
+    //   title: 'Spread',
+    //   renderText: (_, record) => {
+    //     const { offerPrice, bidPrice } = record?.ticking ?? {};
+    //     if (!offerPrice || !bidPrice) {
+    //       return null;
+    //     }
+    //     const result = (offerPrice - bidPrice).toFixed(5);
+    //     return result === 0 ? null : result;
+    //   },
+    // },
+    // { title: 'Con', dataIndex: ['maxConcurrent'], tooltip: 'Max Concurrent' },
     {
-      title: 'Gain',
-      dataIndex: ['gainSellRate'],
-      render: (text, record) => getGetSellRateLabel(record.gainSellCalculateMethod, text),
-      tooltip: 'Gain Sell Rate',
+      title: 'Con/Size',
+      render: (_, { maxConcurrent, size }) => (
+        <Space direction="vertical" size={0}>
+          <Text>{maxConcurrent}</Text>
+          <Text>{size}</Text>
+        </Space>
+      ),
+      tooltip: '1. Maximum Concurrent 2. Size',
     },
+    // {
+    //   title: 'GS-CM',
+    //   dataIndex: ['gainSellCalculateMethod'],
+    //   render: (text) => getEnumLabelByKey(CALCULATE_METHODS, text),
+    //   tooltip: 'Gain Sell Calculate Method',
+    // },
     {
-      title: 'Loss',
-      dataIndex: ['lossSellRate'],
-      render: (text) => `${text}%`,
-      tooltip: 'Loss Sell Rate',
+      title: 'Gain/Loss',
+      render: (_, { gainSellCalculateMethod, gainSellRate, lossSellRate }) => (
+        <Space direction="vertical" size={0}>
+          <Text>
+            {` ${getGetSellRateLabel(gainSellCalculateMethod, gainSellRate)} (${getEnumLabelByKey(
+              CALCULATE_METHODS,
+              gainSellCalculateMethod,
+            )})`}
+          </Text>
+          <Text>{`${lossSellRate}% (Percentage)`}</Text>
+        </Space>
+      ),
+      tooltip: '1. Gain Rate 2. Loss Rate',
     },
-    { title: 'Max', dataIndex: ['maxBuyInPrice'], tooltip: 'Max Buy In Price' },
-    { title: 'Min', dataIndex: ['minBuyInPrice'], tooltip: 'Min Buy In Price' },
-    { title: 'Size', dataIndex: ['size'] },
+    // {
+    //   title: 'Gain',
+    //   dataIndex: ['gainSellRate'],
+    //   render: (text, record) => getGetSellRateLabel(record.gainSellCalculateMethod, text),
+    //   tooltip: 'Gain Sell Rate',
+    // },
+    // {
+    //   title: 'Loss',
+    //   dataIndex: ['lossSellRate'],
+    //   render: (text) => `${text}%`,
+    //   tooltip: 'Loss Sell Rate',
+    // },
+    // { title: 'Max', dataIndex: ['maxPrice'], tooltip: 'Max Open Price' },
+    // { title: 'Min', dataIndex: ['minPrice'], tooltip: 'Min Open Price' },
+    {
+      title: 'Max/Min',
+      render: (_, { maxPrice, minPrice }) => (
+        <Space direction="vertical" size={0}>
+          <Text>${maxPrice}</Text>
+          <Text>${minPrice}</Text>
+        </Space>
+      ),
+      tooltip: '1. Max Open Price 2. Min Open Price',
+    },
+    // { title: 'Size', dataIndex: ['size'] },
     {
       title: 'Operation',
       valueType: 'option',

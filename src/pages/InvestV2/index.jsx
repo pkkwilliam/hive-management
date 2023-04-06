@@ -96,10 +96,10 @@ const InvestV2 = () => {
               id,
               gridInterval,
               lossSellRate,
-              maxBuyInPrice,
+              maxPrice,
               maxConcurrent,
               maxOpenPerGrid,
-              minBuyInPrice,
+              minPrice,
               price,
               size,
             },
@@ -129,10 +129,10 @@ const InvestPurchaseInfoStatisticCard = (props) => {
     id,
     gridInterval,
     lossSellRate,
-    maxBuyInPrice,
+    maxPrice,
     maxConcurrent,
     maxOpenPerGrid,
-    minBuyInPrice,
+    minPrice,
     price,
     size,
   } = props.record;
@@ -179,11 +179,11 @@ const InvestPurchaseInfoStatisticCard = (props) => {
       <StatisticCard
         statistic={{
           title: 'Max Buy',
-          value: maxBuyInPrice,
+          value: maxPrice,
         }}
         footer={
           <>
-            <Statistic value={`${minBuyInPrice ?? 0}`} title="Min Buy" layout="horizontal" />
+            <Statistic value={`${minPrice ?? 0}`} title="Min Buy" layout="horizontal" />
           </>
         }
       />

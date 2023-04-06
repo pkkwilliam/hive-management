@@ -1,6 +1,6 @@
-export const AUTOMATE_ORDER_STATUS_CLOSED = {
-  key: 'CLOSED',
-  label: 'Closed',
+export const AUTOMATE_ORDER_STATUS_SOLD = {
+  key: 'SOLD',
+  label: 'Sold',
   percentComplete: 100,
 };
 export const AUTOMATE_ORDER_STATUS_FILLED = { key: 'FILLED', label: 'Filled', percentComplete: 50 };
@@ -16,8 +16,8 @@ export const AUTOMATE_ORDER_STATUS_SUBMITTED = {
 };
 
 export const AUTOMATE_ORDER_STATUS = [
-  AUTOMATE_ORDER_STATUS_CLOSED,
   AUTOMATE_ORDER_STATUS_FILLED,
   AUTOMATE_ORDER_STATUS_SELLING,
+  AUTOMATE_ORDER_STATUS_SOLD,
   AUTOMATE_ORDER_STATUS_SUBMITTED,
 ];

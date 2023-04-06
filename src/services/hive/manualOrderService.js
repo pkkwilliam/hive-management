@@ -7,22 +7,22 @@ export const USER_MANUAL_ORDER_SERVICE_CONFIG = {
   serviceUrl: USER_MANUAL_ORDER_SERVICE_URL,
 };
 
-export const BUY_ORDER = (investId, params) => {
+export const OPEN_ORDER = (investId, params) => {
   const request = {
     authenticated: USER_MANUAL_ORDER_SERVICE_CONFIG.requireAuth,
     body: params,
     method: 'POST',
-    requestUrl: USER_MANUAL_ORDER_SERVICE_CONFIG.serviceUrl + `/${investId}/buy`,
+    requestUrl: USER_MANUAL_ORDER_SERVICE_CONFIG.serviceUrl + `/${investId}/open`,
   };
   return constructBasicRequest(request);
 };
 
-export const SELL_ORDER = (orderId, params) => {
+export const CLOSE_ORDER = (orderId, params) => {
   const request = {
     authenticated: USER_MANUAL_ORDER_SERVICE_CONFIG.requireAuth,
     body: params,
     method: 'POST',
-    requestUrl: USER_MANUAL_ORDER_SERVICE_CONFIG.serviceUrl + `/${orderId}/sell`,
+    requestUrl: USER_MANUAL_ORDER_SERVICE_CONFIG.serviceUrl + `/${orderId}/close`,
   };
   return constructBasicRequest(request);
 };
