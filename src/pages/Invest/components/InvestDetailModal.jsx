@@ -14,6 +14,7 @@ import { ALGORITHM_GRID_TRADING } from '@/enum/Algorithm';
 import ProFormCalculateMerhodSelect from '@/commons/proForm/ProFormCalculateMethodSelect';
 import ProFormInvestTypeSelect from '@/commons/proForm/ProFormInvestTypeSelect';
 import ProFormChannelAccountSelect from '@/commons/proForm/ProFormChannelAccontSelect';
+import InvestOrderBook from './InvestOrderBook';
 
 const InvestModalForm = (props) => {
   const { invest, onFinish, setVisible, visible } = props;
@@ -31,6 +32,11 @@ const InvestModalForm = (props) => {
       width={1200}
     >
       <Space direction="vertical">
+        <ProFormDependency name={['gridInterval', 'maxPrice', 'minPrice']}>
+          {(dependencyValues) => {
+            return <InvestOrderBook {...dependencyValues} />;
+          }}
+        </ProFormDependency>
         <Space>
           <ProFormSwitch label="Active" name={['active']} />
           <ProFormText hidden label="ID" name={['id']} />

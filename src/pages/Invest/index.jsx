@@ -161,10 +161,17 @@ const Invest = () => {
         const { bidPrice, offerPrice } = ticking ?? { bidPrice: 0, offerPrice: 0 };
         const spread = (offerPrice - bidPrice).toFixed(5);
         return (
-          <Space direction="vertical" size={0}>
-            <Text type="success">{offerPrice}</Text>
-            <Text type="secondary">{spread}</Text>
-            <Text type="danger">{bidPrice}</Text>
+          <Space>
+            <Space direction="vertical" size={0}>
+              <Text>O:</Text>
+              <Text>S:</Text>
+              <Text>C:</Text>
+            </Space>
+            <Space direction="vertical" size={0}>
+              <Text type="success">{offerPrice}</Text>
+              <Text type="secondary">{spread}</Text>
+              <Text type="danger">{bidPrice}</Text>
+            </Space>
           </Space>
         );
       },

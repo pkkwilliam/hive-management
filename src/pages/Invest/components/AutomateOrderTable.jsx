@@ -97,12 +97,45 @@ const AutomateOrderTable = (props) => {
     },
     {
       title: 'Actual Price',
-      render: (_, { actualClosePrice, actualOpenPrice }) => (
-        <Space direction="vertical" size={0}>
-          <Text>${actualOpenPrice ? actualOpenPrice : '-'}</Text>
-          <Text>${actualClosePrice ? actualClosePrice : '-'}</Text>
-        </Space>
-      ),
+      render: (
+        _,
+        { actualClosePrice, actualOpenPrice, expectedClosePrice, expectedOpenPrice, investType },
+      ) => {
+        const executedClosePriceDifference =
+          actualClosePrice !== expectedClosePrice
+            ? Math.abs(actualClosePrice - expectedClosePrice).toFixed(6)
+            : null;
+        const executedOpenPriceDifference =
+          actualOpenPrice !== expectedOpenPrice
+            ? Math.abs(actualOpenPrice - expectedOpenPrice).toFixed(6)
+            : null;
+        const showPriceDifference = executedClosePriceDifference || executedOpenPriceDifference;
+        return (
+          <Space>
+            <Space direction="vertical" size={0}>
+              <Text>O:</Text>
+              <Text>C:</Text>
+            </Space>
+            <Space direction="vertical" size={0}>
+              <Text>${actualOpenPrice ? actualOpenPrice : '-'}</Text>
+              <Text>${actualClosePrice ? actualClosePrice : '-'}</Text>
+            </Space>
+            <Space direction="vertical" size={0}>
+              <Text>
+                {showPriceDifference
+                  ? `$${executedOpenPriceDifference ? executedOpenPriceDifference : '-'}`
+                  : ''}
+              </Text>
+              <Text>
+                {showPriceDifference
+                  ? `$${executedClosePriceDifference ? executedClosePriceDifference : '-'}`
+                  : ''}
+              </Text>
+            </Space>
+          </Space>
+        );
+      },
+      tooltip: 'Actual Price with Expected Price Difference',
     },
     // { title: 'Actual Open Price', dataIndex: ['actualOpenPrice'] },
     // {
@@ -119,12 +152,17 @@ const AutomateOrderTable = (props) => {
     { title: 'Actual Size', dataIndex: ['actualOpenSize'] },
     {
       title: 'Target/Difference',
-      render: (_, { targetCloseDifference, targetClosePrice }) => (
-        <Space direction="vertical" size={0}>
-          <Text>${targetClosePrice ? targetClosePrice : '-'}</Text>
-          <Text>${targetCloseDifference ? targetCloseDifference : '-'}</Text>
-        </Space>
-      ),
+      render: (_, { active, profit, targetCloseDifference, targetClosePrice }) => {
+        const textColor = getTextType(active, profit);
+        return (
+          <Space direction="vertical" size={0}>
+            <Text type={active ? 'default' : 'secondary'}>
+              ${targetClosePrice ? targetClosePrice : '-'}
+            </Text>
+            <Text type={textColor}>${targetCloseDifference ? targetCloseDifference : '-'}</Text>
+          </Space>
+        );
+      },
       tooltip: '1. Target Close Price 2. Difference to Target Close Price',
     },
     // { title: 'Target', dataIndex: ['targetClosePrice'], renderText: (text) => text ?? '-' },
@@ -135,12 +173,13 @@ const AutomateOrderTable = (props) => {
     // },
     {
       title: 'Profit/Total',
-      render: (_, { actualOpenSize, profit }) => {
+      render: (_, { active, actualOpenSize, profit }) => {
         const totalProfit = profit && actualOpenSize ? (profit * actualOpenSize).toFixed(5) : '-';
+        const textColor = getTextType(active, profit);
         return (
           <Space direction="vertical" size={0}>
-            <Text>${profit ? profit : '-'}</Text>
-            <Text>${totalProfit}</Text>
+            <Text type={textColor}>${profit ? profit : '-'}</Text>
+            <Text type={textColor}>${totalProfit}</Text>
           </Space>
         );
       },
@@ -227,5 +266,9 @@ const AutomateOrderTable = (props) => {
     />
   );
 };
+
+function getTextType(active, profit) {
+  return profit < 0 ? 'danger' : active ? 'success' : 'secondary';
+}
 
 export default AutomateOrderTable;
