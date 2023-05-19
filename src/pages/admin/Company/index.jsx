@@ -192,7 +192,7 @@ const Compamy = () => {
         onClickSubmit={
           currentRow ? companyCrudServiceGenerator.update : companyCrudServiceGenerator.create
         }
-        setModalVisible={(visible) =>
+        setModalVisible={() =>
           proTableOnChangeModalVisible(visible, setModalVisible, setCurrentRow)
         }
         visible={modalVisible}
