@@ -20,12 +20,13 @@ import { INVEST_SYNC } from '@/services/hive/investSyncService';
 import { LoadingOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Badge, Button, Space, Switch } from 'antd';
+import { Badge, Button, Divider, Space, Switch } from 'antd';
 import { useRef, useState } from 'react';
 import { USER_INVEST_SERVICE_CONFIG } from '../../services/hive/investService';
 import AutomateOrderTable from './components/AutomateOrderTable';
 import InvestDetailModal from './components/InvestDetailModal';
 import Text from 'antd/lib/typography/Text';
+import InvestSummary from './components/InvestSummary';
 
 const POLLING_INTERVAL = 5000;
 
@@ -277,7 +278,14 @@ const Invest = () => {
         actionRef={tableRef}
         columns={COLUMNS}
         columnEmptyText={'-'}
-        expandable={{ expandedRowRender: (record) => <AutomateOrderTable invest={record} /> }}
+        expandable={{
+          expandedRowRender: (record) => (
+            <>
+              <InvestSummary invest={record} />
+              <AutomateOrderTable invest={record} />
+            </>
+          ),
+        }}
         polling={polling || undefined}
         request={(params, sort, filters) => query(params, sort, filters)}
         rowKey="id"

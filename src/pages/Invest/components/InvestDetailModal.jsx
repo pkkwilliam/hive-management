@@ -10,7 +10,7 @@ import ProFormAlgorithmSelect from '@/commons/proForm/ProFormAlgorithmSelect';
 import ProFormChannelSelect from '@/commons/proForm/ProFormChannelSelect';
 import { Form, Space } from 'antd';
 import { onModalFormVisibleChange } from '@/commons/proForm/proformUtil';
-import { ALGORITHM_GRID_TRADING } from '@/enum/Algorithm';
+import { ALGORITHM_DYNAMIC_GRID_TRADE, ALGORITHM_GRID_TRADING } from '@/enum/Algorithm';
 import ProFormCalculateMerhodSelect from '@/commons/proForm/ProFormCalculateMethodSelect';
 import ProFormInvestTypeSelect from '@/commons/proForm/ProFormInvestTypeSelect';
 import ProFormChannelAccountSelect from '@/commons/proForm/ProFormChannelAccontSelect';
@@ -87,6 +87,8 @@ const InvestModalForm = (props) => {
               const { algorithmType } = dependencyValues;
               switch (algorithmType) {
                 case ALGORITHM_GRID_TRADING.key:
+                  return <GridTradingField />;
+                case ALGORITHM_DYNAMIC_GRID_TRADE.key:
                   return <GridTradingField />;
                 default:
                   return null;

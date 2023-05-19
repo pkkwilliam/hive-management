@@ -10,25 +10,28 @@ import {
   AUTOMATE_ORDER_STATUS_SOLD,
   AUTOMATE_ORDER_STATUS_FILLED,
 } from '@/enum/AutomateOrderStatus';
-import { Badge, Button, Popover, Progress, Space, Tag } from 'antd';
+import { Badge, Button, Card, Popover, Space, Tag } from 'antd';
 import { LoadingOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons';
 import InactiveableLinkButton from '@/commons/InactiveableLinkButton';
 import { TRANSACTION_REASONS } from '@/enum/TransactionReason';
 import Text from 'antd/lib/typography/Text';
+import { toDisplayDateFromDouble } from '@/util/dateUtil';
+
+const DISPLAY_FORMAT = 'DD/hh:mm';
 
 const AutomateOrderPopover = ({ item }) => {
   return (
     <Popover
       content={
         <div>
-          <p>{`Open Time: ${item.openTime}`}</p>
+          <p>{`Open Time: ${toDisplayDateFromDouble(item.openTime)}`}</p>
           <p>{`Open Order ID: ${item.openOrderId}`}</p>
           <p>{`Open Commission: ${item.openCommission}`}</p>
           <p>{`Open Price (Expected): ${item.expectedOpenPrice}`}</p>
           <p>{`Open Price (Actual): ${item.actualOpenPrice}`}</p>
           <p>{`Open Size (Expected): ${item.expectedOpenSize}`}</p>
           <p>{`Open Size (Actual): ${item.actualOpenSize}`}</p>
-          <p>{`Close Time: ${item.closeTime}`}</p>
+          <p>{`Close Time: ${toDisplayDateFromDouble(item.closeTime)}`}</p>
           <p>{`Close Order ID: ${item.closeOrderId}`}</p>
           <p>{`Close Commission: ${item.closeCommission}`}</p>
           <p>{`Close Price (Expected): ${item.expectedClosePrice}`}</p>
@@ -85,6 +88,15 @@ const AutomateOrderTable = (props) => {
       title: 'Status',
       dataIndex: ['status'],
       render: (text, record) => <StatusBar record={record} />,
+    },
+    {
+      title: 'Time',
+      render: (_, { closeTime, openTime }) => (
+        <Space direction="vertical" size={0}>
+          <Text>{toDisplayDateFromDouble(openTime, DISPLAY_FORMAT)}</Text>
+          <Text>{closeTime ? toDisplayDateFromDouble(closeTime, DISPLAY_FORMAT) : '-'}</Text>
+        </Space>
+      ),
     },
     {
       title: 'Reason',
@@ -230,40 +242,40 @@ const AutomateOrderTable = (props) => {
   };
 
   return (
-    <ProTable
-      actionRef={tableRef}
-      cardBordered
-      columns={COLUMNS}
-      headerTitle={`Last Updated: ${time.toLocaleTimeString()}`}
-      request={query}
-      pagination={{
-        pageSize: 10,
-        showSizeChanger: true,
-      }}
-      polling={polling || undefined}
-      toolBarRender={() => [
-        <Button
-          key="polling"
-          onClick={() => {
-            if (polling) {
-              setPolling(undefined);
-              return;
-            }
-            setPolling(POLLING_INTERVAL);
-          }}
-        >
-          {polling ? <LoadingOutlined /> : <ReloadOutlined />}
-          {polling ? 'Stop Polling' : 'Start Polling'}
-        </Button>,
-        <Button
-          key="open"
-          type="primary"
-          onClick={() => onClickOpenOrder(invest)}
-        >{`Open: ${invest.size}`}</Button>,
-      ]}
-      search={false}
-      size="small"
-    />
+    <Card title="Automate Orders" extra={`Last Updated: ${time.toLocaleTimeString()}`}>
+      <ProTable
+        actionRef={tableRef}
+        columns={COLUMNS}
+        request={query}
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+        }}
+        polling={polling || undefined}
+        toolBarRender={() => [
+          <Button
+            key="polling"
+            onClick={() => {
+              if (polling) {
+                setPolling(undefined);
+                return;
+              }
+              setPolling(POLLING_INTERVAL);
+            }}
+          >
+            {polling ? <LoadingOutlined /> : <ReloadOutlined />}
+            {polling ? 'Stop Polling' : 'Start Polling'}
+          </Button>,
+          <Button
+            key="open"
+            type="primary"
+            onClick={() => onClickOpenOrder(invest)}
+          >{`Open: ${invest.size}`}</Button>,
+        ]}
+        search={false}
+        size="small"
+      />
+    </Card>
   );
 };
 
