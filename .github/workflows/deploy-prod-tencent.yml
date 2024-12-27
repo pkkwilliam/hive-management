@@ -4,7 +4,7 @@ on: [workflow_dispatch]
 jobs:
   build-deploy-application:
     env:
-      BUILD_FOLDER: build/*
+      BUILD_FOLDER: dist/*
       ENV: prod
       SERVER_TARGET_FOLDER: /var/www/html/hive
       SERVER_TEMP_FOLDER: ~/temp/hive
@@ -24,6 +24,7 @@ jobs:
       - run: npm run build
         env:
           CI: false
+      - run: ls
 
       - name: "move build to Tencent temp"
         uses: appleboy/scp-action@master
@@ -34,7 +35,7 @@ jobs:
           port: ${{ secrets.TENCENT_CLOUD_SSH_PORT }}
           source: ${{ env.BUILD_FOLDER }}
           target: ${{ env.SERVER_TEMP_FOLDER }}
-
+    
       - name: "Move Files From Temp Folder To Production Folder"
         uses: appleboy/ssh-action@v0.1.6
         with:
